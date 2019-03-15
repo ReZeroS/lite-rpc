@@ -1,4 +1,5 @@
-# Created by https://www.gitignore.io/api/java,maven,intellij
+
+# Created by https://www.gitignore.io/api/java,maven,intellij
 # Edit at https://www.gitignore.io/?templates=java,maven,intellij
 
 ### Intellij ###
@@ -119,3 +120,10 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/java,maven,intellij
 
+src/main/resources/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/markdown-navigator/
+.idea/misc.xml
+.idea/vcs.xml
