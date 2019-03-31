@@ -1,6 +1,10 @@
 package lite.summer.beans.factory.support;
 
 import lite.summer.beans.BeanDefinition;
+import lite.summer.beans.PropertyValue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ReZero
@@ -12,6 +16,8 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean singleton = true;
     private boolean prototype = false;
     private String scope = SCOPE_DEFAULT;
+
+    private List<PropertyValue> propertyValueList = new ArrayList<PropertyValue>();
 
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
@@ -41,4 +47,7 @@ public class GenericBeanDefinition implements BeanDefinition {
         this.prototype = SCOPE_PROTOTYPE.equals(scope);
     }
 
+    public List<PropertyValue> getPropertyValues() {
+        return this.propertyValueList;
+    }
 }

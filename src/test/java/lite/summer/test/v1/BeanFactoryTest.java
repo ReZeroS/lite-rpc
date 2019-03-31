@@ -31,7 +31,7 @@ public class BeanFactoryTest {
     @Test
     public void testGetBean(){
         Resource resource = new ClassPathResource("petstore-v1.xml");
-        xmlBeanDefinitionReader.loadBeanDefinition(resource);
+        xmlBeanDefinitionReader.loadBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition("petStore");
         assertEquals("lite.summer.service.v1.PetStoreService", beanDefinition.getBeanClassName());
@@ -53,7 +53,7 @@ public class BeanFactoryTest {
     public void testInvalidBean(){
         try {
             Resource resource = new ClassPathResource("petstore-v1.xml");
-            xmlBeanDefinitionReader.loadBeanDefinition(resource);
+            xmlBeanDefinitionReader.loadBeanDefinitions(resource);
 
             factory.getBean("invalidBean");
         } catch (BeanCreationException e) {
@@ -66,7 +66,7 @@ public class BeanFactoryTest {
     public void testInvalidXML(){
         try {
             Resource resource = new ClassPathResource("xxx.xml");
-            xmlBeanDefinitionReader.loadBeanDefinition(resource);
+            xmlBeanDefinitionReader.loadBeanDefinitions(resource);
         } catch (BeanDefinitionStoreException e) {
             return;
         }
