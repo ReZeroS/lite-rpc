@@ -1,5 +1,6 @@
 package lite.summer.beans.factory.support;
 
+import lite.summer.beans.PropertyValue;
 import lite.summer.beans.factory.config.RuntimeBeanReference;
 import lite.summer.beans.factory.config.TypedStringValue;
 
@@ -19,6 +20,8 @@ public class BeanDefinitionValueResolver {
 
     public Object resolveValueIfNecessary(Object value) {
 
+//        return propertyValue.resolve(this.beanFactory);
+        //
         if (value instanceof RuntimeBeanReference) {
             RuntimeBeanReference ref = (RuntimeBeanReference) value;
             String refName = ref.getBeanName();

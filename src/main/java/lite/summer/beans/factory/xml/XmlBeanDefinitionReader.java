@@ -1,6 +1,7 @@
 package lite.summer.beans.factory.xml;
 
 import lite.summer.beans.BeanDefinition;
+import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.PropertyValue;
 import lite.summer.beans.factory.BeanDefinitionStoreException;
 import lite.summer.beans.factory.config.RuntimeBeanReference;
@@ -32,6 +33,9 @@ public class XmlBeanDefinitionReader {
     public static final String VALUE_ATTRIBUTE = "value";
     public static final String NAME_ATTRIBUTE = "name";
 
+    public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
+    public static final String TYPE_ATTRIBUTE= "type";
+
 
     private static final Logger logger = LogManager.getLogger("XmlBeanDefinitionReader");
 
@@ -60,6 +64,7 @@ public class XmlBeanDefinitionReader {
                 if (element.attribute(SCOPE_ATTRIBUTE) != null) {
                     beanDefinition.setScope(element.attributeValue(SCOPE_ATTRIBUTE));
                 }
+                parseConstructorArgElements(element, beanDefinition);
                 parsePropertyElement(element, beanDefinition);
                 this.registry.registerBeanDefinition(id, beanDefinition);
             }
@@ -76,6 +81,32 @@ public class XmlBeanDefinitionReader {
         }
     }
 
+
+    public void parseConstructorArgElements(Element beanEle, BeanDefinition bd) {
+        Iterator iter = beanEle.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+        while(iter.hasNext()){
+            Element ele = (Element)iter.next();
+            parseConstructorArgElement(ele, bd);
+        }
+
+    }
+
+    public void parseConstructorArgElement(Element ele, BeanDefinition bd) {
+
+        String typeAttr = ele.attributeValue(TYPE_ATTRIBUTE);
+        String nameAttr = ele.attributeValue(NAME_ATTRIBUTE);
+        Object value = parsePropertyValue(ele, bd, null);
+        ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(value);
+        if (StringUtils.hasLength(typeAttr)) {
+            valueHolder.setType(typeAttr);
+        }
+        if (StringUtils.hasLength(nameAttr)) {
+            valueHolder.setName(nameAttr);
+        }
+
+        bd.getConstructorArgument().addArgumentValue(valueHolder);
+    }
+
     public void parsePropertyElement(Element beanElem, BeanDefinition bd) {
         Iterator iter= beanElem.elementIterator(PROPERTY_ELEMENT);
         while(iter.hasNext()){
@@ -85,7 +116,6 @@ public class XmlBeanDefinitionReader {
                 logger.fatal("Tag 'property' must have a 'name' attribute");
                 return;
             }
-
 
             Object val = parsePropertyValue(propElem, bd, propertyName);
             PropertyValue propertyValue = new PropertyValue(propertyName, val);
@@ -100,7 +130,6 @@ public class XmlBeanDefinitionReader {
                 "<property> element for property '" + propertyName + "'" :
                 "<constructor-arg> element";
 
-
         boolean hasRefAttribute = (ele.attribute(REF_ATTRIBUTE)!=null);
         boolean hasValueAttribute = (ele.attribute(VALUE_ATTRIBUTE) !=null);
 
@@ -113,11 +142,9 @@ public class XmlBeanDefinitionReader {
             return ref;
         }else if (hasValueAttribute) {
             TypedStringValue valueHolder = new TypedStringValue(ele.attributeValue(VALUE_ATTRIBUTE));
-
             return valueHolder;
         }
         else {
-
             throw new RuntimeException(elementName + " must specify a ref or value");
         }
     }

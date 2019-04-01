@@ -1,5 +1,7 @@
 package lite.summer.beans;
 
+import lite.summer.beans.factory.BeanFactory;
+
 /**
  * @Author: ReZero
  * @Date: 3/19/19 10:28 PM
@@ -23,5 +25,20 @@ public class PropertyValue {
 
     public Object getValue() {
         return value;
+    }
+
+//    public abstract Object resolve(BeanFactory beanFactory);
+
+    public boolean isConverted() {
+        return converted;
+    }
+
+    public synchronized Object getConvertedValue() {
+        return convertedValue;
+    }
+
+    public synchronized void setConvertedValue(Object convertedValue) {
+        this.converted = true;
+        this.convertedValue = convertedValue;
     }
 }

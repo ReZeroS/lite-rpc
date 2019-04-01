@@ -116,7 +116,7 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
                 String propertyName = pv.getName();
                 Object originalValue = pv.getValue();
                 Object resolvedValue = valueResolver.resolveValueIfNecessary(originalValue);
-
+//                Object resolvedValue = pv.resolve(this);
                 for (PropertyDescriptor pd : pds) {
                     if(pd.getName().equals(propertyName)){
                         Object convertedValue = converter.convertIfNecessary(resolvedValue, pd.getPropertyType());
