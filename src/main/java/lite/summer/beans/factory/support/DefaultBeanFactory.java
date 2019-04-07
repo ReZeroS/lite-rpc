@@ -1,5 +1,6 @@
 package lite.summer.beans.factory.support;
 
+import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.PropertyValue;
 import lite.summer.beans.SimpleTypeConverter;
 import lite.summer.beans.factory.BeanCreationException;
@@ -86,16 +87,21 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
 
 
     private Object instantiateBean(BeanDefinition beanDefinition) {
-
-        ClassLoader classLoader = this.getBeanClassLoader();
-        String beanClassName = beanDefinition.getBeanClassName();
-        try {
-            Class<?> clz = classLoader.loadClass(beanClassName);
-            return clz.newInstance();
-        } catch (Exception e) {
-            throw new BeanCreationException("c" +
-                    "create for " + beanClassName + " failed.");
+        if (beanDefinition.hasConstructorArgumentValues()) {
+            ConstructorResolver constructorResolver = new ConstructorResolver(this);
+            return constructorResolver.autowireConstructor(beanDefinition);
+        } else {
+            ClassLoader classLoader = this.getBeanClassLoader();
+            String beanClassName = beanDefinition.getBeanClassName();
+            try {
+                Class<?> clz = classLoader.loadClass(beanClassName);
+                return clz.newInstance();
+            } catch (Exception e) {
+                throw new BeanCreationException("c" +
+                        "create for " + beanClassName + " failed.");
+            }
         }
+
     }
 
     protected void populateBean(BeanDefinition beanDefinition, Object bean) {

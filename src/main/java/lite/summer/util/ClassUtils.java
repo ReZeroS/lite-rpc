@@ -3,7 +3,16 @@ package lite.summer.util;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class ClassUtils {
+
+
+
+    /** The inner class separator character: '$' */
+    private static final char INNER_CLASS_SEPARATOR = '$';
+
+    /** The CGLIB class separator: "$$" */
+    public static final String CGLIB_CLASS_SEPARATOR = "$$";
 
     /**
      * Map with primitive wrapper type as key and corresponding primitive
@@ -16,6 +25,16 @@ public class ClassUtils {
      * type as value, for example: int.class -> Integer.class.
      */
     private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new HashMap<Class<?>, Class<?>>(8);
+
+
+    /** The package separator character: '.' */
+    private static final char PACKAGE_SEPARATOR = '.';
+
+    /** The path separator character: '/' */
+    private static final char PATH_SEPARATOR = '/';
+
+
+
 
     static {
         wrapperToPrimitiveTypeMap.put(Boolean.class, boolean.class);
@@ -84,4 +103,24 @@ public class ClassUtils {
     }
 
 
+    public static String convertClassNameToResourcePath(String className) {
+        Assert.notNull(className, "Class name must not be null");
+        return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
+    }
+
+    public static String convertResourcePathToClassName(String className) {
+        Assert.notNull(className, "Class name must not be null");
+        return className.replace(PATH_SEPARATOR, PACKAGE_SEPARATOR);
+    }
+
+    public static String getShortName(String className) {
+        int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR);
+        int nameEndIndex = className.indexOf(CGLIB_CLASS_SEPARATOR);
+        if (nameEndIndex == -1) {
+            nameEndIndex = className.length();
+        }
+        String shortName = className.substring(lastDotIndex + 1, nameEndIndex);
+        shortName = shortName.replace(INNER_CLASS_SEPARATOR, PACKAGE_SEPARATOR);
+        return shortName;
+    }
 }

@@ -1,6 +1,7 @@
 package lite.summer.beans.factory.support;
 
 import lite.summer.beans.PropertyValue;
+import lite.summer.beans.factory.BeanFactory;
 import lite.summer.beans.factory.config.RuntimeBeanReference;
 import lite.summer.beans.factory.config.TypedStringValue;
 
@@ -10,10 +11,10 @@ import lite.summer.beans.factory.config.TypedStringValue;
  * @Version 1.0
  */
 public class BeanDefinitionValueResolver {
-    private final DefaultBeanFactory beanFactory;
+    private final BeanFactory beanFactory;
 
     public BeanDefinitionValueResolver(
-            DefaultBeanFactory beanFactory) {
+            BeanFactory beanFactory) {
 
         this.beanFactory = beanFactory;
     }
