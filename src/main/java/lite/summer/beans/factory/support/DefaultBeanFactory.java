@@ -7,8 +7,7 @@ import lite.summer.beans.factory.BeanCreationException;
 import lite.summer.beans.factory.BeanDefinitionStoreException;
 import lite.summer.beans.factory.BeanFactory;
 import lite.summer.beans.BeanDefinition;
-import lite.summer.beans.factory.config.ConfigurableBeanFactory;
-import lite.summer.beans.factory.config.SingletonBeanRegistry;
+import lite.summer.beans.factory.config.*;
 import lite.summer.util.ClassUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -20,6 +19,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +35,8 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
     private ClassLoader classLoader;
 
     private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
+
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
 
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
@@ -105,6 +107,14 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
     }
 
     protected void populateBean(BeanDefinition beanDefinition, Object bean) {
+
+        for (BeanPostProcessor processor : this.getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                ((InstantiationAwareBeanPostProcessor) processor).postProcessPropertyValues(bean, beanDefinition.getId());
+            }
+        }
+
+
         List<PropertyValue> pvs = beanDefinition.getPropertyValues();
 
         if (pvs == null || pvs.isEmpty()) {
@@ -139,6 +149,42 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
 
     }
 
+    public Object resolveDependency(DependencyDescriptor descriptor) {
+        Class<?> typeToMatch = descriptor.getDependencyType();
+        for(BeanDefinition beanDefinition: this.beanDefinitionMap.values()){
+            //Ensure BeanDefinition has Class object
+            resolveBeanClass(beanDefinition);
+            Class<?> beanClass = beanDefinition.getBeanClass();
+            if(typeToMatch.isAssignableFrom(beanClass)){
+                return this.getBean(beanDefinition.getId());
+            }
+        }
+        return null;
+
+    }
+
+    public void resolveBeanClass(BeanDefinition beanDefinition) {
+        if(beanDefinition.hasBeanClass()){
+            return;
+        } else{
+            try {
+                beanDefinition.resolveBeanClass(this.getBeanClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("can't load class:"+beanDefinition.getBeanClassName());
+            }
+        }
+    }
+
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor postProcessor) {
+        this.beanPostProcessors.add(postProcessor);
+    }
+
+    @Override
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
+    }
 }
 
 

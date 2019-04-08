@@ -22,7 +22,7 @@ public class ClassPathBeanDefinitionScannerTest {
 
         DefaultBeanFactory factory = new DefaultBeanFactory();
 
-        String basePackages = "lite.summer.service.v4,org.litespring.dao.v4";
+        String basePackages = "lite.summer.service.v4,lite.summer.dao.v4";
 
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(factory);
         scanner.doScan(basePackages);

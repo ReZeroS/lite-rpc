@@ -1,5 +1,8 @@
 package lite.summer.context.support;
 
+import lite.summer.beans.factory.annotation.AutowiredAnnotationProcessor;
+import lite.summer.beans.factory.config.AutowireCapableBeanFactory;
+import lite.summer.beans.factory.config.ConfigurableBeanFactory;
 import lite.summer.beans.factory.support.DefaultBeanFactory;
 import lite.summer.beans.factory.xml.XmlBeanDefinitionReader;
 import lite.summer.context.ApplicationContext;
@@ -27,6 +30,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         Resource resource = this.getResourceByPath(configFile);
         reader.loadBeanDefinitions(resource);
         factory.setBeanClassLoader(classLoader);
+        registerBeanPostProcessors(factory);
     }
 
     protected abstract Resource getResourceByPath(String path);
@@ -41,6 +45,12 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     public ClassLoader getBeanClassLoader() {
         return this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader();
+    }
+
+    protected void registerBeanPostProcessors(ConfigurableBeanFactory configurableBeanFactory){
+        AutowiredAnnotationProcessor autowiredAnnotationProcessor = new AutowiredAnnotationProcessor();
+        autowiredAnnotationProcessor.setBeanFactory(configurableBeanFactory);
+        configurableBeanFactory.addBeanPostProcessor(autowiredAnnotationProcessor);
     }
 
 

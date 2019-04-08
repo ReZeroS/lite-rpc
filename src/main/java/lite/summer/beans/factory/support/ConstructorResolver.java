@@ -40,7 +40,7 @@ public class ConstructorResolver {
             beanClass = this.beanFactory.getBeanClassLoader().loadClass(beanDefinition.getBeanClassName());
 
         } catch (ClassNotFoundException e) {
-            throw new BeanCreationException(beanDefinition.getID(), "Instantiation of bean failed, can't resolve class", e);
+            throw new BeanCreationException(beanDefinition.getId(), "Instantiation of bean failed, can't resolve class", e);
         }
 
 
@@ -76,13 +76,13 @@ public class ConstructorResolver {
 
         //can not find a suite constructor
         if (constructorToUse == null) {
-            throw new BeanCreationException(beanDefinition.getID(), "can't find a apporiate constructor");
+            throw new BeanCreationException(beanDefinition.getId(), "can't find a apporiate constructor");
         }
 
         try {
             return constructorToUse.newInstance(argsToUse);
         } catch (Exception e) {
-            throw new BeanCreationException(beanDefinition.getID(), "can't find a create instance using " + constructorToUse);
+            throw new BeanCreationException(beanDefinition.getId(), "can't find a create instance using " + constructorToUse);
         }
 
     }
