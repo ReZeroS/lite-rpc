@@ -19,7 +19,7 @@
         <aop:aspect ref="tx">
 
             <aop:pointcut id="placeOrder"
-                          expression="execution(* org.litespring.service.v5.*.placeOrder(..))" />
+                          expression="execution(* lite.summer.service.v5.*.placeOrder(..))" />
 
             <aop:before pointcut-ref="placeOrder" method="start" />
             <aop:after-returning pointcut-ref="placeOrder"	method="commit" />
@@ -29,5 +29,6 @@
         </aop:aspect>
 
     </aop:config>
+
 
 </beans>

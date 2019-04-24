@@ -1,13 +1,16 @@
 package lite.summer.context.support;
 
+import lite.summer.aop.aspectj.AspectJAutoProxyCreator;
+import lite.summer.beans.factory.NoSuchBeanDefinitionException;
 import lite.summer.beans.factory.annotation.AutowiredAnnotationProcessor;
-import lite.summer.beans.factory.config.AutowireCapableBeanFactory;
 import lite.summer.beans.factory.config.ConfigurableBeanFactory;
 import lite.summer.beans.factory.support.DefaultBeanFactory;
 import lite.summer.beans.factory.xml.XmlBeanDefinitionReader;
 import lite.summer.context.ApplicationContext;
 import lite.summer.core.io.Resource;
 import lite.summer.util.ClassUtils;
+
+import java.util.List;
 
 /**
  * @Author: ReZero
@@ -21,17 +24,14 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     private DefaultBeanFactory factory;
 
     public AbstractApplicationContext(String configFile){
-        this(configFile, ClassUtils.getDefaultClassLoader());
-    }
-
-    public AbstractApplicationContext(String configFile, ClassLoader classLoader){
         factory = new DefaultBeanFactory();
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
         Resource resource = this.getResourceByPath(configFile);
         reader.loadBeanDefinitions(resource);
-        factory.setBeanClassLoader(classLoader);
+        factory.setBeanClassLoader(this.getBeanClassLoader());
         registerBeanPostProcessors(factory);
     }
+
 
     protected abstract Resource getResourceByPath(String path);
 
@@ -48,10 +48,25 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     protected void registerBeanPostProcessors(ConfigurableBeanFactory configurableBeanFactory){
-        AutowiredAnnotationProcessor autowiredAnnotationProcessor = new AutowiredAnnotationProcessor();
-        autowiredAnnotationProcessor.setBeanFactory(configurableBeanFactory);
-        configurableBeanFactory.addBeanPostProcessor(autowiredAnnotationProcessor);
+        {
+            AutowiredAnnotationProcessor autowiredAnnotationProcessor = new AutowiredAnnotationProcessor();
+            autowiredAnnotationProcessor.setBeanFactory(configurableBeanFactory);
+            configurableBeanFactory.addBeanPostProcessor(autowiredAnnotationProcessor);
+        }
+        {
+            AspectJAutoProxyCreator postProcessor = new AspectJAutoProxyCreator();
+            postProcessor.setBeanFactory(configurableBeanFactory);
+            configurableBeanFactory.addBeanPostProcessor(postProcessor);
+        }
     }
 
+    public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
+        return this.factory.getType(name);
+    }
+
+    @Override
+    public List<Object> getBeansByType(Class<?> classType) {
+        return this.factory.getBeansByType(classType);
+    }
 
 }

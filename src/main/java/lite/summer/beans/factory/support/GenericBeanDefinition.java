@@ -1,5 +1,6 @@
 package lite.summer.beans.factory.support;
 
+import lite.summer.aop.config.MethodLocatingFactory;
 import lite.summer.beans.BeanDefinition;
 import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.PropertyValue;
@@ -19,9 +20,12 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean prototype = false;
     private String scope = SCOPE_DEFAULT;
 
+    private boolean synthetic = false;
+
     private List<PropertyValue> propertyValueList = new ArrayList<PropertyValue>();
 
     private ConstructorArgument constructorArgument = new ConstructorArgument();
+
 
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
@@ -30,6 +34,11 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     public GenericBeanDefinition() {
 
+    }
+
+    public GenericBeanDefinition(Class<?> beanClass) {
+        this.beanClass = beanClass;
+        this.beanClassName = beanClass.getName();
     }
 
 
@@ -101,5 +110,14 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     public boolean hasBeanClass() {
         return this.beanClass != null;
+    }
+
+    @Override
+    public boolean isSynthetic() {
+        return this.synthetic;
+    }
+
+    public void setSynthetic(boolean synthetic) {
+        this.synthetic = synthetic;
     }
 }

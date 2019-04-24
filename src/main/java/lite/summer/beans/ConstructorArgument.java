@@ -1,5 +1,7 @@
 package lite.summer.beans;
 
+import lite.summer.beans.factory.support.GenericBeanDefinition;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,11 +47,15 @@ public class ConstructorArgument {
         this.argumentValues.clear();
     }
 
+    public void addArgumentValue(Object value) {
+        this.argumentValues.add(new ValueHolder(value));
+    }
+
     /**
      * Holder for a constructor argument value, with an optional type
      * attribute indicating the target type of the actual constructor argument.
      */
-    public static class ValueHolder{
+    public static class ValueHolder {
 
         private Object value;
 

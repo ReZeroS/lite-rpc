@@ -4,8 +4,6 @@ import lite.summer.beans.BeanDefinition;
 import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.SimpleTypeConverter;
 import lite.summer.beans.factory.BeanCreationException;
-import lite.summer.beans.factory.BeanFactory;
-import lite.summer.beans.factory.config.ConfigurableBeanFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,10 +21,10 @@ public class ConstructorResolver {
     protected final Log logger = LogFactory.getLog(getClass());
 
 
-    private final ConfigurableBeanFactory beanFactory;
+    private final AbstractBeanFactory beanFactory;
 
 
-    public ConstructorResolver(ConfigurableBeanFactory beanFactory) {
+    public ConstructorResolver(AbstractBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 
@@ -35,7 +33,7 @@ public class ConstructorResolver {
         Constructor<?> constructorToUse = null;
         Object[] argsToUse = null;
 
-        Class<?> beanClass = null;
+        Class<?> beanClass;
         try {
             beanClass = this.beanFactory.getBeanClassLoader().loadClass(beanDefinition.getBeanClassName());
 

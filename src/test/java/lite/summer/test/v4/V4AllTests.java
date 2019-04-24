@@ -11,12 +11,14 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         ApplicationContextTest.class,
-        PackageResourceLoaderTest.class,
+        AutowiredAnnotationProcessorTest.class,
         ClassReaderTest.class,
-        MetadataReaderTest.class,
         ClassPathBeanDefinitionScannerTest.class,
-        XmlBeanDefinitionReaderTest.class,
-        DependencyDescriptorTest.class
+        DependencyDescriptorTest.class,
+        InjectionMetadataTest.class,
+        MetadataReaderTest.class,
+        PackageResourceLoaderTest.class,
+        XmlBeanDefinitionReaderTest.class
 })
 public class V4AllTests {
 }

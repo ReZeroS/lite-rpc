@@ -1,5 +1,6 @@
 package lite.summer.beans.factory.xml;
 
+import lite.summer.aop.config.ConfigBeanDefinitionParser;
 import lite.summer.beans.BeanDefinition;
 import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.PropertyValue;
@@ -24,6 +25,8 @@ import java.util.Iterator;
 
 public class XmlBeanDefinitionReader {
 
+    BeanDefinitionRegistry registry;
+
     private static final String ID_ATTRIBUTE = "id";
     private static final String CLASS_ATTRIBUTE = "class";
     private static final String SCOPE_ATTRIBUTE = "scope";
@@ -40,13 +43,14 @@ public class XmlBeanDefinitionReader {
 
     public static final String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
 
+    private static final String AOP_NAMESPACE_URI = "http://www.springframework.org/schema/aop";
+
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
 
 
 
     private static final Logger logger = LogManager.getLogger("XmlBeanDefinitionReader");
 
-    BeanDefinitionRegistry registry;
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
         this.registry = registry;
@@ -72,6 +76,8 @@ public class XmlBeanDefinitionReader {
                 } else if(this.isContextNamespace(namespaceUri)){
                     //<context:component-scan>
                     parseComponentElement(element);
+                } else if (this.isAopNamespace(namespaceUri)) {
+                    parseAopElement(element);
                 }
             }
         } catch (Exception e) {
@@ -85,6 +91,15 @@ public class XmlBeanDefinitionReader {
                 }
             }
         }
+    }
+
+    private boolean isAopNamespace(String namespaceUri) {
+        return (!StringUtils.hasLength(namespaceUri) || AOP_NAMESPACE_URI.equals(namespaceUri));
+    }
+
+    private void parseAopElement(Element ele){
+        ConfigBeanDefinitionParser parser = new ConfigBeanDefinitionParser();
+        parser.parse(ele, this.registry);
     }
 
     private void parseComponentElement(Element ele) {

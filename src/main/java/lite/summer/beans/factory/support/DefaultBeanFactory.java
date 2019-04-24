@@ -1,26 +1,21 @@
 package lite.summer.beans.factory.support;
 
-import lite.summer.beans.ConstructorArgument;
+import lite.summer.beans.BeanDefinition;
+import lite.summer.beans.BeansException;
 import lite.summer.beans.PropertyValue;
 import lite.summer.beans.SimpleTypeConverter;
 import lite.summer.beans.factory.BeanCreationException;
-import lite.summer.beans.factory.BeanDefinitionStoreException;
-import lite.summer.beans.factory.BeanFactory;
-import lite.summer.beans.BeanDefinition;
-import lite.summer.beans.factory.config.*;
+import lite.summer.beans.factory.BeanFactoryAware;
+import lite.summer.beans.factory.NoSuchBeanDefinitionException;
+import lite.summer.beans.factory.config.BeanPostProcessor;
+import lite.summer.beans.factory.config.DependencyDescriptor;
+import lite.summer.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import lite.summer.util.ClassUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,8 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ReZero
  */
-public class DefaultBeanFactory extends DefaultSingletonRegistry
-        implements ConfigurableBeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends AbstractBeanFactory
+        implements BeanDefinitionRegistry {
 
     private ClassLoader classLoader;
 
@@ -38,10 +33,6 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
 
     private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
-
-    public void setBeanClassLoader(ClassLoader beanClassLoader) {
-        this.classLoader = beanClassLoader;
-    }
 
     public ClassLoader getBeanClassLoader() {
         return this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader();
@@ -80,10 +71,51 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
         return createBean(beanDefinition);
     }
 
-    private Object createBean(BeanDefinition beanDefinition) {
+    public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
+        BeanDefinition bd = this.getBeanDefinition(name);
+        if(bd == null){
+            throw new NoSuchBeanDefinitionException(name);
+        }
+        resolveBeanClass(bd);
+        return bd.getBeanClass();
+    }
+
+    @Override
+    public List<Object> getBeansByType(Class<?> type){
+        List<Object> result = new ArrayList<>();
+        List<String> beanIDs = this.getBeanIDsByType(type);
+        for(String beanID : beanIDs){
+//            Class<?> beanClass = null;
+//            try{
+//                beanClass = this.getType(beanName);
+//            }catch(Exception e){
+//                logger.warn("can't load class for bean :"+beanName+", skip it.");
+//                continue;
+//            }
+//
+//            if((beanClass != null) && type.isAssignableFrom(beanClass)){
+//                result.add(beanName);
+//            }
+            result.add(this.getBean(beanID));
+        }
+        return result;
+    }
+
+    private List<String> getBeanIDsByType(Class<?> type){
+        List<String> result = new ArrayList<>();
+        for(String beanName :this.beanDefinitionMap.keySet()){
+            if(type.isAssignableFrom(this.getType(beanName))){
+                result.add(beanName);
+            }
+        }
+        return result;
+    }
+
+
+    protected Object createBean(BeanDefinition beanDefinition) {
         Object bean = instantiateBean(beanDefinition);
         populateBean(beanDefinition, bean);
-
+        bean = initializeBean(beanDefinition, bean);
         return bean;
     }
 
@@ -148,6 +180,38 @@ public class DefaultBeanFactory extends DefaultSingletonRegistry
         }
 
     }
+
+
+    protected Object initializeBean(BeanDefinition bd, Object bean)  {
+        invokeAwareMethods(bean);
+        //Todo，调用Bean的init方法，暂不实现
+        if(!bd.isSynthetic()){
+            return applyBeanPostProcessorsAfterInitialization(bean,bd.getId());
+        }
+        return bean;
+    }
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
+            throws BeansException {
+
+        Object result = existingBean;
+        for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+            result = beanProcessor.afterInitialization(result, beanName);
+            if (result == null) {
+                return result;
+            }
+        }
+        return result;
+    }
+    private void invokeAwareMethods(final Object bean) {
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
+    }
+
+    public void setBeanClassLoader(ClassLoader beanClassLoader) {
+        this.classLoader = beanClassLoader;
+    }
+
 
     public Object resolveDependency(DependencyDescriptor descriptor) {
         Class<?> typeToMatch = descriptor.getDependencyType();
