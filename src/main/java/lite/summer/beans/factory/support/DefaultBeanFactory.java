@@ -11,6 +11,8 @@ import lite.summer.beans.factory.config.BeanPostProcessor;
 import lite.summer.beans.factory.config.DependencyDescriptor;
 import lite.summer.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import lite.summer.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -27,9 +29,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultBeanFactory extends AbstractBeanFactory
         implements BeanDefinitionRegistry {
 
+    private static final Logger logger = LoggerFactory.getLogger(DefaultBeanFactory.class);
+
     private ClassLoader classLoader;
 
-    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
+    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
     private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
@@ -37,7 +41,6 @@ public class DefaultBeanFactory extends AbstractBeanFactory
     public ClassLoader getBeanClassLoader() {
         return this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader();
     }
-
 
 
     public DefaultBeanFactory() {
@@ -55,7 +58,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
     public Object getBean(String beanID) {
         BeanDefinition beanDefinition = this.getBeanDefinition(beanID);
-        if (beanDefinition == null){
+        if (beanDefinition == null) {
             throw new BeanCreationException("expect BeanCreationException ");
         }
 
@@ -71,40 +74,36 @@ public class DefaultBeanFactory extends AbstractBeanFactory
         return createBean(beanDefinition);
     }
 
-    public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
-        BeanDefinition bd = this.getBeanDefinition(name);
-        if(bd == null){
+    public Class<?> getType(String name) {
+        BeanDefinition beanDefinition = this.getBeanDefinition(name);
+        if (beanDefinition == null) {
             throw new NoSuchBeanDefinitionException(name);
         }
-        resolveBeanClass(bd);
-        return bd.getBeanClass();
+        resolveBeanClass(beanDefinition);
+        return beanDefinition.getBeanClass();
     }
 
     @Override
-    public List<Object> getBeansByType(Class<?> type){
+    public List<Object> getBeansByType(Class<?> type) {
         List<Object> result = new ArrayList<>();
         List<String> beanIDs = this.getBeanIDsByType(type);
-        for(String beanID : beanIDs){
-//            Class<?> beanClass = null;
-//            try{
-//                beanClass = this.getType(beanName);
-//            }catch(Exception e){
-//                logger.warn("can't load class for bean :"+beanName+", skip it.");
-//                continue;
-//            }
-//
-//            if((beanClass != null) && type.isAssignableFrom(beanClass)){
-//                result.add(beanName);
-//            }
-            result.add(this.getBean(beanID));
+        for (String beanID : beanIDs) {
+            Object bean;
+            try {
+                bean = this.getBean(beanID);
+            } catch (BeanCreationException e) {
+                logger.info("Invalid beanId, reject to resolve it.");
+                continue;
+            }
+            result.add(bean);
         }
         return result;
     }
 
-    private List<String> getBeanIDsByType(Class<?> type){
+    private List<String> getBeanIDsByType(Class<?> type) {
         List<String> result = new ArrayList<>();
-        for(String beanName :this.beanDefinitionMap.keySet()){
-            if(type.isAssignableFrom(this.getType(beanName))){
+        for (String beanName : this.beanDefinitionMap.keySet()) {
+            if (type.isAssignableFrom(this.getType(beanName))) {
                 result.add(beanName);
             }
         }
@@ -155,18 +154,18 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
         BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
         SimpleTypeConverter converter = new SimpleTypeConverter();
-        try{
+        try {
 
             BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
             PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
 
-            for (PropertyValue pv : pvs){
+            for (PropertyValue pv : pvs) {
                 String propertyName = pv.getName();
                 Object originalValue = pv.getValue();
                 Object resolvedValue = valueResolver.resolveValueIfNecessary(originalValue);
 //                Object resolvedValue = pv.resolve(this);
                 for (PropertyDescriptor pd : pds) {
-                    if(pd.getName().equals(propertyName)){
+                    if (pd.getName().equals(propertyName)) {
                         Object convertedValue = converter.convertIfNecessary(resolvedValue, pd.getPropertyType());
                         pd.getWriteMethod().invoke(bean, convertedValue);
                         break;
@@ -175,21 +174,22 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
 
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             throw new BeanCreationException("Failed to obtain BeanInfo for class [" + beanDefinition.getBeanClassName() + "]", ex);
         }
 
     }
 
 
-    protected Object initializeBean(BeanDefinition bd, Object bean)  {
+    protected Object initializeBean(BeanDefinition bd, Object bean) {
         invokeAwareMethods(bean);
         //Todo，调用Bean的init方法，暂不实现
-        if(!bd.isSynthetic()){
-            return applyBeanPostProcessorsAfterInitialization(bean,bd.getId());
+        if (!bd.isSynthetic()) {
+            return applyBeanPostProcessorsAfterInitialization(bean, bd.getId());
         }
         return bean;
     }
+
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
             throws BeansException {
 
@@ -202,6 +202,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory
         }
         return result;
     }
+
     private void invokeAwareMethods(final Object bean) {
         if (bean instanceof BeanFactoryAware) {
             ((BeanFactoryAware) bean).setBeanFactory(this);
@@ -215,11 +216,11 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
     public Object resolveDependency(DependencyDescriptor descriptor) {
         Class<?> typeToMatch = descriptor.getDependencyType();
-        for(BeanDefinition beanDefinition: this.beanDefinitionMap.values()){
+        for (BeanDefinition beanDefinition : this.beanDefinitionMap.values()) {
             //Ensure BeanDefinition has Class object
             resolveBeanClass(beanDefinition);
             Class<?> beanClass = beanDefinition.getBeanClass();
-            if(typeToMatch.isAssignableFrom(beanClass)){
+            if (typeToMatch.isAssignableFrom(beanClass)) {
                 return this.getBean(beanDefinition.getId());
             }
         }
@@ -228,13 +229,13 @@ public class DefaultBeanFactory extends AbstractBeanFactory
     }
 
     public void resolveBeanClass(BeanDefinition beanDefinition) {
-        if(beanDefinition.hasBeanClass()){
+        if (beanDefinition.hasBeanClass()) {
             return;
-        } else{
+        } else {
             try {
                 beanDefinition.resolveBeanClass(this.getBeanClassLoader());
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("can't load class:"+beanDefinition.getBeanClassName());
+                throw new RuntimeException("can't load class:" + beanDefinition.getBeanClassName());
             }
         }
     }

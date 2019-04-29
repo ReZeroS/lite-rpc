@@ -27,7 +27,7 @@ public class AspectInstanceFactory implements BeanFactoryAware {
         }
     }
 
-    public Object getAspectInstance() throws Exception {
+    public Object getAspectInstance() {
         return this.beanFactory.getBean(this.aspectBeanName);
     }
 }

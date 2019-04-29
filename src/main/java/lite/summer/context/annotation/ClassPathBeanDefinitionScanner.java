@@ -10,8 +10,8 @@ import lite.summer.core.type.classreading.MetadataReader;
 import lite.summer.core.type.classreading.SimpleMetadataReader;
 import lite.summer.stereotype.Component;
 import lite.summer.util.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -28,7 +28,7 @@ public class ClassPathBeanDefinitionScanner {
 
     private PackageResourceLoader resourceLoader = new PackageResourceLoader();
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
 
     private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 

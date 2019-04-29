@@ -40,8 +40,8 @@ public class ConfigBeanDefinitionParser {
 
     public BeanDefinition parse(Element element, BeanDefinitionRegistry registry) {
 
-        List<Element> childElts = element.elements();
-        for (Element elt : childElts) {
+        List<Element> elements = element.elements();
+        for (Element elt : elements) {
             String localName = elt.getName();
 			/*if (POINTCUT.equals(localName)) {
 				parsePointcut(elt, registry);
@@ -62,10 +62,8 @@ public class ConfigBeanDefinitionParser {
         String aspectId = aspectElement.attributeValue(ID);
         String aspectName = aspectElement.attributeValue(REF);
 
-
-        List<BeanDefinition> beanDefinitions = new ArrayList<BeanDefinition>();
-        List<RuntimeBeanReference> beanReferences = new ArrayList<RuntimeBeanReference>();
-
+        List<BeanDefinition> beanDefinitions = new ArrayList<>();
+        List<RuntimeBeanReference> beanReferences = new ArrayList<>();
 
         List<Element> eleList = aspectElement.elements();
         boolean adviceFoundAlready = false;
@@ -130,7 +128,6 @@ public class ConfigBeanDefinitionParser {
 
         adviceDef.setSynthetic(true);
 
-
         // register the final advisor
         BeanDefinitionReaderUtils.registerWithGeneratedName(adviceDef, registry);
 
@@ -159,7 +156,6 @@ public class ConfigBeanDefinitionParser {
         Object pointcut = parsePointcutProperty(adviceElement);
         if (pointcut instanceof BeanDefinition) {
             cav.addArgumentValue(pointcut);
-
             beanDefinitions.add((BeanDefinition) pointcut);
         } else if (pointcut instanceof String) {
             RuntimeBeanReference pointcutRef = new RuntimeBeanReference((String) pointcut);

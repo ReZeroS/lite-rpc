@@ -4,8 +4,8 @@ import lite.summer.aop.Advice;
 import lite.summer.util.Assert;
 import lite.summer.util.ClassUtils;
 import org.aopalliance.intercept.MethodInterceptor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -22,7 +22,7 @@ public class JdkAopProxyFactory implements AopProxyFactory, InvocationHandler {
 
 
     /** We use a static Log to avoid serialization issues */
-    private static final Log logger = LogFactory.getLog(JdkAopProxyFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdkAopProxyFactory.class);
 
     /** Config used to configure this proxy */
     private final AopConfig config;

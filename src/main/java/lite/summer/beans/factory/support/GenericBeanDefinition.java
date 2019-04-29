@@ -1,6 +1,5 @@
 package lite.summer.beans.factory.support;
 
-import lite.summer.aop.config.MethodLocatingFactory;
 import lite.summer.beans.BeanDefinition;
 import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.PropertyValue;

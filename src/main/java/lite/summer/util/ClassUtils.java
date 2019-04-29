@@ -1,5 +1,8 @@
 package lite.summer.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 
@@ -17,13 +20,13 @@ public class ClassUtils {
      * Map with primitive wrapper type as key and corresponding primitive
      * type as value, for example: Integer.class -> int.class.
      */
-    private static final Map<Class<?>, Class<?>> wrapperToPrimitiveTypeMap = new HashMap<Class<?>, Class<?>>(8);
+    private static final Map<Class<?>, Class<?>> wrapperToPrimitiveTypeMap = new HashMap<>(8);
 
     /**
      * Map with primitive type as key and corresponding wrapper
      * type as value, for example: int.class -> Integer.class.
      */
-    private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new HashMap<Class<?>, Class<?>>(8);
+    private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new HashMap<>(8);
 
 
     /** The package separator character: '.' */
@@ -32,8 +35,7 @@ public class ClassUtils {
     /** The path separator character: '/' */
     private static final char PATH_SEPARATOR = '/';
 
-
-
+    private static final Logger logger = LoggerFactory.getLogger(ClassUtils.class);
 
     static {
         wrapperToPrimitiveTypeMap.put(Boolean.class, boolean.class);
@@ -58,7 +60,7 @@ public class ClassUtils {
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
         } catch (Throwable ex) {
-
+            logger.warn("ContextClassLoader not found in current thread");
         }
         if (classLoader == null) {
             classLoader = ClassUtils.class.getClassLoader();
@@ -66,7 +68,7 @@ public class ClassUtils {
                 try {
                     classLoader = ClassLoader.getSystemClassLoader();
                 } catch (Throwable ex) {
-
+                    logger.warn("SystemClassLoader not found");
                 }
             }
 

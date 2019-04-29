@@ -25,45 +25,44 @@ import java.util.Set;
  */
 public class AspectJAutoProxyCreator implements BeanPostProcessor {
     ConfigurableBeanFactory beanFactory;
+
     public Object beforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
     public Object afterInitialization(Object bean, String beanName) throws BeansException {
 
-        //如果这个Bean本身就是Advice及其子类，那就不要再生成动态代理了。
-        if(isInfrastructureClass(bean.getClass())){
+        //if this Bean is instance or subclass of Advice, then will not create proxy
+        if (isInfrastructureClass(bean.getClass())) {
             return bean;
         }
 
         List<Advice> advices = getCandidateAdvices(bean);
-        if(advices.isEmpty()){
+        if (advices.isEmpty()) {
             return bean;
         }
 
-        return createProxy(advices,bean);
+        return createProxy(advices, bean);
     }
 
-    private List<Advice> getCandidateAdvices(Object bean){
+    private List<Advice> getCandidateAdvices(Object bean) {
 
         List<Object> advices = this.beanFactory.getBeansByType(Advice.class);
 
         List<Advice> result = new ArrayList<>();
-        for(Object o : advices){
-            Pointcut pc = ((Advice) o).getPointcut();
-            if(canApply(pc,bean.getClass())){
+        for (Object o : advices) {
+            Pointcut pointcut = ((Advice) o).getPointcut();
+            if (canApply(pointcut, bean.getClass())) {
                 result.add((Advice) o);
             }
-
         }
         return result;
     }
 
-    protected Object createProxy( List<Advice> advices ,Object bean) {
-
+    protected Object createProxy(List<Advice> advices, Object bean) {
 
         AopConfigSupport config = new AopConfigSupport();
-        for(Advice advice : advices){
+        for (Advice advice : advices) {
             config.addAdvice(advice);
         }
 
@@ -74,22 +73,17 @@ public class AspectJAutoProxyCreator implements BeanPostProcessor {
 
         config.setTargetObject(bean);
 
-        AopProxyFactory proxyFactory = null;
-        if(config.getProxiedInterfaces().length == 0){
-            proxyFactory =  new CglibProxyFactory(config);
-        } else{
+        AopProxyFactory proxyFactory;
+        if (config.getProxiedInterfaces().length == 0) {
+            proxyFactory = new CglibProxyFactory(config);
+        } else {
             proxyFactory = new JdkAopProxyFactory(config);
         }
-
-
         return proxyFactory.getProxy();
-
-
     }
 
     protected boolean isInfrastructureClass(Class<?> beanClass) {
         boolean retVal = Advice.class.isAssignableFrom(beanClass);
-
         return retVal;
     }
 
@@ -98,12 +92,11 @@ public class AspectJAutoProxyCreator implements BeanPostProcessor {
 
     }
 
-    public static boolean canApply(Pointcut pc, Class<?> targetClass) {
+    public static boolean canApply(Pointcut pointcut, Class<?> targetClass) {
 
+        MethodMatcher methodMatcher = pointcut.getMethodMatcher();
 
-        MethodMatcher methodMatcher = pc.getMethodMatcher();
-
-        Set<Class> classes = new LinkedHashSet<Class>(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
+        Set<Class> classes = new LinkedHashSet<>(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
         classes.add(targetClass);
         for (Class<?> clazz : classes) {
             Method[] methods = clazz.getDeclaredMethods();

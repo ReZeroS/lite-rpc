@@ -27,7 +27,6 @@ public class ClassMetadataReadingVisitor extends ClassVisitor {
     private String[] interfaces;
 
 
-
     public ClassMetadataReadingVisitor() {
         super(SummerAsmInfo.ASM_VERSION);
     }

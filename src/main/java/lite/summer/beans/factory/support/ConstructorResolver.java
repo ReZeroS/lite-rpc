@@ -4,8 +4,8 @@ import lite.summer.beans.BeanDefinition;
 import lite.summer.beans.ConstructorArgument;
 import lite.summer.beans.SimpleTypeConverter;
 import lite.summer.beans.factory.BeanCreationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ConstructorResolver {
 
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(ConstructorArgument.class);
 
 
     private final AbstractBeanFactory beanFactory;
@@ -107,7 +107,7 @@ public class ConstructorResolver {
                 //converted successfully, save it
                 argsToUse[i] = convertedValue;
             } catch (Exception e) {
-                logger.error(e);
+                logger.error(e.getMessage());
                 return false;
             }
         }

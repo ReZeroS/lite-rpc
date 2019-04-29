@@ -4,8 +4,8 @@ import lite.summer.core.io.FileSystemResource;
 import lite.summer.core.io.Resource;
 import lite.summer.util.Assert;
 import lite.summer.util.ClassUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class PackageResourceLoader  {
 
-    private static final Log logger = LogFactory.getLog(PackageResourceLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(PackageResourceLoader.class);
 
     private final ClassLoader classLoader;
 

@@ -10,15 +10,15 @@ import java.lang.reflect.Method;
  * @Date: 4/9/19 3:02 PM
  * @Version 1.0
  */
-public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice{
+public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice {
 
     public AspectJAfterReturningAdvice(Method adviceMethod, AspectJExpressionPointcut pointcut, AspectInstanceFactory adviceObjectFactory) {
-        super(adviceMethod,pointcut,adviceObjectFactory);
+        super(adviceMethod, pointcut, adviceObjectFactory);
     }
 
-    public Object invoke(MethodInvocation mi) throws Throwable {
-        Object o = mi.proceed();
-        //例如：调用TransactionManager的commit方法
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+        Object o = methodInvocation.proceed();
+        //ex：call TransactionManager.commit
         this.invokeAdviceMethod();
         return o;
     }

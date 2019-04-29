@@ -12,11 +12,11 @@ import lite.summer.beans.factory.support.GenericBeanDefinition;
 import lite.summer.context.annotation.ClassPathBeanDefinitionScanner;
 import lite.summer.core.io.Resource;
 import lite.summer.util.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +49,7 @@ public class XmlBeanDefinitionReader {
 
 
 
-    private static final Logger logger = LogManager.getLogger("XmlBeanDefinitionReader");
+    private static final Logger logger = LoggerFactory.getLogger(XmlBeanDefinitionReader.class);
 
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
@@ -161,7 +161,7 @@ public class XmlBeanDefinitionReader {
             Element propElem = (Element)iter.next();
             String propertyName = propElem.attributeValue(NAME_ATTRIBUTE);
             if (!StringUtils.hasLength(propertyName)) {
-                logger.fatal("Tag 'property' must have a 'name' attribute");
+                logger.error("Tag 'property' must have a 'name' attribute");
                 return;
             }
 

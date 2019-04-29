@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 public abstract class AbstractAspectJAdvice implements Advice {
 
 
+    
     protected Method adviceMethod;
     protected AspectJExpressionPointcut pointcut;
     protected AspectInstanceFactory adviceObjectFactory;

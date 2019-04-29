@@ -15,13 +15,11 @@ import java.util.List;
 public class ReflectiveMethodInvocation implements MethodInvocation {
 
 
+    protected final Object targetObject;
 
-    protected final Object targetObject; //petStoreService
-
-    protected final Method targetMethod; //placeOrder方法
+    protected final Method targetMethod;
 
     protected Object[] arguments;
-
 
 
     /**
@@ -47,7 +45,6 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
     }
 
 
-
     public final Object getThis() {
         return this.targetObject;
     }
@@ -67,14 +64,13 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
     }
 
 
-
     public Object proceed() throws Throwable {
         //	所有的拦截器已经调用完成
         if (this.currentInterceptorIndex == this.interceptors.size() - 1) {
             return invokeJoinpoint();
         }
 
-        this.currentInterceptorIndex ++;
+        this.currentInterceptorIndex++;
 
         MethodInterceptor interceptor =
                 this.interceptors.get(this.currentInterceptorIndex);
@@ -86,6 +82,7 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
     /**
      * Invoke the joinpoint using reflection.
      * Subclasses can override this to use custom invocation.
+     *
      * @return the return value of the joinpoint
      * @throws Throwable if invoking the joinpoint resulted in an exception
      */

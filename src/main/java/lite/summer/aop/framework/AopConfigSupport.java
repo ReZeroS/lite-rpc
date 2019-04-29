@@ -15,34 +15,30 @@ import java.util.List;
  */
 public class AopConfigSupport implements AopConfig {
 
+    private Object targetObject = null;
 
     private boolean proxyTargetClass = false;
 
+    private List<Advice> advices = new ArrayList<>();
 
-    private Object targetObject = null;
-
-    private List<Advice> advices = new ArrayList<Advice>();
-
-    private List<Class> interfaces = new ArrayList<Class>();
+    private List<Class> interfaces = new ArrayList<>();
 
 
     public AopConfigSupport() {
 
     }
 
-
-    public void setTargetObject(Object targetObject){
+    public void setTargetObject(Object targetObject) {
         this.targetObject = targetObject;
     }
 
-    public Object getTargetObject(){
+    public Object getTargetObject() {
         return this.targetObject;
     }
+
     public Class<?> getTargetClass() {
         return this.targetObject.getClass();
     }
-
-
 
     public void addInterface(Class<?> intf) {
         Assert.notNull(intf, "Interface must not be null");
@@ -51,21 +47,20 @@ public class AopConfigSupport implements AopConfig {
         }
         if (!this.interfaces.contains(intf)) {
             this.interfaces.add(intf);
-
         }
     }
 
     /**
      * Remove a proxied interface.
      * <p>Does nothing if the given interface isn't proxied.
+     *
      * @param { int} the interface to remove from the proxy
      * @return {@code true} if the interface was removed; {@code false}
      * if the interface was not found and hence could not be removed
      */
-	/*public boolean removeInterface(Class<?> intf) {
+	public boolean removeInterface(Class<?> intf) {
 		return this.interfaces.remove(intf);
-	}*/
-
+	}
     public Class<?>[] getProxiedInterfaces() {
         return this.interfaces.toArray(new Class[this.interfaces.size()]);
     }
@@ -79,7 +74,7 @@ public class AopConfigSupport implements AopConfig {
         return false;
     }
 
-    public void addAdvice(Advice advice)  {
+    public void addAdvice(Advice advice) {
         this.advices.add(advice);
     }
 
@@ -99,10 +94,10 @@ public class AopConfigSupport implements AopConfig {
     }
 
     public List<Advice> getAdvices(Method method) {
-        List<Advice> result = new ArrayList<Advice>();
-        for(Advice advice : this.getAdvices()){
+        List<Advice> result = new ArrayList<>();
+        for (Advice advice : this.getAdvices()) {
             Pointcut pc = advice.getPointcut();
-            if(pc.getMethodMatcher().matches(method)){
+            if (pc.getMethodMatcher().matches(method)) {
                 result.add(advice);
             }
         }

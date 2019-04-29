@@ -16,11 +16,15 @@ import java.util.Set;
  * @Date: 4/8/19 10:11 PM
  * @Version 1.0
  */
-public class AspectJExpressionPointcut implements Pointcut, MethodMatcher{
+public class AspectJExpressionPointcut implements Pointcut, MethodMatcher {
 
 
-    private static final Set<PointcutPrimitive> SUPPORTED_PRIMITIVES = new HashSet<PointcutPrimitive>();
+    private static final Set<PointcutPrimitive> SUPPORTED_PRIMITIVES = new HashSet<>();
 
+    /**
+     * Enumeration list of the different kinds of pointcut primitives
+     * supported by AspectJ.
+     */
     static {
         SUPPORTED_PRIMITIVES.add(PointcutPrimitive.EXECUTION);
         SUPPORTED_PRIMITIVES.add(PointcutPrimitive.ARGS);
@@ -40,40 +44,46 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher{
 
     private ClassLoader pointcutClassLoader;
 
-    public AspectJExpressionPointcut(){
+    public AspectJExpressionPointcut() {
 
     }
-    public MethodMatcher getMethodMatcher() {
 
+    public MethodMatcher getMethodMatcher() {
         return this;
     }
 
     public String getExpression() {
-
         return this.expression;
     }
-    public void setExpression(String expression){
+
+    public void setExpression(String expression) {
         this.expression = expression;
     }
+
+
     public boolean matches(Method method/*, Class<?> targetClass*/) {
 
         checkReadyToMatch();
 
         ShadowMatch shadowMatch = getShadowMatch(method);
 
+//      Special handling for this, target, @this, @target, @annotation
+//      in Summer - we can optimize since we know we have exactly this class,
+//      and there will never be matching subclass at runtime.
         if (shadowMatch.alwaysMatches()) {
             return true;
         }
 
         return false;
     }
+
+
     private ShadowMatch getShadowMatch(Method method) {
 
-        ShadowMatch shadowMatch = null;
+        ShadowMatch shadowMatch;
         try {
             shadowMatch = this.pointcutExpression.matchesMethodExecution(method);
-        }
-        catch (ReflectionWorld.ReflectionWorldException ex) {
+        } catch (ReflectionWorld.ReflectionWorldException ex) {
 
             throw new RuntimeException("not implemented yet");
 			/*try {
@@ -89,6 +99,10 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher{
         return shadowMatch;
     }
 
+    /**
+     * Check the expression and classloader has been created
+     * or throw IllegalStateException
+     */
     private void checkReadyToMatch() {
         if (getExpression() == null) {
             throw new IllegalStateException("Must set property 'expression' before attempting to match");
@@ -101,11 +115,11 @@ public class AspectJExpressionPointcut implements Pointcut, MethodMatcher{
 
     private PointcutExpression buildPointcutExpression(ClassLoader classLoader) {
 
-
         PointcutParser parser = PointcutParser
                 .getPointcutParserSupportingSpecifiedPrimitivesAndUsingSpecifiedClassLoaderForResolution(
                         SUPPORTED_PRIMITIVES, classLoader);
 
+        // resolve pointcut parameters
 		/*PointcutParameter[] pointcutParameters = new PointcutParameter[this.pointcutParameterNames.length];
 		for (int i = 0; i < pointcutParameters.length; i++) {
 			pointcutParameters[i] = parser.createPointcutParameter(
