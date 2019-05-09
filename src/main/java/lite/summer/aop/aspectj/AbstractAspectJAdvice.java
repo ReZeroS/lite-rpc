@@ -35,6 +35,7 @@ public abstract class AbstractAspectJAdvice implements Advice {
         adviceMethod.invoke(adviceObjectFactory.getAspectInstance());
     }
 
+    @Override
     public Pointcut getPointcut() {
         return this.pointcut;
     }

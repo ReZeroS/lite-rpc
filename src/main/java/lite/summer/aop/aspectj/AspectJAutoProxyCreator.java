@@ -26,10 +26,12 @@ import java.util.Set;
 public class AspectJAutoProxyCreator implements BeanPostProcessor {
     ConfigurableBeanFactory beanFactory;
 
+    @Override
     public Object beforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
+    @Override
     public Object afterInitialization(Object bean, String beanName) throws BeansException {
 
         //if this Bean is instance or subclass of Advice, then will not create proxy

@@ -21,6 +21,7 @@ public class ClassPathResource implements Resource {
     }
 
 
+    @Override
     public InputStream getInputStream() throws IOException {
         InputStream inputStream = this.classLoader.getResourceAsStream(this.path);
 
@@ -31,6 +32,7 @@ public class ClassPathResource implements Resource {
     }
 
 
+    @Override
     public String getDescription() {
         return this.path;
     }

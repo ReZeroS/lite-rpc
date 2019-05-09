@@ -35,6 +35,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     protected abstract Resource getResourceByPath(String path);
 
+    @Override
     public Object getBean(String beanID) {
         return factory.getBean(beanID);
     }
@@ -60,6 +61,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         }
     }
 
+    @Override
     public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
         return this.factory.getType(name);
     }

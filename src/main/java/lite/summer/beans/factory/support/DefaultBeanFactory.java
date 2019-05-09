@@ -38,6 +38,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory
     private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
 
+    @Override
     public ClassLoader getBeanClassLoader() {
         return this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader();
     }
@@ -47,15 +48,18 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
     }
 
+    @Override
     public void registerBeanDefinition(String id, BeanDefinition beanDefinition) {
         this.beanDefinitionMap.put(id, beanDefinition);
     }
 
-    public BeanDefinition getBeanDefinition(String beanID) {
-        return this.beanDefinitionMap.get(beanID);
+    @Override
+    public BeanDefinition getBeanDefinition(String beanId) {
+        return this.beanDefinitionMap.get(beanId);
     }
 
 
+    @Override
     public Object getBean(String beanID) {
         BeanDefinition beanDefinition = this.getBeanDefinition(beanID);
         if (beanDefinition == null) {
@@ -74,6 +78,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory
         return createBean(beanDefinition);
     }
 
+    @Override
     public Class<?> getType(String name) {
         BeanDefinition beanDefinition = this.getBeanDefinition(name);
         if (beanDefinition == null) {
@@ -111,6 +116,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory
     }
 
 
+    @Override
     protected Object createBean(BeanDefinition beanDefinition) {
         Object bean = instantiateBean(beanDefinition);
         populateBean(beanDefinition, bean);
@@ -209,11 +215,13 @@ public class DefaultBeanFactory extends AbstractBeanFactory
         }
     }
 
+    @Override
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
         this.classLoader = beanClassLoader;
     }
 
 
+    @Override
     public Object resolveDependency(DependencyDescriptor descriptor) {
         Class<?> typeToMatch = descriptor.getDependencyType();
         for (BeanDefinition beanDefinition : this.beanDefinitionMap.values()) {

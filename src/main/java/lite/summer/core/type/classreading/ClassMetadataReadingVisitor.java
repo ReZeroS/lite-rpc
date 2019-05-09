@@ -1,6 +1,7 @@
 package lite.summer.core.type.classreading;
 
 import lite.summer.asm.SummerAsmInfo;
+import lite.summer.core.type.ClassMetadata;
 import lite.summer.util.ClassUtils;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
@@ -11,8 +12,7 @@ import org.objectweb.asm.Opcodes;
  * @Date: 4/5/19 10:24 PM
  * @Version 1.0
  */
-public class ClassMetadataReadingVisitor extends ClassVisitor {
-
+public class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata {
 
     private String className;
 
@@ -32,6 +32,7 @@ public class ClassMetadataReadingVisitor extends ClassVisitor {
     }
 
 
+    @Override
     public void visit(int version, int access, String name, String signature, String supername, String[] interfaces) {
         this.className = ClassUtils.convertResourcePathToClassName(name);
         this.isInterface = ((access & Opcodes.ACC_INTERFACE) != 0);
@@ -47,14 +48,17 @@ public class ClassMetadataReadingVisitor extends ClassVisitor {
     }
 
 
+    @Override
     public String getClassName() {
         return this.className;
     }
 
+    @Override
     public boolean isInterface() {
         return this.isInterface;
     }
 
+    @Override
     public boolean isAbstract() {
         return this.isAbstract;
     }
@@ -63,23 +67,25 @@ public class ClassMetadataReadingVisitor extends ClassVisitor {
         return !(this.isInterface || this.isAbstract);
     }
 
+    @Override
     public boolean isFinal() {
         return this.isFinal;
     }
 
 
+    @Override
     public boolean hasSuperClass() {
         return (this.superClassName != null);
     }
 
+    @Override
     public String getSuperClassName() {
         return this.superClassName;
     }
 
+    @Override
     public String[] getInterfaceNames() {
         return this.interfaces;
     }
-
-
 
 }

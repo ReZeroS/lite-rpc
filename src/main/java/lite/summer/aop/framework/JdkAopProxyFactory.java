@@ -36,10 +36,12 @@ public class JdkAopProxyFactory implements AopProxyFactory, InvocationHandler {
     }
 
 
+    @Override
     public Object getProxy() {
         return getProxy(ClassUtils.getDefaultClassLoader());
     }
 
+    @Override
     public Object getProxy(ClassLoader classLoader) {
         if (logger.isDebugEnabled()) {
             logger.debug("Creating JDK dynamic proxy: target source is " + this.config.getTargetObject());
@@ -50,6 +52,7 @@ public class JdkAopProxyFactory implements AopProxyFactory, InvocationHandler {
     }
 
 
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         Object target = this.config.getTargetObject();

@@ -16,6 +16,7 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice {
         super(adviceMethod, pointcut, adviceObjectFactory);
     }
 
+    @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Object o = methodInvocation.proceed();
         //ex：call TransactionManager.commit

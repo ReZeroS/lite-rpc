@@ -13,6 +13,7 @@ public class SummerNamingPolicy extends DefaultNamingPolicy {
     public SummerNamingPolicy() {
     }
 
+    @Override
     protected String getTag() {
         return "BySummerCGLIB";
     }

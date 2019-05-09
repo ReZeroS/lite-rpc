@@ -25,7 +25,6 @@ public class SimpleMetadataReader implements MetadataReader {
     public SimpleMetadataReader(Resource resource) throws IOException {
         InputStream is = new BufferedInputStream(resource.getInputStream());
         ClassReader classReader;
-
         try {
             classReader = new ClassReader(is);
         }
@@ -42,14 +41,17 @@ public class SimpleMetadataReader implements MetadataReader {
     }
 
 
+    @Override
     public Resource getResource() {
         return this.resource;
     }
 
+    @Override
     public ClassMetadata getClassMetadata() {
         return this.classMetadata;
     }
 
+    @Override
     public AnnotationMetadata getAnnotationMetadata() {
         return this.annotationMetadata;
     }

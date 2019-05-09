@@ -20,6 +20,7 @@ public class SimpleTypeConverter implements TypeConverter {
     public SimpleTypeConverter(){
 
     }
+    @Override
     public <T> T convertIfNecessary(Object value, Class<T> requiredType) throws TypeMismatchException {
 
         if(ClassUtils.isAssignableValue(requiredType, value)){

@@ -16,6 +16,7 @@ public class AspectJBeforeAdvice extends AbstractAspectJAdvice {
         super(adviceMethod, pointcut, adviceObjectFactory);
     }
 
+    @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         //例如： 调用TransactionManager的start方法
         this.invokeAdviceMethod();

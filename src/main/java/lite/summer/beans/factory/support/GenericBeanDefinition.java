@@ -45,38 +45,46 @@ public class GenericBeanDefinition implements BeanDefinition {
         this.beanClassName = beanClassName;
     }
 
+    @Override
     public String getBeanClassName() {
         return this.beanClassName;
     }
 
+    @Override
     public boolean isSingleton() {
         return this.singleton;
     }
 
+    @Override
     public boolean isPrototype() {
         return this.prototype;
     }
 
+    @Override
     public String getScope() {
         return this.scope;
     }
 
+    @Override
     public void setScope(String scope){
         this.scope = scope;
         this.singleton = SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
         this.prototype = SCOPE_PROTOTYPE.equals(scope);
     }
 
+    @Override
     public List<PropertyValue> getPropertyValues() {
         return this.propertyValueList;
     }
 
+    @Override
     public ConstructorArgument getConstructorArgument() {
         return this.constructorArgument;
     }
 
 
 
+    @Override
     public String getId() {
         return this.id;
     }
@@ -85,10 +93,12 @@ public class GenericBeanDefinition implements BeanDefinition {
         this.id = id;
     }
 
+    @Override
     public boolean hasConstructorArgumentValues() {
         return !this.constructorArgument.isEmpty();
     }
 
+    @Override
     public Class<?> resolveBeanClass(ClassLoader classLoader) throws ClassNotFoundException {
         String className = getBeanClassName();
         if (className == null) {
@@ -99,6 +109,7 @@ public class GenericBeanDefinition implements BeanDefinition {
         return resolvedClass;
     }
 
+    @Override
     public Class<?> getBeanClass() throws IllegalStateException {
         if(this.beanClass == null){
             throw new IllegalStateException(
@@ -107,6 +118,7 @@ public class GenericBeanDefinition implements BeanDefinition {
         return this.beanClass;
     }
 
+    @Override
     public boolean hasBeanClass() {
         return this.beanClass != null;
     }

@@ -28,14 +28,17 @@ public class AopConfigSupport implements AopConfig {
 
     }
 
+    @Override
     public void setTargetObject(Object targetObject) {
         this.targetObject = targetObject;
     }
 
+    @Override
     public Object getTargetObject() {
         return this.targetObject;
     }
 
+    @Override
     public Class<?> getTargetClass() {
         return this.targetObject.getClass();
     }
@@ -61,10 +64,12 @@ public class AopConfigSupport implements AopConfig {
 	public boolean removeInterface(Class<?> intf) {
 		return this.interfaces.remove(intf);
 	}
+    @Override
     public Class<?>[] getProxiedInterfaces() {
         return this.interfaces.toArray(new Class[this.interfaces.size()]);
     }
 
+    @Override
     public boolean isInterfaceProxied(Class<?> intf) {
         for (Class proxyIntf : this.interfaces) {
             if (intf.isAssignableFrom(proxyIntf)) {
@@ -74,11 +79,13 @@ public class AopConfigSupport implements AopConfig {
         return false;
     }
 
+    @Override
     public void addAdvice(Advice advice) {
         this.advices.add(advice);
     }
 
 
+    @Override
     public boolean isProxyTargetClass() {
 
         return proxyTargetClass;
@@ -88,11 +95,13 @@ public class AopConfigSupport implements AopConfig {
         this.proxyTargetClass = proxyTargetClass;
     }
 
+    @Override
     public List<Advice> getAdvices() {
 
         return this.advices;
     }
 
+    @Override
     public List<Advice> getAdvices(Method method) {
         List<Advice> result = new ArrayList<>();
         for (Advice advice : this.getAdvices()) {

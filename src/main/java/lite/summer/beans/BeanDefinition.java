@@ -16,6 +16,9 @@ public interface BeanDefinition {
 
     String getScope();
 
+    /**
+     * @param scope singleton, prototype
+     */
     void setScope(String scope);
 
     String getBeanClassName();

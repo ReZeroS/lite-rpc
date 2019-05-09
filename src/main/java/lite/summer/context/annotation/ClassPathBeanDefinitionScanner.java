@@ -24,13 +24,14 @@ import java.util.Set;
  */
 public class ClassPathBeanDefinitionScanner {
 
+    protected final Logger logger = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
+
     private final BeanDefinitionRegistry registry;
 
     private PackageResourceLoader resourceLoader = new PackageResourceLoader();
 
-    protected final Logger logger = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
-
     private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+
 
     public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry) {
         this.registry = registry;
@@ -38,14 +39,15 @@ public class ClassPathBeanDefinitionScanner {
 
     public Set<BeanDefinition> doScan(String packagesToScan) {
 
-        String[] basePackages = StringUtils.tokenizeToStringArray(packagesToScan,",");
+        // split "packageA, packageB ..." => ["packageA", "packageB", ...]
+        String[] basePackages = StringUtils.tokenizeToStringArray(packagesToScan, ",");
 
-        Set<BeanDefinition> beanDefinitions = new LinkedHashSet<BeanDefinition>();
+        Set<BeanDefinition> beanDefinitions = new LinkedHashSet<>();
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
                 beanDefinitions.add(candidate);
-                registry.registerBeanDefinition(candidate.getId(),candidate);
+                registry.registerBeanDefinition(candidate.getId(), candidate);
 
             }
         }
@@ -53,33 +55,29 @@ public class ClassPathBeanDefinitionScanner {
     }
 
 
-
     public Set<BeanDefinition> findCandidateComponents(String basePackage) {
-        Set<BeanDefinition> candidates = new LinkedHashSet<BeanDefinition>();
+        Set<BeanDefinition> candidates = new LinkedHashSet<>();
         try {
 
             Resource[] resources = this.resourceLoader.getResources(basePackage);
 
             for (Resource resource : resources) {
                 try {
-
                     MetadataReader metadataReader = new SimpleMetadataReader(resource);
 
-                    if(metadataReader.getAnnotationMetadata().hasAnnotation(Component.class.getName())){
+                    if (metadataReader.getAnnotationMetadata().hasAnnotation(Component.class.getName())) {
                         ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader.getAnnotationMetadata());
                         String beanName = this.beanNameGenerator.generateBeanName(sbd, this.registry);
                         sbd.setId(beanName);
                         candidates.add(sbd);
                     }
-                }
-                catch (Throwable ex) {
+                } catch (Throwable ex) {
                     throw new BeanDefinitionStoreException(
                             "Failed to read candidate component class: " + resource, ex);
                 }
 
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new BeanDefinitionStoreException("I/O failure during classpath scanning", ex);
         }
         return candidates;
