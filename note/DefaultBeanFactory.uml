@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="620.0" y="185.0">lite.summer.beans.factory.config.ConfigurableBeanFactory</node>
+    <node x="1001.125" y="160.0">lite.summer.context.support.AbstractApplicationContext</node>
+    <node x="318.0" y="172.5">lite.summer.beans.factory.support.DefaultSingletonRegistry</node>
+    <node x="1148.875" y="290.0">lite.summer.context.support.FileSystemXmlApplicationContext</node>
+    <node x="738.5" y="370.0">lite.summer.beans.factory.support.DefaultBeanFactory</node>
+    <node x="1493.875" y="290.0">lite.summer.beans.factory.support.BeanDefinitionRegistry</node>
+    <node x="186.5" y="80.0">lite.summer.beans.factory.config.SingletonBeanRegistry</node>
+    <node x="339.25" y="290.0">lite.summer.beans.factory.support.AbstractBeanFactory</node>
+    <node x="606.5" y="80.0">lite.summer.beans.factory.config.AutowireCapableBeanFactory</node>
+    <node x="0.0" y="172.5">lite.summer.beans.factory.support.DefaultSingletonBeanRegistry</node>
+    <node x="1037.125" y="80.0">lite.summer.context.ApplicationContext</node>
+    <node x="812.875" y="290.0">lite.summer.context.support.ClassPathXmlApplicationContext</node>
+    <node x="925.375" y="0.0">lite.summer.beans.factory.BeanFactory</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lite.summer.beans.factory.support.AbstractBeanFactory" target="lite.summer.beans.factory.support.DefaultSingletonBeanRegistry">
+      <point x="-54.25" y="-15.0" />
+      <point x="393.5" y="265.0" />
+      <point x="149.0" y="265.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.support.BeanDefinitionRegistry">
+      <point x="87.5" y="-65.0" />
+      <point x="1001.0" y="345.0" />
+      <point x="1615.875" y="345.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultSingletonBeanRegistry" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="0.0" y="-27.5" />
+      <point x="149.0" y="135.0" />
+      <point x="245.25" y="135.0" />
+      <point x="-58.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.AbstractApplicationContext" target="lite.summer.context.ApplicationContext">
+      <point x="0.0" y="-40.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.ClassPathXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="970.875" y="265.0" />
+      <point x="1071.125" y="265.0" />
+      <point x="-70.0" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.AutowireCapableBeanFactory" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="746.5" y="55.0" />
+      <point x="961.625" y="55.0" />
+      <point x="-36.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultSingletonRegistry" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="0.0" y="-27.5" />
+      <point x="459.0" y="135.0" />
+      <point x="362.75" y="135.0" />
+      <point x="58.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.ConfigurableBeanFactory" target="lite.summer.beans.factory.config.AutowireCapableBeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.FileSystemXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="1311.375" y="265.0" />
+      <point x="1211.125" y="265.0" />
+      <point x="70.0" y="40.0" />
+    </edge>
+    <edge source="lite.summer.context.ApplicationContext" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="1141.125" y="55.0" />
+      <point x="1034.125" y="55.0" />
+      <point x="36.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.AbstractBeanFactory" target="lite.summer.beans.factory.config.ConfigurableBeanFactory">
+      <point x="54.25" y="-15.0" />
+      <point x="502.0" y="265.0" />
+      <point x="746.5" y="265.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.support.AbstractBeanFactory">
+      <point x="-87.5" y="-65.0" />
+      <point x="826.0" y="345.0" />
+      <point x="447.75" y="345.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6557556773688332" x="516.5" y="291.0" />
+  <SelectedNodes>
+    <node>lite.summer.context.support.AbstractApplicationContext</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

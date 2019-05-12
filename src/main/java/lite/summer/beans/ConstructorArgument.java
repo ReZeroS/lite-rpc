@@ -13,8 +13,7 @@ import java.util.List;
  */
 public class ConstructorArgument {
 
-    private final List<ValueHolder> argumentValues = new LinkedList<ValueHolder>();
-
+    private final List<ValueHolder> argumentValues = new LinkedList<>();
 
     /**
      * Create a new empty ConstructorArgumentValues object.
@@ -54,14 +53,17 @@ public class ConstructorArgument {
     /**
      * Holder for a constructor argument value, with an optional type
      * attribute indicating the target type of the actual constructor argument.
+     * High cohesion design
      */
     public static class ValueHolder {
 
         private Object value;
-
+// Todo: has not been implemented
         private String type;
 
         private String name;
+
+//        private String index;
 
         public ValueHolder(Object value) {
             this.value = value;

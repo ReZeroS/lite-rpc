@@ -61,9 +61,10 @@ public class AopConfigSupport implements AopConfig {
      * @return {@code true} if the interface was removed; {@code false}
      * if the interface was not found and hence could not be removed
      */
-	public boolean removeInterface(Class<?> intf) {
-		return this.interfaces.remove(intf);
-	}
+    public boolean removeInterface(Class<?> intf) {
+        return this.interfaces.remove(intf);
+    }
+
     @Override
     public Class<?>[] getProxiedInterfaces() {
         return this.interfaces.toArray(new Class[this.interfaces.size()]);

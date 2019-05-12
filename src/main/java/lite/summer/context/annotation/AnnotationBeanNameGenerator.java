@@ -19,8 +19,6 @@ import java.util.Set;
  */
 public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 
-
-
     @Override
     public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
         if (definition instanceof AnnotatedBeanDefinition) {

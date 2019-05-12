@@ -17,7 +17,8 @@ public class BeanUtils {
      * <p>Checks {@code Class.getMethod} first, falling back to
      * {@code findDeclaredMethod}. This allows to find public methods
      * without issues even in environments with restricted Java security settings.
-     * @param clazz the class to check
+     *
+     * @param clazz      the class to check
      * @param methodName the name of the method to find
      * @param paramTypes the parameter types of the method to find
      * @return the Method object, or {@code null} if not found
@@ -27,8 +28,7 @@ public class BeanUtils {
     public static Method findMethod(Class<?> clazz, String methodName, Class<?>... paramTypes) {
         try {
             return clazz.getMethod(methodName, paramTypes);
-        }
-        catch (NoSuchMethodException ex) {
+        } catch (NoSuchMethodException ex) {
             return findDeclaredMethod(clazz, methodName, paramTypes);
         }
     }
@@ -38,7 +38,8 @@ public class BeanUtils {
      * declared on the given class or one of its superclasses. Will return a public,
      * protected, package access, or private method.
      * <p>Checks {@code Class.getDeclaredMethod}, cascading upwards to all superclasses.
-     * @param clazz the class to check
+     *
+     * @param clazz      the class to check
      * @param methodName the name of the method to find
      * @param paramTypes the parameter types of the method to find
      * @return the Method object, or {@code null} if not found
@@ -47,8 +48,7 @@ public class BeanUtils {
     public static Method findDeclaredMethod(Class<?> clazz, String methodName, Class<?>... paramTypes) {
         try {
             return clazz.getDeclaredMethod(methodName, paramTypes);
-        }
-        catch (NoSuchMethodException ex) {
+        } catch (NoSuchMethodException ex) {
             if (clazz.getSuperclass() != null) {
                 return findDeclaredMethod(clazz.getSuperclass(), methodName, paramTypes);
             }
@@ -63,11 +63,12 @@ public class BeanUtils {
      * <p>Checks {@code Class.getMethods} first, falling back to
      * {@code findDeclaredMethodWithMinimalParameters}. This allows for finding public
      * methods without issues even in environments with restricted Java security settings.
-     * @param clazz the class to check
+     *
+     * @param clazz      the class to check
      * @param methodName the name of the method to find
      * @return the Method object, or {@code null} if not found
      * @throws IllegalArgumentException if methods of the given name were found but
-     * could not be resolved to a unique method with minimal parameters
+     *                                  could not be resolved to a unique method with minimal parameters
      * @see Class#getMethods
      * @see #findDeclaredMethodWithMinimalParameters
      */
@@ -86,11 +87,12 @@ public class BeanUtils {
      * declared on the given class or one of its superclasses. Will return a public,
      * protected, package access, or private method.
      * <p>Checks {@code Class.getDeclaredMethods}, cascading upwards to all superclasses.
-     * @param clazz the class to check
+     *
+     * @param clazz      the class to check
      * @param methodName the name of the method to find
      * @return the Method object, or {@code null} if not found
      * @throws IllegalArgumentException if methods of the given name were found but
-     * could not be resolved to a unique method with minimal parameters
+     *                                  could not be resolved to a unique method with minimal parameters
      * @see Class#getDeclaredMethods
      */
     public static Method findDeclaredMethodWithMinimalParameters(Class<?> clazz, String methodName)
@@ -106,11 +108,12 @@ public class BeanUtils {
     /**
      * Find a method with the given method name and minimal parameters (best case: none)
      * in the given list of methods.
-     * @param methods the methods to check
+     *
+     * @param methods    the methods to check
      * @param methodName the name of the method to find
      * @return the Method object, or {@code null} if not found
      * @throws IllegalArgumentException if methods of the given name were found but
-     * could not be resolved to a unique method with minimal parameters
+     *                                  could not be resolved to a unique method with minimal parameters
      */
     public static Method findMethodWithMinimalParameters(Method[] methods, String methodName)
             throws IllegalArgumentException {
@@ -123,8 +126,7 @@ public class BeanUtils {
                 if (targetMethod == null || numParams < targetMethod.getParameterTypes().length) {
                     targetMethod = method;
                     numMethodsFoundWithCurrentMinimumArgs = 1;
-                }
-                else {
+                } else {
                     if (targetMethod.getParameterTypes().length == numParams) {
                         // Additional candidate with same length
                         numMethodsFoundWithCurrentMinimumArgs++;
@@ -153,8 +155,9 @@ public class BeanUtils {
      * {@code methodName} with the least number of arguments, whereas {@code methodName()}
      * means the method called {@code methodName} with exactly 0 arguments.
      * <p>If no method can be found, then {@code null} is returned.
+     *
      * @param signature the method signature as String representation
-     * @param clazz the class to resolve the method signature against
+     * @param clazz     the class to resolve the method signature against
      * @return the resolved Method
      * @see #findMethod
      * @see #findMethodWithMinimalParameters
@@ -166,15 +169,12 @@ public class BeanUtils {
         if (firstParen > -1 && lastParen == -1) {
             throw new IllegalArgumentException("Invalid method signature '" + signature +
                     "': expected closing ')' for args list");
-        }
-        else if (lastParen > -1 && firstParen == -1) {
+        } else if (lastParen > -1 && firstParen == -1) {
             throw new IllegalArgumentException("Invalid method signature '" + signature +
                     "': expected opening '(' for args list");
-        }
-        else if (firstParen == -1 && lastParen == -1) {
+        } else if (firstParen == -1 && lastParen == -1) {
             return findMethodWithMinimalParameters(clazz, signature);
-        }
-        else {
+        } else {
             String methodName = signature.substring(0, firstParen);
             String[] parameterTypeNames =
                     StringUtils.commaDelimitedListToStringArray(signature.substring(firstParen + 1, lastParen));
@@ -183,8 +183,7 @@ public class BeanUtils {
                 String parameterTypeName = parameterTypeNames[i].trim();
                 try {
                     parameterTypes[i] = clazz.getClassLoader().loadClass(parameterTypeName);
-                }
-                catch (Throwable ex) {
+                } catch (Throwable ex) {
                     throw new IllegalArgumentException("Invalid method signature: unable to resolve type [" +
                             parameterTypeName + "] for argument " + i + ". Root cause: " + ex);
                 }

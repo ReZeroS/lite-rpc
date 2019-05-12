@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="725.5" y="630.0">lite.summer.beans.BeanDefinition</node>
+    <node x="1175.0" y="1710.0">lite.summer.util.NumberUtils</node>
+    <node x="1282.0" y="1485.0">lite.summer.beans.factory.xml.XmlBeanDefinitionReader</node>
+    <node x="1420.5" y="1020.0">lite.summer.core.io.Resource</node>
+    <node x="0.0" y="710.0">lite.summer.core.type.AnnotationMetadata</node>
+    <node x="1263.75" y="1100.0">lite.summer.core.io.FileSystemResource</node>
+    <node x="181.0" y="1785.0">lite.summer.beans.BeanUtils</node>
+    <node x="71.25" y="790.0">lite.summer.core.type.classreading.AnnotationMetadataReadingVisitor</node>
+    <node x="1382.0" y="1560.0">lite.summer.beans.ConstructorArgument</node>
+    <node x="0.0" y="945.0">lite.summer.beans.TypeMismatchException</node>
+    <node x="0.0" y="1410.0">lite.summer.beans.SimpleTypeConverter</node>
+    <node x="0.0" y="555.0">lite.summer.aop.aspectj.AspectJAfterReturningAdvice</node>
+    <node x="353.0" y="1785.0">lite.summer.beans.factory.annotation.Autowired</node>
+    <node x="569.0" y="1560.0">lite.summer.beans.factory.config.DependencyDescriptor</node>
+    <node x="0.0" y="1560.0">lite.summer.aop.AopInvocationException</node>
+    <node x="610.0" y="1175.0">lite.summer.aop.MethodMatcher</node>
+    <node x="0.0" y="1100.0">lite.summer.beans.TypedStringValuePropertyValue</node>
+    <node x="156.75" y="630.0">lite.summer.core.type.ClassMetadata</node>
+    <node x="573.0" y="945.0">lite.summer.beans.factory.NoSuchBeanDefinitionException</node>
+    <node x="871.0" y="475.0">lite.summer.beans.factory.config.InstantiationAwareBeanPostProcessor</node>
+    <node x="818.0" y="1255.0">lite.summer.context.annotation.AnnotationBeanNameGenerator</node>
+    <node x="1255.0" y="1330.0">lite.summer.beans.factory.support.BeanDefinitionValueResolver</node>
+    <node x="981.125" y="160.0">lite.summer.context.support.AbstractApplicationContext</node>
+    <node x="799.5" y="320.0">lite.summer.beans.factory.support.DefaultBeanFactory</node>
+    <node x="723.0" y="1710.0">lite.summer.util.ReflectionUtils</node>
+    <node x="0.0" y="1635.0">lite.summer.beans.propertyeditors.CustomBooleanEditor</node>
+    <node x="0.0" y="1485.0">lite.summer.aop.framework.ReflectiveMethodInvocation</node>
+    <node x="0.0" y="1255.0">lite.summer.aop.framework.JdkAopProxyFactory</node>
+    <node x="1491.75" y="1100.0">lite.summer.core.io.ClassPathResource</node>
+    <node x="900.0" y="945.0">lite.summer.beans.factory.BeanCreationException</node>
+    <node x="562.0" y="710.0">lite.summer.beans.factory.support.GenericBeanDefinition</node>
+    <node x="325.0" y="1485.0">lite.summer.aop.config.ConfigBeanDefinitionParser</node>
+    <node x="0.0" y="1785.0">lite.summer.util.ClassUtils</node>
+    <node x="650.0" y="1485.0">lite.summer.beans.factory.support.BeanDefinitionReaderUtils</node>
+    <node x="1073.75" y="1020.0">lite.summer.beans.factory.FactoryBean</node>
+    <node x="817.0" y="710.0">lite.summer.beans.factory.annotation.AnnotatedBeanDefinition</node>
+    <node x="1252.0" y="475.0">lite.summer.aop.aspectj.AspectJAutoProxyCreator</node>
+    <node x="497.0" y="1330.0">lite.summer.core.type.classreading.AnnotationAttributesReadingVisitor</node>
+    <node x="262.0" y="1410.0">lite.summer.aop.framework.AopConfigSupport</node>
+    <node x="1115.5" y="395.0">lite.summer.beans.factory.config.BeanPostProcessor</node>
+    <node x="840.0" y="1560.0">lite.summer.beans.factory.config.RuntimeBeanReference</node>
+    <node x="785.0" y="1020.0">lite.summer.beans.factory.BeanFactoryAware</node>
+    <node x="1432.0" y="1255.0">lite.summer.core.type.classreading.SimpleMetadataReader</node>
+    <node x="479.25" y="865.0">lite.summer.beans.BeansException</node>
+    <node x="894.0" y="1330.0">lite.summer.context.annotation.ClassPathBeanDefinitionScanner</node>
+    <node x="327.0" y="1100.0">lite.summer.beans.RuntimeBeanReferencePropertyValue</node>
+    <node x="1128.875" y="240.0">lite.summer.context.support.FileSystemXmlApplicationContext</node>
+    <node x="786.0" y="1635.0">lite.summer.cglib.SummerNamingPolicy</node>
+    <node x="472.0" y="1175.0">lite.summer.aop.Pointcut</node>
+    <node x="1365.0" y="1710.0">lite.summer.util.StringUtils</node>
+    <node x="367.5" y="395.0">lite.summer.aop.Advice</node>
+    <node x="1473.875" y="240.0">lite.summer.beans.factory.support.BeanDefinitionRegistry</node>
+    <node x="902.5" y="555.0">lite.summer.beans.factory.annotation.AutowiredAnnotationProcessor</node>
+    <node x="300.0" y="475.0">lite.summer.aop.aspectj.AbstractAspectJAdvice</node>
+    <node x="0.0" y="1710.0">lite.summer.beans.factory.annotation.InjectionMetadata</node>
+    <node x="262.0" y="1635.0">lite.summer.beans.factory.support.ConstructorResolver</node>
+    <node x="289.0" y="1560.0">lite.summer.core.io.support.PackageResourceLoader</node>
+    <node x="228.0" y="1255.0">lite.summer.aop.framework.CglibProxyFactory</node>
+    <node x="1174.5" y="1175.0">lite.summer.beans.factory.annotation.InjectionElement</node>
+    <node x="244.5" y="1020.0">lite.summer.beans.PropertyValue</node>
+    <node x="715.0" y="1100.0">lite.summer.aop.config.AspectInstanceFactory</node>
+    <node x="966.0" y="1485.0">lite.summer.aop.framework.CglibProxyFactory.DynamicAdvisedInterceptor</node>
+    <node x="1459.0" y="1175.0">lite.summer.core.type.classreading.MetadataReader</node>
+    <node x="228.0" y="710.0">lite.summer.core.type.classreading.ClassMetadataReadingVisitor</node>
+    <node x="1555.0" y="1710.0">lite.summer.beans.ConstructorArgument.ValueHolder</node>
+    <node x="1039.0" y="1635.0">lite.summer.aop.framework.AopConfigException</node>
+    <node x="905.375" y="0.0">lite.summer.beans.factory.BeanFactory</node>
+    <node x="970.0" y="1100.0">lite.summer.aop.config.MethodLocatingFactory</node>
+    <node x="488.0" y="1710.0">lite.summer.beans.factory.config.TypedStringValue</node>
+    <node x="949.0" y="1710.0">lite.summer.util.AnnotationUtils</node>
+    <node x="600.0" y="160.0">lite.summer.beans.factory.config.ConfigurableBeanFactory</node>
+    <node x="293.5" y="1330.0">lite.summer.aop.framework.AopConfig</node>
+    <node x="525.0" y="1785.0">lite.summer.util.Assert</node>
+    <node x="546.0" y="555.0">lite.summer.aop.aspectj.AspectJAfterThrowingAdvice</node>
+    <node x="318.0" y="160.0">lite.summer.beans.factory.support.DefaultSingletonRegistry</node>
+    <node x="244.0" y="1710.0">lite.summer.cglib.DefaultNamePolicy</node>
+    <node x="662.5" y="790.0">lite.summer.context.annotation.ScannedGenericBeanDefinition</node>
+    <node x="1292.0" y="1635.0">lite.summer.beans.propertyeditors.CustomNumberEditor</node>
+    <node x="309.0" y="555.0">lite.summer.aop.aspectj.AspectJBeforeAdvice</node>
+    <node x="181.5" y="80.0">lite.summer.beans.factory.config.SingletonBeanRegistry</node>
+    <node x="329.25" y="240.0">lite.summer.beans.factory.support.AbstractBeanFactory</node>
+    <node x="255.0" y="945.0">lite.summer.beans.factory.BeanDefinitionStoreException</node>
+    <node x="586.5" y="80.0">lite.summer.beans.factory.config.AutowireCapableBeanFactory</node>
+    <node x="524.0" y="1635.0">lite.summer.aop.framework.CglibProxyFactory.ProxyCallbackFilter</node>
+    <node x="0.0" y="160.0">lite.summer.beans.factory.support.DefaultSingletonBeanRegistry</node>
+    <node x="1111.0" y="1560.0">lite.summer.core.annotation.AnnotationAttributes</node>
+    <node x="1017.125" y="80.0">lite.summer.context.ApplicationContext</node>
+    <node x="475.75" y="1255.0">lite.summer.aop.aspectj.AspectJExpressionPointcut</node>
+    <node x="863.0" y="1175.0">lite.summer.beans.factory.support.BeanNameGenerator</node>
+    <node x="1152.0" y="1255.0">lite.summer.beans.factory.annotation.AutowiredFieldElement</node>
+    <node x="27.0" y="1330.0">lite.summer.beans.TypeConverter</node>
+    <node x="125.25" y="1175.0">lite.summer.aop.framework.AopProxyFactory</node>
+    <node x="792.875" y="240.0">lite.summer.context.support.ClassPathXmlApplicationContext</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lite.summer.aop.framework.AopConfigSupport" target="lite.summer.aop.framework.AopConfig">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.AbstractBeanFactory" target="lite.summer.beans.factory.support.DefaultSingletonBeanRegistry">
+      <point x="-54.25" y="-15.0" />
+      <point x="383.5" y="215.0" />
+      <point x="149.0" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.NoSuchBeanDefinitionException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-15.0" />
+      <point x="726.5" y="925.0" />
+      <point x="586.75" y="925.0" />
+      <point x="21.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJExpressionPointcut" target="lite.summer.aop.MethodMatcher">
+      <point x="67.75" y="-15.0" />
+      <point x="679.0" y="1230.0" />
+      <point x="691.5" y="1230.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.type.classreading.AnnotationMetadataReadingVisitor" target="lite.summer.core.type.classreading.ClassMetadataReadingVisitor">
+      <point x="83.5" y="-15.0" />
+      <point x="321.75" y="765.0" />
+      <point x="372.5" y="765.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.type.AnnotationMetadata" target="lite.summer.core.type.ClassMetadata">
+      <point x="0.0" y="-15.0" />
+      <point x="104.0" y="685.0" />
+      <point x="197.5" y="685.0" />
+      <point x="-40.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.config.MethodLocatingFactory" target="lite.summer.beans.factory.BeanFactoryAware">
+      <point x="-58.75" y="-15.0" />
+      <point x="1028.75" y="1075.0" />
+      <point x="927.5" y="1075.0" />
+      <point x="47.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.InstantiationAwareBeanPostProcessor" target="lite.summer.beans.factory.config.BeanPostProcessor">
+      <point x="0.0" y="-15.0" />
+      <point x="1051.5" y="450.0" />
+      <point x="1165.25" y="450.0" />
+      <point x="-49.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJBeforeAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AbstractAspectJAdvice" target="lite.summer.aop.Advice">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.type.classreading.SimpleMetadataReader" target="lite.summer.core.type.classreading.MetadataReader">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.config.AspectInstanceFactory" target="lite.summer.beans.factory.BeanFactoryAware">
+      <point x="0.0" y="-15.0" />
+      <point x="-47.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.annotation.AnnotationBeanNameGenerator" target="lite.summer.beans.factory.support.BeanNameGenerator">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.type.classreading.AnnotationMetadataReadingVisitor" target="lite.summer.core.type.AnnotationMetadata">
+      <point x="-83.5" y="-15.0" />
+      <point x="154.75" y="765.0" />
+      <point x="104.0" y="765.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.ConfigurableBeanFactory" target="lite.summer.beans.factory.config.AutowireCapableBeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJAfterThrowingAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-15.0" />
+      <point x="686.0" y="530.0" />
+      <point x="495.8333333333333" y="530.0" />
+      <point x="78.33333333333331" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.annotation.AnnotatedBeanDefinition" target="lite.summer.beans.BeanDefinition">
+      <point x="0.0" y="-15.0" />
+      <point x="943.5" y="685.0" />
+      <point x="854.5" y="685.0" />
+      <point x="43.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.FileSystemXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="1291.375" y="215.0" />
+      <point x="1191.125" y="215.0" />
+      <point x="70.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.TypedStringValuePropertyValue" target="lite.summer.beans.PropertyValue">
+      <point x="0.0" y="-15.0" />
+      <point x="153.5" y="1075.0" />
+      <point x="285.25" y="1075.0" />
+      <point x="-40.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.GenericBeanDefinition" target="lite.summer.beans.BeanDefinition">
+      <point x="0.0" y="-15.0" />
+      <point x="679.5" y="685.0" />
+      <point x="768.5" y="685.0" />
+      <point x="-43.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.TypeMismatchException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-15.0" />
+      <point x="117.5" y="915.0" />
+      <point x="500.75" y="915.0" />
+      <point x="-64.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.annotation.AutowiredFieldElement" target="lite.summer.beans.factory.annotation.InjectionElement">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.framework.JdkAopProxyFactory" target="lite.summer.aop.framework.AopProxyFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="104.0" y="1230.0" />
+      <point x="170.5" y="1230.0" />
+      <point x="-45.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.io.ClassPathResource" target="lite.summer.core.io.Resource">
+      <point x="0.0" y="-15.0" />
+      <point x="1591.25" y="1075.0" />
+      <point x="1509.0" y="1075.0" />
+      <point x="29.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.RuntimeBeanReferencePropertyValue" target="lite.summer.beans.PropertyValue">
+      <point x="0.0" y="-15.0" />
+      <point x="498.5" y="1075.0" />
+      <point x="366.75" y="1075.0" />
+      <point x="40.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.annotation.ScannedGenericBeanDefinition" target="lite.summer.beans.factory.support.GenericBeanDefinition">
+      <point x="-74.5" y="-15.0" />
+      <point x="737.0" y="765.0" />
+      <point x="679.5" y="765.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.support.AbstractBeanFactory">
+      <point x="-52.0" y="-15.0" />
+      <point x="851.5" y="295.0" />
+      <point x="437.75" y="295.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.AbstractBeanFactory" target="lite.summer.beans.factory.config.ConfigurableBeanFactory">
+      <point x="54.25" y="-15.0" />
+      <point x="492.0" y="215.0" />
+      <point x="726.5" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJAfterReturningAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-15.0" />
+      <point x="144.5" y="530.0" />
+      <point x="339.1666666666667" y="530.0" />
+      <point x="-78.33333333333331" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.type.classreading.ClassMetadataReadingVisitor" target="lite.summer.core.type.ClassMetadata">
+      <point x="0.0" y="-15.0" />
+      <point x="372.5" y="685.0" />
+      <point x="279.0" y="685.0" />
+      <point x="40.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.BeanCreationException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-15.0" />
+      <point x="1017.5" y="915.0" />
+      <point x="629.75" y="915.0" />
+      <point x="64.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.support.BeanDefinitionRegistry">
+      <point x="52.0" y="-15.0" />
+      <point x="955.5" y="295.0" />
+      <point x="1595.875" y="295.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJExpressionPointcut" target="lite.summer.aop.Pointcut">
+      <point x="-67.75" y="-15.0" />
+      <point x="543.5" y="1230.0" />
+      <point x="531.0" y="1230.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.SimpleTypeConverter" target="lite.summer.beans.TypeConverter">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultSingletonBeanRegistry" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="0.0" y="-15.0" />
+      <point x="149.0" y="135.0" />
+      <point x="240.25" y="135.0" />
+      <point x="-58.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.AbstractApplicationContext" target="lite.summer.context.ApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.support.ClassPathXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="950.875" y="215.0" />
+      <point x="1051.125" y="215.0" />
+      <point x="-70.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.annotation.ScannedGenericBeanDefinition" target="lite.summer.beans.factory.annotation.AnnotatedBeanDefinition">
+      <point x="74.5" y="-15.0" />
+      <point x="886.0" y="765.0" />
+      <point x="943.5" y="765.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.core.io.FileSystemResource" target="lite.summer.core.io.Resource">
+      <point x="0.0" y="-15.0" />
+      <point x="1367.75" y="1075.0" />
+      <point x="1450.0" y="1075.0" />
+      <point x="-29.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.AutowireCapableBeanFactory" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="726.5" y="55.0" />
+      <point x="941.625" y="55.0" />
+      <point x="-36.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.BeanDefinitionStoreException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-15.0" />
+      <point x="404.0" y="925.0" />
+      <point x="543.75" y="925.0" />
+      <point x="-21.5" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.framework.CglibProxyFactory" target="lite.summer.aop.framework.AopProxyFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="327.5" y="1230.0" />
+      <point x="261.0" y="1230.0" />
+      <point x="45.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultSingletonRegistry" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="0.0" y="-15.0" />
+      <point x="449.0" y="135.0" />
+      <point x="357.75" y="135.0" />
+      <point x="58.75" y="15.0" />
+    </edge>
+    <edge source="lite.summer.context.ApplicationContext" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="1121.125" y="55.0" />
+      <point x="1014.125" y="55.0" />
+      <point x="36.25" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.annotation.AutowiredAnnotationProcessor" target="lite.summer.beans.factory.config.InstantiationAwareBeanPostProcessor">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.config.MethodLocatingFactory" target="lite.summer.beans.factory.FactoryBean">
+      <point x="58.75" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJAutoProxyCreator" target="lite.summer.beans.factory.config.BeanPostProcessor">
+      <point x="0.0" y="-15.0" />
+      <point x="1378.5" y="450.0" />
+      <point x="1264.75" y="450.0" />
+      <point x="49.75" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.31716621253405997" x="859.0" y="907.4999999999999" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

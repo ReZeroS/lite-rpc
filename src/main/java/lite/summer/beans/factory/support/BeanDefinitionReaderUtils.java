@@ -90,8 +90,7 @@ public class BeanDefinitionReaderUtils {
      * @throws BeanDefinitionStoreException if no unique name can be generated
      *                                      for the given bean definition or the definition cannot be registered
      */
-    public static String registerWithGeneratedName(
-            GenericBeanDefinition definition, BeanDefinitionRegistry registry)
+    public static String registerWithGeneratedName(GenericBeanDefinition definition, BeanDefinitionRegistry registry)
             throws BeanDefinitionStoreException {
 
         String generatedName = generateBeanName(definition, registry, false);

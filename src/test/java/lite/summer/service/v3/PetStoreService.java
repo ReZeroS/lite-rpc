@@ -2,6 +2,8 @@ package lite.summer.service.v3;
 
 import lite.summer.dao.v3.AccountDao;
 import lite.summer.dao.v3.ItemDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: ReZero
@@ -10,20 +12,32 @@ import lite.summer.dao.v3.ItemDao;
  */
 public class PetStoreService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PetStoreService.class);
+
     private AccountDao accountDao;
-    private ItemDao  itemDao;
+    private ItemDao itemDao;
     private int version;
 
-    public PetStoreService(AccountDao accountDao, ItemDao itemDao){
+    public PetStoreService(AccountDao accountDao, ItemDao itemDao) {
         this.accountDao = accountDao;
         this.itemDao = itemDao;
         this.version = -1;
     }
-    public PetStoreService(AccountDao accountDao, ItemDao itemDao,int version){
+
+    public PetStoreService(AccountDao accountDao, ItemDao itemDao, int version) {
         this.accountDao = accountDao;
         this.itemDao = itemDao;
         this.version = version;
+        logger.info("Use constructor which contains int param");
     }
+
+    public PetStoreService(AccountDao accountDao, ItemDao itemDao, String version) {
+        this.accountDao = accountDao;
+        this.itemDao = itemDao;
+        this.version = Integer.valueOf(version);
+        logger.info("Use constructor which contains string param");
+    }
+
     public int getVersion() {
         return version;
     }
@@ -35,7 +49,6 @@ public class PetStoreService {
     public ItemDao getItemDao() {
         return itemDao;
     }
-
 
 
 }

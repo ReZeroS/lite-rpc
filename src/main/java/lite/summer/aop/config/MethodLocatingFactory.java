@@ -44,7 +44,6 @@ public class MethodLocatingFactory  implements FactoryBean<Method>, BeanFactoryA
             throw new IllegalArgumentException("Can't determine type of bean with name '" + this.targetBeanName + "'");
         }
 
-
         this.method = BeanUtils.resolveSignature(this.methodName, beanClass);
 
         if (this.method == null) {
@@ -55,7 +54,7 @@ public class MethodLocatingFactory  implements FactoryBean<Method>, BeanFactoryA
 
 
     @Override
-    public Method getObject() throws Exception {
+    public Method getObject() {
         return this.method;
     }
 

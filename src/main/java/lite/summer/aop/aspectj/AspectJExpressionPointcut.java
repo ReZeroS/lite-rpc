@@ -18,7 +18,6 @@ import java.util.Set;
  */
 public class AspectJExpressionPointcut implements Pointcut, MethodMatcher {
 
-
     private static final Set<PointcutPrimitive> SUPPORTED_PRIMITIVES = new HashSet<>();
 
     /**

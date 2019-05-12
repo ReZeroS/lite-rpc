@@ -36,29 +36,24 @@ public class ConstructorResolver {
         Class<?> beanClass;
         try {
             beanClass = this.beanFactory.getBeanClassLoader().loadClass(beanDefinition.getBeanClassName());
-
         } catch (ClassNotFoundException e) {
             throw new BeanCreationException(beanDefinition.getId(), "Instantiation of bean failed, can't resolve class", e);
         }
 
-
-        Constructor<?>[] candidates = beanClass.getConstructors();
-
-
-        BeanDefinitionValueResolver valueResolver =
-                new BeanDefinitionValueResolver(this.beanFactory);
-
         ConstructorArgument cargs = beanDefinition.getConstructorArgument();
+// get all constructors and determine which will be the real one
+        Constructor<?>[] candidates = beanClass.getConstructors();
+        BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this.beanFactory);
         SimpleTypeConverter typeConverter = new SimpleTypeConverter();
 
-        for (int i = 0; i < candidates.length; ++i) {
 
+        for (int i = 0; i < candidates.length; ++i) {
             Class<?>[] parameterTypes = candidates[i].getParameterTypes();
             if (parameterTypes.length != cargs.getArgumentCount()) {
                 continue;
             }
             argsToUse = new Object[parameterTypes.length];
-
+            // since the length has been matched,
             boolean result = this.valuesMatchTypes(parameterTypes,
                     cargs.getArgumentValues(),
                     argsToUse,
@@ -69,12 +64,11 @@ public class ConstructorResolver {
                 constructorToUse = candidates[i];
                 break;
             }
-
         }
 
         //can not find a suite constructor
         if (constructorToUse == null) {
-            throw new BeanCreationException(beanDefinition.getId(), "can't find a apporiate constructor");
+            throw new BeanCreationException(beanDefinition.getId(), "can't find a appropriate constructor");
         }
 
         try {
@@ -92,14 +86,15 @@ public class ConstructorResolver {
                                      SimpleTypeConverter typeConverter) {
 
 
+        // analyze the parameter and initialize them
         for (int i = 0; i < parameterTypes.length; ++i) {
-            ConstructorArgument.ValueHolder valueHolder
-                    = valueHolders.get(i);
+            ConstructorArgument.ValueHolder valueHolder = valueHolders.get(i);
+
             //get parameter value，possible as TypedStringValue or RuntimeBeanReference
             Object originalValue = valueHolder.getValue();
 
             try {
-                //get real value
+                //get the real value
                 Object resolvedValue = valueResolver.resolveValueIfNecessary(originalValue);
                 //if type:int but with string value, then converted
                 //converted failed then throw exception

@@ -26,8 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ReZero
  */
-public class DefaultBeanFactory extends AbstractBeanFactory
-        implements BeanDefinitionRegistry {
+public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefinitionRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultBeanFactory.class);
 
@@ -60,17 +59,17 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
 
     @Override
-    public Object getBean(String beanID) {
-        BeanDefinition beanDefinition = this.getBeanDefinition(beanID);
+    public Object getBean(String beanId) {
+        BeanDefinition beanDefinition = this.getBeanDefinition(beanId);
         if (beanDefinition == null) {
             throw new BeanCreationException("expect BeanCreationException ");
         }
 
         if (beanDefinition.isSingleton()) {
-            Object bean = this.getSingleton(beanID);
+            Object bean = this.getSingleton(beanId);
             if (bean == null) {
                 bean = createBean(beanDefinition);
-                this.registrySingleton(beanID, bean);
+                this.registrySingleton(beanId, bean);
             }
             return bean;
 
@@ -118,7 +117,9 @@ public class DefaultBeanFactory extends AbstractBeanFactory
 
     @Override
     protected Object createBean(BeanDefinition beanDefinition) {
+        // build bean by constructor provided or default zero args constructor
         Object bean = instantiateBean(beanDefinition);
+        //
         populateBean(beanDefinition, bean);
         bean = initializeBean(beanDefinition, bean);
         return bean;
@@ -136,25 +137,22 @@ public class DefaultBeanFactory extends AbstractBeanFactory
                 Class<?> clz = classLoader.loadClass(beanClassName);
                 return clz.newInstance();
             } catch (Exception e) {
-                throw new BeanCreationException("c" +
-                        "create for " + beanClassName + " failed.");
+                throw new BeanCreationException("create for " + beanClassName + " failed.");
             }
         }
-
     }
 
     protected void populateBean(BeanDefinition beanDefinition, Object bean) {
-
         for (BeanPostProcessor processor : this.getBeanPostProcessors()) {
             if (processor instanceof InstantiationAwareBeanPostProcessor) {
                 ((InstantiationAwareBeanPostProcessor) processor).postProcessPropertyValues(bean, beanDefinition.getId());
             }
         }
 
-
         List<PropertyValue> pvs = beanDefinition.getPropertyValues();
 
         if (pvs == null || pvs.isEmpty()) {
+            logger.info("populate without any property in bean definition");
             return;
         }
 
@@ -187,11 +185,11 @@ public class DefaultBeanFactory extends AbstractBeanFactory
     }
 
 
-    protected Object initializeBean(BeanDefinition bd, Object bean) {
+    protected Object initializeBean(BeanDefinition beanDefinition, Object bean) {
         invokeAwareMethods(bean);
-        //Todo，调用Bean的init方法，暂不实现
-        if (!bd.isSynthetic()) {
-            return applyBeanPostProcessorsAfterInitialization(bean, bd.getId());
+        //Todo， call Bean init method, still has not been implemented
+        if (!beanDefinition.isSynthetic()) {
+            return applyBeanPostProcessorsAfterInitialization(bean, beanDefinition.getId());
         }
         return bean;
     }

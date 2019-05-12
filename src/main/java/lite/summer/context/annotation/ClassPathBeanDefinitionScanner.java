@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class ClassPathBeanDefinitionScanner {
 
-    protected final Logger logger = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
+    private final Logger logger = LoggerFactory.getLogger(ClassPathBeanDefinitionScanner.class);
 
     private final BeanDefinitionRegistry registry;
 
@@ -45,11 +45,8 @@ public class ClassPathBeanDefinitionScanner {
         Set<BeanDefinition> beanDefinitions = new LinkedHashSet<>();
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
-            for (BeanDefinition candidate : candidates) {
-                beanDefinitions.add(candidate);
-                registry.registerBeanDefinition(candidate.getId(), candidate);
-
-            }
+            beanDefinitions.addAll(candidates);
+            candidates.forEach(candidate -> registry.registerBeanDefinition(candidate.getId(), candidate));
         }
         return beanDefinitions;
     }

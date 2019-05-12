@@ -28,19 +28,19 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
     private boolean requiredParameterValue = true;
 
     private final Set<Class<? extends Annotation>> autowiredAnnotationTypes =
-            new LinkedHashSet<Class<? extends Annotation>>();
+            new LinkedHashSet<>();
 
-    public AutowiredAnnotationProcessor(){
+    public AutowiredAnnotationProcessor() {
         this.autowiredAnnotationTypes.add(Autowired.class);
     }
 
     public InjectionMetadata buildAutowiringMetadata(Class<?> clazz) {
 
-        LinkedList<InjectionElement> elements = new LinkedList<InjectionElement>();
+        LinkedList<InjectionElement> elements = new LinkedList<>();
         Class<?> targetClass = clazz;
 
         do {
-            LinkedList<InjectionElement> currElements = new LinkedList<InjectionElement>();
+            LinkedList<InjectionElement> currElements = new LinkedList<>();
             for (Field field : targetClass.getDeclaredFields()) {
                 Annotation ann = findAutowiredAnnotation(field);
                 if (ann != null) {
@@ -49,11 +49,20 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
                         continue;
                     }
                     boolean required = determineRequiredStatus(ann);
-                    currElements.add(new AutowiredFieldElement(field, required,beanFactory));
+                    currElements.add(new AutowiredFieldElement(field, required, beanFactory));
                 }
             }
             for (Method method : targetClass.getDeclaredMethods()) {
                 //TODO 处理方法注入
+                Annotation ann = findAutowiredAnnotation(method);
+                if (ann != null) {
+                    if (Modifier.isStatic(method.getModifiers())) {
+                        continue;
+                    }
+                    boolean required = determineRequiredStatus(ann);
+                    currElements.add(new AutowiredMethodElement(method, required, beanFactory));
+                }
+
             }
             elements.addAll(0, currElements);
             targetClass = targetClass.getSuperclass();
@@ -72,8 +81,7 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
                 return true;
             }
             return (this.requiredParameterValue == (Boolean) ReflectionUtils.invokeMethod(method, ann));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // An exception was thrown during reflective invocation of the required attribute
             // -> default to required status
             return true;
@@ -89,19 +97,23 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
         }
         return null;
     }
-    public void setBeanFactory(AutowireCapableBeanFactory beanFactory){
+
+    public void setBeanFactory(AutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
+
     @Override
     public Object beforeInitialization(Object bean, String beanName) throws BeansException {
         //do nothing
         return bean;
     }
+
     @Override
     public Object afterInitialization(Object bean, String beanName) throws BeansException {
         // do nothing
         return bean;
     }
+
     @Override
     public Object beforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
         return null;
@@ -118,8 +130,7 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
         InjectionMetadata metadata = buildAutowiringMetadata(bean.getClass());
         try {
             metadata.inject(bean);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             throw new BeanCreationException(beanName, "Injection of autowired dependencies failed", ex);
         }
     }

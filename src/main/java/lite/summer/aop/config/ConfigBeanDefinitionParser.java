@@ -13,6 +13,8 @@ import lite.summer.beans.factory.support.BeanDefinitionRegistry;
 import lite.summer.beans.factory.support.GenericBeanDefinition;
 import lite.summer.util.StringUtils;
 import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ import java.util.List;
  * @Version 1.0
  */
 public class ConfigBeanDefinitionParser {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ConfigBeanDefinitionParser.class);
 
 
     private static final String ASPECT = "aspect";
@@ -37,6 +42,7 @@ public class ConfigBeanDefinitionParser {
     private static final String AFTER_THROWING_ELEMENT = "after-throwing";
     private static final String AROUND = "around";
     private static final String ASPECT_NAME_PROPERTY = "aspectName";
+
 
     public BeanDefinition parse(Element element, BeanDefinitionRegistry registry) {
 
@@ -58,6 +64,10 @@ public class ConfigBeanDefinitionParser {
     }
 
 
+    /**
+     * @param aspectElement
+     * @param registry      parse advice {before, after-returning, after-throwing} and pointcut tag
+     */
     private void parseAspect(Element aspectElement, BeanDefinitionRegistry registry) {
         String aspectId = aspectElement.attributeValue(ID);
         String aspectName = aspectElement.attributeValue(REF);
@@ -82,6 +92,7 @@ public class ConfigBeanDefinitionParser {
                 beanDefinitions.add(advisorDefinition);
             }
         }
+
 
         List<Element> pointcuts = aspectElement.elements(POINTCUT);
         for (Element pointcutElement : pointcuts) {
@@ -116,8 +127,7 @@ public class ConfigBeanDefinitionParser {
         methodDefinition.setSynthetic(true);
 
         // create instance factory definition
-        GenericBeanDefinition aspectFactoryDef =
-                new GenericBeanDefinition(AspectInstanceFactory.class);
+        GenericBeanDefinition aspectFactoryDef = new GenericBeanDefinition(AspectInstanceFactory.class);
         aspectFactoryDef.getPropertyValues().add(new PropertyValue("aspectBeanName", aspectName));
         aspectFactoryDef.setSynthetic(true);
 
@@ -149,20 +159,19 @@ public class ConfigBeanDefinitionParser {
         GenericBeanDefinition adviceDefinition = new GenericBeanDefinition(getAdviceClass(adviceElement));
         adviceDefinition.getPropertyValues().add(new PropertyValue(ASPECT_NAME_PROPERTY, aspectName));
 
-
-        ConstructorArgument cav = adviceDefinition.getConstructorArgument();
-        cav.addArgumentValue(methodDef);
-
+        ConstructorArgument constructorArgument = adviceDefinition.getConstructorArgument();
+        constructorArgument.addArgumentValue(methodDef);
+        // pointcut => BeanDefinition{AspectJExpressionPointcut} | pointcut-ref => {String}
         Object pointcut = parsePointcutProperty(adviceElement);
         if (pointcut instanceof BeanDefinition) {
-            cav.addArgumentValue(pointcut);
+            constructorArgument.addArgumentValue(pointcut);
             beanDefinitions.add((BeanDefinition) pointcut);
         } else if (pointcut instanceof String) {
             RuntimeBeanReference pointcutRef = new RuntimeBeanReference((String) pointcut);
-            cav.addArgumentValue(pointcutRef);
+            constructorArgument.addArgumentValue(pointcutRef);
             beanReferences.add(pointcutRef);
         }
-        cav.addArgumentValue(aspectFactoryDef);
+        constructorArgument.addArgumentValue(aspectFactoryDef);
 
         return adviceDefinition;
     }
@@ -199,8 +208,7 @@ public class ConfigBeanDefinitionParser {
         String id = pointcutElement.attributeValue(ID);
         String expression = pointcutElement.attributeValue(EXPRESSION);
 
-        GenericBeanDefinition pointcutDefinition = null;
-
+        GenericBeanDefinition pointcutDefinition;
 
         //this.parseState.push(new PointcutEntry(id));
         pointcutDefinition = createPointcutDefinition(expression);
@@ -211,9 +219,7 @@ public class ConfigBeanDefinitionParser {
             registry.registerBeanDefinition(pointcutBeanName, pointcutDefinition);
         } else {
             BeanDefinitionReaderUtils.registerWithGeneratedName(pointcutDefinition, registry);
-
         }
-
 
         return pointcutDefinition;
     }
@@ -226,9 +232,7 @@ public class ConfigBeanDefinitionParser {
      */
     private Object parsePointcutProperty(Element element/*, ParserContext parserContext*/) {
         if ((element.attribute(POINTCUT) == null) && (element.attribute(POINTCUT_REF) == null)) {
-			/*parserContext.getReaderContext().error(
-					"Cannot define both 'pointcut' and 'pointcut-ref' on <advisor> tag.",
-					element, this.parseState.snapshot());*/
+            logger.error("Cannot define both 'pointcut' and 'pointcut-ref' on <advisor> tag.");
             return null;
         } else if (element.attribute(POINTCUT) != null) {
             // Create a pointcut for the anonymous pc and register it.

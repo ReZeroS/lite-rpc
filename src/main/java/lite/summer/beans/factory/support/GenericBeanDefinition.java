@@ -21,7 +21,7 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     private boolean synthetic = false;
 
-    private List<PropertyValue> propertyValueList = new ArrayList<PropertyValue>();
+    private List<PropertyValue> propertyValueList = new ArrayList<>();
 
     private ConstructorArgument constructorArgument = new ConstructorArgument();
 

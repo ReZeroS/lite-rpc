@@ -16,7 +16,6 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice  {
         super(adviceMethod, pointcut, adviceObjectFactory);
     }
 
-
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         try {

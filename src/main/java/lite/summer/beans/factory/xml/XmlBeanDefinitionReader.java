@@ -111,7 +111,6 @@ public class XmlBeanDefinitionReader {
         String basePackages = ele.attributeValue(BASE_PACKAGE_ATTRIBUTE);
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);
         scanner.doScan(basePackages);
-
     }
 
     private void parseDefaultElement(Element element) {
@@ -189,11 +188,11 @@ public class XmlBeanDefinitionReader {
 
     /**
      * @param ele
-     * @param bd
+     * @param beanDefinition
      * @param propertyName
      * @return value : value or ref : RuntimeBeanReference
      */
-    public Object parsePropertyValue(Element ele, BeanDefinition bd, String propertyName) {
+    public Object parsePropertyValue(Element ele, BeanDefinition beanDefinition, String propertyName) {
         String elementName = (propertyName != null) ?
                 "<property> element for property '" + propertyName + "'" :
                 "<constructor-arg> element";

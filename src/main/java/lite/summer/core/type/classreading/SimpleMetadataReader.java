@@ -15,6 +15,7 @@ import java.io.InputStream;
  * @Version 1.0
  */
 public class SimpleMetadataReader implements MetadataReader {
+
     private final Resource resource;
 
     private final ClassMetadata classMetadata;
@@ -27,17 +28,16 @@ public class SimpleMetadataReader implements MetadataReader {
         ClassReader classReader;
         try {
             classReader = new ClassReader(is);
-        }
-        finally {
+        } finally {
             is.close();
         }
 
         AnnotationMetadataReadingVisitor visitor = new AnnotationMetadataReadingVisitor();
         classReader.accept(visitor, ClassReader.SKIP_DEBUG);
 
-        this.annotationMetadata = visitor;
-        this.classMetadata = visitor;
         this.resource = resource;
+        this.classMetadata = visitor;
+        this.annotationMetadata = visitor;
     }
 
 
