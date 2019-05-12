@@ -1,6 +1,6 @@
 package lite.summer.context.support;
 
-import lite.summer.aop.aspectj.AspectJAutoProxyCreator;
+import lite.summer.aop.aspectj.AspectJAutoProxyProcessor;
 import lite.summer.beans.factory.NoSuchBeanDefinitionException;
 import lite.summer.beans.factory.annotation.AutowiredAnnotationProcessor;
 import lite.summer.beans.factory.config.ConfigurableBeanFactory;
@@ -50,12 +50,14 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     protected void registerBeanPostProcessors(ConfigurableBeanFactory configurableBeanFactory){
         {
+            //populateBean postProcessPropertyValues
             AutowiredAnnotationProcessor autowiredAnnotationProcessor = new AutowiredAnnotationProcessor();
             autowiredAnnotationProcessor.setBeanFactory(configurableBeanFactory);
             configurableBeanFactory.addBeanPostProcessor(autowiredAnnotationProcessor);
         }
         {
-            AspectJAutoProxyCreator postProcessor = new AspectJAutoProxyCreator();
+            //applyBeanPostProcessorsAfterInitialization
+            AspectJAutoProxyProcessor postProcessor = new AspectJAutoProxyProcessor();
             postProcessor.setBeanFactory(configurableBeanFactory);
             configurableBeanFactory.addBeanPostProcessor(postProcessor);
         }

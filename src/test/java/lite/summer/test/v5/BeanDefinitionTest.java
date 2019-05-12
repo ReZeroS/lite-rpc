@@ -94,7 +94,6 @@ public class BeanDefinitionTest extends AbstractTestBaseNeeded {
 
         }
 
-        //TODO 作业：检查另外两个Bean
 
 
     }

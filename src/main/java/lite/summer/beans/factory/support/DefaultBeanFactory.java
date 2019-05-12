@@ -143,12 +143,14 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
     }
 
     protected void populateBean(BeanDefinition beanDefinition, Object bean) {
+        //autowire annotation
         for (BeanPostProcessor processor : this.getBeanPostProcessors()) {
             if (processor instanceof InstantiationAwareBeanPostProcessor) {
                 ((InstantiationAwareBeanPostProcessor) processor).postProcessPropertyValues(bean, beanDefinition.getId());
             }
         }
 
+        // xml <property>
         List<PropertyValue> pvs = beanDefinition.getPropertyValues();
 
         if (pvs == null || pvs.isEmpty()) {

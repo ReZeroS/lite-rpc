@@ -8,5 +8,5 @@ import lite.summer.stereotype.Component;
  * @Version 1.0
  */
 @Component
-public class methodDao {
+public class MethodDao {
 }

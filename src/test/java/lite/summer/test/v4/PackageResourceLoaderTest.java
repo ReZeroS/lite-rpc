@@ -18,7 +18,7 @@ public class PackageResourceLoaderTest {
     public void testGetResources() throws IOException {
         PackageResourceLoader loader = new PackageResourceLoader();
         Resource[] resources = loader.getResources("lite.summer.dao.v4");
-        Assert.assertEquals(2, resources.length);
+        Assert.assertEquals(3, resources.length);
 
     }
 }

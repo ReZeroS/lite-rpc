@@ -1,20 +1,25 @@
 package lite.summer.beans.factory.config;
 
+import lite.summer.core.MethodParameter;
 import lite.summer.util.Assert;
-import org.aspectj.apache.bcel.classfile.MethodParameters;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+
 
 /**
  * @Author: ReZero
  * @Date: 4/7/19 11:46 PM
  * @Version 1.0
  */
-public class DependencyDescriptor {
-    private Field field;
+public class DependencyDescriptor implements Serializable {
+    private transient Field field;
     private boolean required;
-    private MethodParameters methodParameters;
+    private transient MethodParameter methodParameter;
+    private Class declaringClass;
+    private String methodName;
+    private Class[] parameterTypes;
+    private int parameterIndex;
 
     public DependencyDescriptor(Field field, boolean required) {
         Assert.notNull(field, "Field must not be null");
@@ -23,13 +28,25 @@ public class DependencyDescriptor {
 
     }
 
-
-    public Class<?> getDependencyType(){
-        if(this.field != null){
-            return field.getType();
+    public DependencyDescriptor(boolean required, MethodParameter methodParameter) {
+        Assert.notNull(methodParameter, "MethodParameter must not be null");
+        this.methodParameter = methodParameter;
+        this.declaringClass = methodParameter.getDeclaringClass();
+        if (this.methodParameter.getMethod() != null) {
+            this.methodName = methodParameter.getMethod().getName();
+            this.parameterTypes = methodParameter.getMethod().getParameterTypes();
         }
+        else {
+            this.parameterTypes = methodParameter.getConstructor().getParameterTypes();
+        }
+        this.parameterIndex = methodParameter.getParameterIndex();
+        this.required = required;
+    }
 
-        throw new RuntimeException("only support field dependency");
+    //
+    public Class<?> getDependencyType(){
+        return (this.field != null ? this.field.getType() : this.methodParameter.getParameterType());
+
     }
 
     public boolean isRequired() {

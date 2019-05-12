@@ -53,7 +53,6 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
                 }
             }
             for (Method method : targetClass.getDeclaredMethods()) {
-                //TODO 处理方法注入
                 Annotation ann = findAutowiredAnnotation(method);
                 if (ann != null) {
                     if (Modifier.isStatic(method.getModifiers())) {

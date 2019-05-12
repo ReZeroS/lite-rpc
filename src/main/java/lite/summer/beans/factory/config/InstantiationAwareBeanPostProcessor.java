@@ -13,8 +13,6 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
     boolean afterInstantiation(Object bean, String beanName) throws BeansException;
 
-    void postProcessPropertyValues(Object bean, String beanName)
-            throws BeansException;
-
+    void postProcessPropertyValues(Object bean, String beanName) throws BeansException;
 
 }

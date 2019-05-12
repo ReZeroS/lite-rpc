@@ -39,9 +39,6 @@ public class BeanDefinitionReaderUtils {
             throws BeanDefinitionStoreException {
 
         String generatedBeanName = definition.getBeanClassName();
-        if (generatedBeanName == null) {
-            //TODO
-        }
         if (!StringUtils.hasText(generatedBeanName)) {
             throw new BeanDefinitionStoreException("Unnamed bean definition specifies neither " +
                     "'class' nor 'parent' nor 'factory-bean' - can't generate bean name");

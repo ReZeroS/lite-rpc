@@ -23,7 +23,7 @@ import java.util.Set;
  * @Date: 4/15/19 6:26 PM
  * @Version 1.0
  */
-public class AspectJAutoProxyCreator implements BeanPostProcessor {
+public class AspectJAutoProxyProcessor implements BeanPostProcessor {
     ConfigurableBeanFactory beanFactory;
 
     @Override
@@ -64,6 +64,9 @@ public class AspectJAutoProxyCreator implements BeanPostProcessor {
     protected Object createProxy(List<Advice> advices, Object bean) {
 
         AopConfigSupport config = new AopConfigSupport();
+
+        config.setTargetObject(bean);
+
         for (Advice advice : advices) {
             config.addAdvice(advice);
         }
@@ -73,14 +76,13 @@ public class AspectJAutoProxyCreator implements BeanPostProcessor {
             config.addInterface(targetInterface);
         }
 
-        config.setTargetObject(bean);
-
         AopProxyFactory proxyFactory;
         if (config.getProxiedInterfaces().length == 0) {
             proxyFactory = new CglibProxyFactory(config);
         } else {
             proxyFactory = new JdkAopProxyFactory(config);
         }
+
         return proxyFactory.getProxy();
     }
 
