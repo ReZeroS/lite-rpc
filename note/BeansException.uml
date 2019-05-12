@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="563.5" y="0.0">lite.summer.beans.BeansException</node>
+    <node x="0.0" y="192.5">lite.summer.beans.TypeMismatchException</node>
+    <node x="331.99999999999994" y="205.5">lite.summer.beans.factory.BeanDefinitionStoreException</node>
+    <node x="706.0" y="167.5">lite.summer.beans.factory.BeanCreationException</node>
+    <node x="1082.0" y="130.0">lite.summer.beans.factory.NoSuchBeanDefinitionException</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lite.summer.beans.factory.BeanCreationException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-78.0" />
+      <point x="884.0" y="110.0" />
+      <point x="729.75" y="110.0" />
+      <point x="33.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.NoSuchBeanDefinitionException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-115.5" />
+      <point x="1283.5" y="100.0" />
+      <point x="796.25" y="100.0" />
+      <point x="99.75" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.BeanDefinitionStoreException" target="lite.summer.beans.BeansException">
+      <point x="5.6843418860808015E-14" y="-40.0" />
+      <point x="509.0" y="110.0" />
+      <point x="663.25" y="110.0" />
+      <point x="-33.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.TypeMismatchException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-53.0" />
+      <point x="156.0" y="100.0" />
+      <point x="596.75" y="100.0" />
+      <point x="-99.75" y="40.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6936507936507936" x="778.4942791762014" y="322.5400972723995" />
+  <SelectedNodes>
+    <node>lite.summer.beans.BeansException</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

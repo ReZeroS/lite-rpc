@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="577.0" y="338.0">lite.summer.aop.aspectj.AspectJAfterReturningAdvice</node>
+    <node x="813.0" y="0.0">lite.summer.aop.Advice</node>
+    <node x="597.5" y="105.0">lite.summer.aop.aspectj.AbstractAspectJAdvice</node>
+    <node x="1206.0" y="338.0">lite.summer.aop.aspectj.AspectJAfterThrowingAdvice</node>
+    <node x="0.0" y="338.0">lite.summer.aop.aspectj.AspectJBeforeAdvice</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lite.summer.aop.aspectj.AspectJBeforeAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-40.5" />
+      <point x="278.5" y="313.0" />
+      <point x="692.1666666666666" y="313.0" />
+      <point x="-189.33333333333337" y="91.5" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AbstractAspectJAdvice" target="lite.summer.aop.Advice">
+      <point x="0.0" y="-91.5" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJAfterThrowingAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-40.5" />
+      <point x="1509.5" y="313.0" />
+      <point x="1070.8333333333335" y="313.0" />
+      <point x="189.33333333333348" y="91.5" />
+    </edge>
+    <edge source="lite.summer.aop.aspectj.AspectJAfterReturningAdvice" target="lite.summer.aop.aspectj.AbstractAspectJAdvice">
+      <point x="0.0" y="-40.5" />
+      <point x="0.0" y="91.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6936507936507936" x="779.0722269030383" y="334.3363997455164" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

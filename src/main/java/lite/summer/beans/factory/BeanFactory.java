@@ -1,9 +1,12 @@
 package lite.summer.beans.factory;
 
-import lite.summer.beans.BeanDefinition;
+import java.util.List;
 
 public interface BeanFactory {
-    public BeanDefinition getBeanDefinition(String beanID);
+    Object getBean(String beanID);
 
-    public Object getBean(String beanID);
+    Class<?> getType(String targetBeanName);
+
+    List<Object> getBeansByType(Class<?> classType);
+
 }

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1596.5" y="0.0">lite.summer.beans.BeanDefinition</node>
+    <node x="0.0" y="1827.0">lite.summer.util.NumberUtils</node>
+    <node x="1948.5" y="0.0">lite.summer.beans.factory.xml.XmlBeanDefinitionReader</node>
+    <node x="1109.25" y="1020.0">lite.summer.core.io.Resource</node>
+    <node x="956.0" y="1150.0">lite.summer.core.io.FileSystemResource</node>
+    <node x="1055.0" y="1827.0">lite.summer.beans.factory.config.RuntimeBeanReference</node>
+    <node x="376.0" y="1496.0">lite.summer.beans.BeansException</node>
+    <node x="0.0" y="894.0">lite.summer.context.support.FileSystemXmlApplicationContext</node>
+    <node x="473.0" y="1020.0">lite.summer.util.StringUtils</node>
+    <node x="827.75" y="168.0">lite.summer.beans.factory.support.BeanDefinitionRegistry</node>
+    <node x="1169.0" y="2052.0">lite.summer.test.v2.ApplicationContextTest</node>
+    <node x="413.0" y="1827.0">lite.summer.service.v2.PetStoreService</node>
+    <node x="0.0" y="1651.0">lite.summer.beans.TypeMismatchException</node>
+    <node x="525.0" y="2177.0">lite.summer.dao.v2.ItemDao</node>
+    <node x="864.0" y="2052.0">lite.summer.test.v2.CustomBooleanEditorTest</node>
+    <node x="1672.0" y="1496.0">lite.summer.beans.PropertyValue</node>
+    <node x="1825.0" y="1125.0">lite.summer.beans.SimpleTypeConverter</node>
+    <node x="2234.0" y="2052.0">lite.summer.test.v2.V2AllTests</node>
+    <node x="1948.0" y="1496.0">lite.summer.test.v1.BeanFactoryTest</node>
+    <node x="343.625" y="0.0">lite.summer.beans.factory.BeanFactory</node>
+    <node x="0.0" y="2177.0">lite.summer.test.v1.V1AllTests</node>
+    <node x="643.0" y="1827.0">lite.summer.beans.factory.support.BeanDefinitionValueResolver</node>
+    <node x="1340.0" y="1827.0">lite.summer.beans.factory.config.TypedStringValue</node>
+    <node x="0.0" y="2052.0">lite.summer.test.v2.TypeConverterTest</node>
+    <node x="462.75" y="155.0">lite.summer.beans.factory.config.ConfigurableBeanFactory</node>
+    <node x="1747.0" y="2052.0">lite.summer.util.Assert</node>
+    <node x="132.75" y="448.5">lite.summer.context.support.AbstractApplicationContext</node>
+    <node x="1269.5" y="524.5">lite.summer.beans.factory.support.DefaultSingletonRegistry</node>
+    <node x="777.25" y="311.0">lite.summer.beans.factory.support.DefaultBeanFactory</node>
+    <node x="1107.0" y="1496.0">lite.summer.beans.propertyeditors.CustomNumberEditor</node>
+    <node x="305.0" y="2052.0">lite.summer.test.v1.ApplicationContextTest</node>
+    <node x="1534.0" y="1020.0">lite.summer.beans.propertyeditors.CustomBooleanEditor</node>
+    <node x="181.0" y="2177.0">lite.summer.dao.v2.AccountDao</node>
+    <node x="1205.75" y="168.0">lite.summer.beans.factory.config.SingletonBeanRegistry</node>
+    <node x="1195.0" y="1162.5">lite.summer.core.io.ClassPathResource</node>
+    <node x="2063.0" y="1827.0">lite.summer.test.v2.BeanDefinitionValueResolverTest</node>
+    <node x="332.0" y="1664.0">lite.summer.beans.factory.BeanDefinitionStoreException</node>
+    <node x="706.0" y="1626.0">lite.summer.beans.factory.BeanCreationException</node>
+    <node x="594.0" y="2052.0">lite.summer.test.v1.ResourceTest</node>
+    <node x="2008.0" y="2052.0">lite.summer.service.v1.PetStoreService</node>
+    <node x="1596.5" y="457.0">lite.summer.beans.factory.support.GenericBeanDefinition</node>
+    <node x="1590.0" y="1827.0">lite.summer.test.v2.BeanDefinitionTest</node>
+    <node x="234.75" y="193.0">lite.summer.context.ApplicationContext</node>
+    <node x="362.0" y="2177.0">lite.summer.test.AllTests</node>
+    <node x="1850.0" y="1020.0">lite.summer.beans.TypeConverter</node>
+    <node x="0.0" y="1020.0">lite.summer.util.ClassUtils</node>
+    <node x="345.0" y="894.0">lite.summer.context.support.ClassPathXmlApplicationContext</node>
+    <node x="1458.0" y="2052.0">lite.summer.test.v2.CustomNumberEditorTest</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lite.summer.context.support.FileSystemXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-40.5" />
+      <point x="162.5" y="869.0" />
+      <point x="235.75" y="869.0" />
+      <point x="-103.0" y="129.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.GenericBeanDefinition" target="lite.summer.beans.BeanDefinition">
+      <point x="0.0" y="-229.0" />
+      <point x="0.0" y="203.5" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="149.0" y="-266.5" />
+      <point x="1149.75" y="286.0" />
+      <point x="1274.0" y="286.0" />
+      <point x="-68.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.context.ApplicationContext" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="338.75" y="130.0" />
+      <point x="417.375" y="130.0" />
+      <point x="-73.75" y="52.5" />
+    </edge>
+    <edge source="lite.summer.beans.factory.config.ConfigurableBeanFactory" target="lite.summer.beans.factory.BeanFactory">
+      <point x="0.0" y="-53.0" />
+      <point x="635.25" y="130.0" />
+      <point x="564.875" y="130.0" />
+      <point x="73.75" y="52.5" />
+    </edge>
+    <edge source="lite.summer.context.support.ClassPathXmlApplicationContext" target="lite.summer.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-40.5" />
+      <point x="503.0" y="869.0" />
+      <point x="441.75" y="869.0" />
+      <point x="103.0" y="129.0" />
+    </edge>
+    <edge source="lite.summer.core.io.FileSystemResource" target="lite.summer.core.io.Resource">
+      <point x="0.0" y="-91.0" />
+      <point x="1065.5" y="1125.0" />
+      <point x="1156.5" y="1125.0" />
+      <point x="-47.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultSingletonRegistry" target="lite.summer.beans.factory.config.SingletonBeanRegistry">
+      <point x="0.0" y="-53.0" />
+      <point x="68.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.config.ConfigurableBeanFactory">
+      <point x="-149.0" y="-266.5" />
+      <point x="851.75" y="286.0" />
+      <point x="635.25" y="286.0" />
+      <point x="0.0" y="53.0" />
+    </edge>
+    <edge source="lite.summer.beans.TypeMismatchException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-53.0" />
+      <point x="156.0" y="1601.0" />
+      <point x="420.3333333333333" y="1601.0" />
+      <point x="-88.66666666666669" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.BeanCreationException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-78.0" />
+      <point x="884.0" y="1601.0" />
+      <point x="597.6666666666667" y="1601.0" />
+      <point x="88.66666666666674" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.support.DefaultBeanFactory" target="lite.summer.beans.factory.support.BeanDefinitionRegistry">
+      <point x="0.0" y="-266.5" />
+      <point x="1000.75" y="286.0" />
+      <point x="1006.75" y="286.0" />
+      <point x="0.0" y="40.0" />
+    </edge>
+    <edge source="lite.summer.core.io.ClassPathResource" target="lite.summer.core.io.Resource">
+      <point x="0.0" y="-78.5" />
+      <point x="1342.0" y="1125.0" />
+      <point x="1251.0" y="1125.0" />
+      <point x="47.25" y="40.0" />
+    </edge>
+    <edge source="lite.summer.beans.SimpleTypeConverter" target="lite.summer.beans.TypeConverter">
+      <point x="0.0" y="-91.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="lite.summer.context.support.AbstractApplicationContext" target="lite.summer.context.ApplicationContext">
+      <point x="0.0" y="-129.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="lite.summer.beans.factory.BeanDefinitionStoreException" target="lite.summer.beans.BeansException">
+      <point x="0.0" y="-40.0" />
+      <point x="0.0" y="40.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="518.5" y="291.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
