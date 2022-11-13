@@ -12,7 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import static io.github.rezeros.cache.GlobalCache.PROVIDER_CACHE;
+import static io.github.rezeros.cache.CommonServerCache.PROVIDER_CACHE;
 
 public class Server {
 

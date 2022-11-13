@@ -9,7 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.lang.reflect.Method;
 
-import static io.github.rezeros.cache.GlobalCache.PROVIDER_CACHE;
+import static io.github.rezeros.cache.CommonServerCache.PROVIDER_CACHE;
 
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
