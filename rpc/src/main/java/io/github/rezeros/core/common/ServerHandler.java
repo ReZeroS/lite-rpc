@@ -1,4 +1,4 @@
-package io.github.rezeros.common;
+package io.github.rezeros.core.common;
 
 import com.alibaba.fastjson.JSON;
 import io.github.rezeros.protocol.RpcInvocation;

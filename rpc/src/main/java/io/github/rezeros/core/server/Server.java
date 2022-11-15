@@ -1,8 +1,8 @@
 package io.github.rezeros.core.server;
 
-import io.github.rezeros.common.RpcDecoder;
-import io.github.rezeros.common.RpcEncoder;
-import io.github.rezeros.common.ServerHandler;
+import io.github.rezeros.core.common.RpcDecoder;
+import io.github.rezeros.core.common.RpcEncoder;
+import io.github.rezeros.core.common.ServerHandler;
 import io.github.rezeros.core.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;

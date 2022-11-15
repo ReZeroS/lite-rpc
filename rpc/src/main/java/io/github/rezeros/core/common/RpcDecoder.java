@@ -1,4 +1,4 @@
-package io.github.rezeros.common;
+package io.github.rezeros.core.common;
 
 import io.github.rezeros.protocol.RpcProtocol;
 import io.netty.buffer.ByteBuf;

@@ -2,8 +2,8 @@ package io.github.rezeros.core.client;
 
 
 import com.alibaba.fastjson.JSON;
-import io.github.rezeros.common.RpcDecoder;
-import io.github.rezeros.common.RpcEncoder;
+import io.github.rezeros.core.common.RpcDecoder;
+import io.github.rezeros.core.common.RpcEncoder;
 import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.protocol.RpcInvocation;
 import io.github.rezeros.protocol.RpcProtocol;
