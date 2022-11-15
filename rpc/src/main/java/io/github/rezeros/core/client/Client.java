@@ -4,7 +4,13 @@ package io.github.rezeros.core.client;
 import com.alibaba.fastjson.JSON;
 import io.github.rezeros.core.common.RpcDecoder;
 import io.github.rezeros.core.common.RpcEncoder;
+import io.github.rezeros.core.common.event.IRpcListenerLoader;
 import io.github.rezeros.core.config.ClientConfig;
+import io.github.rezeros.core.proxy.javassist.JavassistProxyFactory;
+import io.github.rezeros.core.proxy.jdk.JDKProxyFactory;
+import io.github.rezeros.core.registry.AbstractRegister;
+import io.github.rezeros.core.registry.URL;
+import io.github.rezeros.core.registry.zookeeper.ZookeeperRegister;
 import io.github.rezeros.protocol.RpcInvocation;
 import io.github.rezeros.protocol.RpcProtocol;
 import io.netty.bootstrap.Bootstrap;
@@ -24,25 +30,47 @@ public class Client {
 
     private static final EventLoopGroup clientGroup = new NioEventLoopGroup();
 
-
     private ClientConfig clientConfig;
+
+    private AbstractRegister abstractRegister;
+
+    private IRpcListenerLoader iRpcListenerLoader;
+
+    private Bootstrap bootstrap = new Bootstrap();
+
 
 
     public static void main(String[] args) throws Throwable {
         Client client = new Client();
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.setPort(9090);
-        clientConfig.setServerAddr("localhost");
-        client.setClientConfig(clientConfig);
-        RpcReference rpcReference = client.startClientApplication();
+        RpcReference rpcReference = client.initClientApplication();
         DataService dataService = rpcReference.get(DataService.class);
+        client.doSubcribeService(DataService.class);
+        ConnectionHandler.setBootstrap(client.getBootstrap());
+        client.doConnectServer();
+        client.startClient();
         for (int i = 0; i < 100; i++) {
             String result = dataService.sendData("test");
             System.out.println(result);
         }
     }
 
-    public RpcReference startClientApplication() throws InterruptedException {
+    private void doConnectServer() {
+        SUBSCRBE_SERVICE_LIST
+
+    }
+
+    private void doSubcribeService(Class serviceBean) {
+        if (abstractRegister == null) {
+            abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
+        }
+        URL url = new URL();
+        url.setApplicationName(clientConfig.getApplicationName());
+        url.setServiceName(serviceBean.getName());
+        url.addParameter("host", CommonUtils.getIpAddress());
+        abstractRegister.subscribe(url);
+    }
+
+    public RpcReference initClientApplication() throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(clientGroup);
         bootstrap.channel(NioSocketChannel.class);
@@ -56,19 +84,17 @@ public class Client {
             }
         });
         //常规的链接netty服务端
-        ChannelFuture channelFuture = bootstrap.connect(clientConfig.getServerAddr(), clientConfig.getPort()).sync();
-        log.info("============ 服务启动 ============");
-        this.startClient(channelFuture);
-        //这里注入了一个代理工厂，这个代理类在下文会仔细介绍
-        RpcReference rpcReference = new RpcReference(new JDKProxyFactory());
-        return rpcReference;
+        iRpcListenerLoader = new IRpcListenerLoader();
+        iRpcListenerLoader.init();
+        clientConfig = PropertiesBootstrap.loadClientConfigFromLocal();
+        return clientConfig.getProxyType().equals("javassist")
+                ? new RpcReference(new JavassistProxyFactory())
+                : new RpcReference(new JDKProxyFactory());
     }
 
 
     /**
      * 开启发送线程，专门从事将数据包发送给服务端，起到一个解耦的效果
-     *
-     * @param channelFuture
      */
     private void startClient(ChannelFuture channelFuture) {
         Thread asyncSendJob = new Thread(new AsyncSendJob(channelFuture));

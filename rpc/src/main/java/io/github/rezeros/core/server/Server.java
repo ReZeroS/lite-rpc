@@ -4,6 +4,9 @@ import io.github.rezeros.core.common.RpcDecoder;
 import io.github.rezeros.core.common.RpcEncoder;
 import io.github.rezeros.core.common.ServerHandler;
 import io.github.rezeros.core.config.ServerConfig;
+import io.github.rezeros.core.registry.RegistryService;
+import io.github.rezeros.core.registry.URL;
+import io.github.rezeros.core.registry.zookeeper.ZookeeperRegister;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -13,21 +16,27 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import static io.github.rezeros.cache.CommonServerCache.PROVIDER_CACHE;
+import static io.github.rezeros.cache.CommonServerCache.PROVIDER_URL_SET;
 
 public class Server {
 
     public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
-        ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setPort(9090);
-        server.setServerConfig(serverConfig);
+        server.initServerConfig();
         server.registryService(new DataServiceImpl());
         server.startApplication();
     }
 
+    private void initServerConfig() {
+        this.serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
+    }
+
     private static EventLoopGroup bossGroup;
     private static EventLoopGroup workerGroup;
-    private static ServerConfig serverConfig;
+
+    private ServerConfig serverConfig;
+
+    private RegistryService registryService;
 
 
 
@@ -52,7 +61,16 @@ public class Server {
                 ch.pipeline().addLast(new ServerHandler());
             }
         });
+        this.batchExportUrl();
         serverBootstrap.bind(serverConfig.getPort()).sync();
+    }
+
+    private void batchExportUrl() {
+        new Thread(() -> {
+            for (URL url : PROVIDER_URL_SET) {
+                registryService.register(url);
+            }
+        }).start();
     }
 
     private void registryService(Object serviceBean) {
@@ -60,12 +78,20 @@ public class Server {
         if (interfaces.length != 1) {
             throw new RuntimeException("必须实现且仅实现一个接口？");
         }
-        Class<?> anInterface = interfaces[0];
-        PROVIDER_CACHE.put(anInterface.getName(), serviceBean);
-    }
+        if (registryService == null) {
+            registryService = new ZookeeperRegister(serverConfig.getRegisterAddr())
+        }
+        Class<?> interfaceClass = interfaces[0];
 
-    private void setServerConfig(ServerConfig serverConfig) {
-        serverConfig = serverConfig;
+        PROVIDER_CACHE.put(interfaceClass.getName(), serviceBean);
+
+        URL url = new URL();
+        url.setServiceName(interfaceClass.getName());
+        url.setApplicationName(serverConfig.getApplicationName());
+        url.addParameter("host", CommonUtils.getIpAddress());
+        url.addParameter("port", String.valueOf(serverConfig.getServerPort()));
+
+        PROVIDER_URL_SET.add(url);
     }
 
 
