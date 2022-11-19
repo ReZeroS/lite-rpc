@@ -1,6 +1,8 @@
 package io.github.rezeros.cache;
 
+import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.config.ClientConfig;
+import io.github.rezeros.core.filter.client.ClientFilterChain;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.protocol.RpcInvocation;
 
@@ -26,4 +28,5 @@ public class CommonClientCache {
     public static Map<String, List<ChannelFutureWrapper>> CONNECT_MAP = new ConcurrentHashMap<>();
 
 
+    public static ClientFilterChain clientFilterChain;
 }

@@ -7,6 +7,9 @@ public class ClientConfig {
 
 
     private int port;
+
     private String serverAddr;
+
+    private String applicationName;
 
 }

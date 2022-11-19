@@ -8,6 +8,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
+import static io.github.rezeros.cache.CommonClientCache.RESP_MAP;
+
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override

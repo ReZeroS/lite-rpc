@@ -1,9 +1,12 @@
 package io.github.rezeros.core.client;
 
+import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import static io.github.rezeros.cache.CommonClientCache.CONNECT_MAP;
@@ -47,6 +50,10 @@ public class ConnectionHandler {
         }
         channelFutureWrappers.add(channelFutureWrapper);
         CONNECT_MAP.put(providerServiceName, channelFutureWrappers);
+
+        Selector selector = new Selector();
+        selector.setProviderServiceName(providerServiceName);
+        IROUTER.refreshRouterArr(selector);
     }
 
 

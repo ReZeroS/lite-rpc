@@ -9,6 +9,7 @@ import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.proxy.javassist.JavassistProxyFactory;
 import io.github.rezeros.core.proxy.jdk.JDKProxyFactory;
 import io.github.rezeros.core.registry.AbstractRegister;
+import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.registry.zookeeper.ZookeeperRegister;
 import io.github.rezeros.protocol.RpcInvocation;
@@ -24,9 +25,11 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Map;
 
 import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
 import static io.github.rezeros.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
+import static io.github.rezeros.core.spi.ExtensionLoader.EXTENSION_LOADER_CLASS_CACHE;
 
 @Slf4j
 @Data
@@ -76,7 +79,23 @@ public class Client {
     private void doSubscribeService(Class serviceBean) {
         if (abstractRegister == null) {
             abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
+
+
         }
+
+        if (abstractRegister == null) {
+            try {
+                //使用自定义的SPI机制去加载配置
+                EXTENSION_LOADER.loadExtension(RegistryService.class);
+                Map<String, Class> registerMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
+                Class registerClass =  registerMap.get(clientConfig.getRegisterType());
+                //真正实力化对象的位置
+                abstractRegister = (AbstractRegister) registerClass.newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException("registryServiceType unKnow,error is ", e);
+            }
+        }
+
         URL url = new URL();
         url.setApplicationName(clientConfig.getApplicationName());
         url.setServiceName(serviceBean.getName());

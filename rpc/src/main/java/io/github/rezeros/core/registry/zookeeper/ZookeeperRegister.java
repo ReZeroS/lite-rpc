@@ -77,6 +77,7 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
         //监听是否有新的服务注册
         String newServerNodePath = ROOT + "/" + url.getServiceName() + "/provider";
         watchChildNodeData(newServerNodePath);
+        url.getParameters().get("providerIps")
     }
 
     public void watchChildNodeData(String newServerNodePath){

@@ -1,6 +1,7 @@
 package io.github.rezeros.core.common.event.listener;
 
 import io.github.rezeros.core.client.ConnectionHandler;
+import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.common.event.IRpcListener;
 import io.github.rezeros.core.common.event.IRpcUpdateEvent;
 import io.netty.channel.ChannelFuture;
