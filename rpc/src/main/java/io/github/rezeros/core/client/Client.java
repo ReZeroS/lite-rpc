@@ -23,6 +23,11 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
+import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
+import static io.github.rezeros.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
+
 @Slf4j
 @Data
 public class Client {
@@ -44,7 +49,7 @@ public class Client {
         Client client = new Client();
         RpcReference rpcReference = client.initClientApplication();
         DataService dataService = rpcReference.get(DataService.class);
-        client.doSubcribeService(DataService.class);
+        client.doSubscribeService(DataService.class);
         ConnectionHandler.setBootstrap(client.getBootstrap());
         client.doConnectServer();
         client.startClient();
@@ -54,12 +59,21 @@ public class Client {
         }
     }
 
-    private void doConnectServer() {
-        SUBSCRBE_SERVICE_LIST
+    private void doConnectServer() throws InterruptedException {
+        for (String providerServiceName : SUBSCRIBE_SERVICE_LIST) {
+            List<String> providerIps = abstractRegister.getProviderIps(providerServiceName);
+            for (String providerIp : providerIps) {
+                ConnectionHandler.connect(providerServiceName, providerIp);
+            }
 
+            URL url = new URL();
+            url.setServiceName(providerServiceName);
+            //客户端在此新增一个订阅的功能
+            abstractRegister.doAfterSubscribe(url);
+        }
     }
 
-    private void doSubcribeService(Class serviceBean) {
+    private void doSubscribeService(Class serviceBean) {
         if (abstractRegister == null) {
             abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
         }
@@ -71,7 +85,7 @@ public class Client {
     }
 
     public RpcReference initClientApplication() throws InterruptedException {
-        Bootstrap bootstrap = new Bootstrap();
+        clientConfig = PropertiesBootstrap.loadClientConfigFromLocal();
         bootstrap.group(clientGroup);
         bootstrap.channel(NioSocketChannel.class);
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
@@ -86,7 +100,6 @@ public class Client {
         //常规的链接netty服务端
         iRpcListenerLoader = new IRpcListenerLoader();
         iRpcListenerLoader.init();
-        clientConfig = PropertiesBootstrap.loadClientConfigFromLocal();
         return clientConfig.getProxyType().equals("javassist")
                 ? new RpcReference(new JavassistProxyFactory())
                 : new RpcReference(new JDKProxyFactory());
@@ -106,7 +119,7 @@ public class Client {
      */
     static class AsyncSendJob implements Runnable {
 
-        private final ChannelFuture channelFuture;
+
 
         public AsyncSendJob(ChannelFuture channelFuture) {
             this.channelFuture = channelFuture;
@@ -121,7 +134,7 @@ public class Client {
                     //将RpcInvocation封装到RpcProtocol对象中，然后发送给服务端，这里正好对应了上文中的ServerHandler
                     String json = JSON.toJSONString(data);
                     RpcProtocol rpcProtocol = new RpcProtocol(json.getBytes());
-
+                    ChannelFuture channelFuture = ConnectionHandler.getChannelFuture(data.getTargetServiceName());
                     //netty的通道负责发送数据给服务端
                     channelFuture.channel().writeAndFlush(rpcProtocol);
                 } catch (InterruptedException e) {

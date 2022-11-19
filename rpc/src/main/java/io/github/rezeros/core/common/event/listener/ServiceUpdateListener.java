@@ -16,6 +16,10 @@ import static io.github.rezeros.cache.CommonClientCache.CONNECT_MAP;
 @Slf4j
 public class ServiceUpdateListener implements IRpcListener<IRpcUpdateEvent> {
 
+    /**
+     * 对比 t 和 connectmap中的 老 t，更新为 新 t
+     * @param t
+     */
     @Override
     public void callBack(Object t) {
         //获取到字节点的数据信息
@@ -48,7 +52,7 @@ public class ServiceUpdateListener implements IRpcListener<IRpcUpdateEvent> {
                     Integer port = Integer.valueOf(newProviderUrl.split(":")[1]);
                     channelFutureWrapper.setPort(port);
                     channelFutureWrapper.setHost(host);
-                    ChannelFuture channelFuture = null;
+                    ChannelFuture channelFuture;
                     try {
                         channelFuture = ConnectionHandler.createChannelFuture(host,port);
                         channelFutureWrapper.setChannelFuture(channelFuture);

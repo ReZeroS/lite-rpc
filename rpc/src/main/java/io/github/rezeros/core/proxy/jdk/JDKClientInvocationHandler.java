@@ -7,13 +7,16 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
+import static io.github.rezeros.cache.CommonClientCache.RESP_MAP;
+import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
+
 public class JDKClientInvocationHandler implements InvocationHandler {
 
     private final static Object OBJECT = new Object();
 
     private Class<?> clazz;
-    public JDKClientInvocationHandler(Class<?> clazz) {
-        clazz = clazz;
+    public JDKClientInvocationHandler(Class<?> targetClass) {
+        clazz = targetClass;
     }
 
     @Override

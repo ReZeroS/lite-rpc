@@ -23,9 +23,11 @@ public class Server {
     public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
         server.initServerConfig();
-        server.registryService(new DataServiceImpl());
+        // 暴露服务信息
+        server.exportService(new DataServiceImpl());
         server.startApplication();
     }
+
 
     private void initServerConfig() {
         this.serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
@@ -73,13 +75,14 @@ public class Server {
         }).start();
     }
 
-    private void registryService(Object serviceBean) {
+
+    private void exportService(Object serviceBean) {
         Class<?>[] interfaces = serviceBean.getClass().getInterfaces();
         if (interfaces.length != 1) {
-            throw new RuntimeException("必须实现且仅实现一个接口？");
+            throw new RuntimeException("必须实现且仅实现一个接口");
         }
         if (registryService == null) {
-            registryService = new ZookeeperRegister(serverConfig.getRegisterAddr())
+            registryService = new ZookeeperRegister(serverConfig.getRegisterAddr());
         }
         Class<?> interfaceClass = interfaces[0];
 

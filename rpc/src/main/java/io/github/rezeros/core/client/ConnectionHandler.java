@@ -35,7 +35,7 @@ public class ConnectionHandler {
         String ip = providerAddress[0];
         Integer port = Integer.parseInt(providerAddress[1]);
         //到底这个channelFuture里面是什么
-        ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
+        ChannelFuture channelFuture = createChannelFuture(ip, port);
         ChannelFutureWrapper channelFutureWrapper = new ChannelFutureWrapper();
         channelFutureWrapper.setChannelFuture(channelFuture);
         channelFutureWrapper.setHost(ip);
@@ -66,9 +66,6 @@ public class ConnectionHandler {
 
     /**
      * 默认走随机策略获取ChannelFuture
-     *
-     * @param providerServiceName
-     * @return
      */
     public static ChannelFuture getChannelFuture(String providerServiceName) {
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(providerServiceName);
