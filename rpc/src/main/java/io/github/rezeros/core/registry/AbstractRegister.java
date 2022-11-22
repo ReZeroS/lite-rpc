@@ -2,8 +2,8 @@ package io.github.rezeros.core.registry;
 
 import java.util.List;
 
-import static io.github.rezeros.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
-import static io.github.rezeros.cache.CommonServerCache.PROVIDER_URL_SET;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
+import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_URL_SET;
 
 
 /**

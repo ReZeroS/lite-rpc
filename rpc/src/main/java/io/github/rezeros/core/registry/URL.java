@@ -1,5 +1,6 @@
 package io.github.rezeros.core.registry;
 
+import io.github.rezeros.core.registry.zookeeper.ProviderNodeInfo;
 import lombok.Data;
 
 import java.nio.charset.StandardCharsets;

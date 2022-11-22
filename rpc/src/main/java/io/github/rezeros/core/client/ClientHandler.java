@@ -7,9 +7,11 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 
-import static io.github.rezeros.cache.CommonClientCache.RESP_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.RESP_MAP;
 
+@Slf4j
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
@@ -21,6 +23,11 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 //        String json = new String(reqContent, 0, reqContent.length);
         RpcInvocation rpcInvocation = JSON.parseObject(reqContent, RpcInvocation.class);
         //通过之前发送的uuid来注入匹配的响应数值
+        if (rpcInvocation.getE() != null) {
+            log.error("rpc invocation error", rpcInvocation.getE());
+        }
+
+
         if (!RESP_MAP.containsKey(rpcInvocation.getUuid())) {
             throw new IllegalArgumentException("server response is error!");
         }

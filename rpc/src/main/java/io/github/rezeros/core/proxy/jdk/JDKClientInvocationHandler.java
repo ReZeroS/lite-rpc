@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import static io.github.rezeros.cache.CommonClientCache.RESP_MAP;
-import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
+import static io.github.rezeros.core.common.cache.CommonClientCache.RESP_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SEND_QUEUE;
 
 public class JDKClientInvocationHandler implements InvocationHandler {
 

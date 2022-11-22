@@ -3,20 +3,27 @@ package io.github.rezeros.core.server;
 import io.github.rezeros.core.common.RpcDecoder;
 import io.github.rezeros.core.common.RpcEncoder;
 import io.github.rezeros.core.common.ServerHandler;
+import io.github.rezeros.core.common.config.PropertiesBootstrap;
+import io.github.rezeros.core.common.utils.CommonUtils;
 import io.github.rezeros.core.config.ServerConfig;
 import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.registry.zookeeper.ZookeeperRegister;
+import io.github.rezeros.test.DataServiceImpl;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
-import static io.github.rezeros.cache.CommonServerCache.PROVIDER_CACHE;
-import static io.github.rezeros.cache.CommonServerCache.PROVIDER_URL_SET;
+import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_CACHE;
+import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_URL_SET;
+import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECODE_CHAR;
 
 public class Server {
 
@@ -54,17 +61,23 @@ public class Server {
                 .option(ChannelOption.SO_RCVBUF, 16 * 1024)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
+        // 长链接模式
+        // 绑在 accept 上？
+        serverBootstrap.handler(new MaxConnectionLimitHandler(serverConfig.getMaxConnections()));
+
         serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 System.out.println("初始化provider过程");
+                ByteBuf delimiter = Unpooled.copiedBuffer(DEFAULT_DECODE_CHAR.getBytes());
+                ch.pipeline().addLast(new DelimiterBasedFrameDecoder(serverConfig.getMaxServerRequestData(), delimiter));
                 ch.pipeline().addLast(new RpcEncoder());
                 ch.pipeline().addLast(new RpcDecoder());
                 ch.pipeline().addLast(new ServerHandler());
             }
         });
         this.batchExportUrl();
-        serverBootstrap.bind(serverConfig.getPort()).sync();
+        serverBootstrap.bind(serverConfig.getServerPort()).sync();
     }
 
     private void batchExportUrl() {

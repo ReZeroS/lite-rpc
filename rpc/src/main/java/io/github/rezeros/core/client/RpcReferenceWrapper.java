@@ -52,4 +52,13 @@ public class RpcReferenceWrapper<T> {
     public void setAttatchments(Map<String, Object> attatchments) {
         this.attatchments = attatchments;
     }
+
+    public void setTimeOut(int timeOut) {
+        attatchments.put("timeOut", timeOut);
+    }
+
+    public String getTimeOUt() {
+        return String.valueOf(attatchments.get("timeOut"));
+    }
+
 }

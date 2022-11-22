@@ -1,8 +1,8 @@
 package io.github.rezeros.core.router;
 
+import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.registry.URL;
 
-import java.nio.channels.Selector;
 
 public interface IRouter {
 

@@ -4,7 +4,9 @@ package io.github.rezeros.core.client;
 import com.alibaba.fastjson.JSON;
 import io.github.rezeros.core.common.RpcDecoder;
 import io.github.rezeros.core.common.RpcEncoder;
+import io.github.rezeros.core.common.config.PropertiesBootstrap;
 import io.github.rezeros.core.common.event.IRpcListenerLoader;
+import io.github.rezeros.core.common.utils.CommonUtils;
 import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.proxy.javassist.JavassistProxyFactory;
 import io.github.rezeros.core.proxy.jdk.JDKProxyFactory;
@@ -27,8 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Map;
 
-import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
-import static io.github.rezeros.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
+import static io.github.rezeros.core.common.cache.CommonClientCache.EXTENSION_LOADER;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SEND_QUEUE;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SUBSCRIBE_SERVICE_LIST;
 import static io.github.rezeros.core.spi.ExtensionLoader.EXTENSION_LOADER_CLASS_CACHE;
 
 @Slf4j
@@ -51,15 +54,15 @@ public class Client {
     public static void main(String[] args) throws Throwable {
         Client client = new Client();
         RpcReference rpcReference = client.initClientApplication();
-        DataService dataService = rpcReference.get(DataService.class);
-        client.doSubscribeService(DataService.class);
-        ConnectionHandler.setBootstrap(client.getBootstrap());
-        client.doConnectServer();
-        client.startClient();
-        for (int i = 0; i < 100; i++) {
-            String result = dataService.sendData("test");
-            System.out.println(result);
-        }
+//        DataService dataService = rpcReference.get(DataService.class);
+//        client.doSubscribeService(DataService.class);
+//        ConnectionHandler.setBootstrap(client.getBootstrap());
+//        client.doConnectServer();
+//        client.startClient();
+//        for (int i = 0; i < 100; i++) {
+//            String result = dataService.sendData("test");
+//            System.out.println(result);
+//        }
     }
 
     private void doConnectServer() throws InterruptedException {
@@ -128,8 +131,8 @@ public class Client {
     /**
      * 开启发送线程，专门从事将数据包发送给服务端，起到一个解耦的效果
      */
-    private void startClient(ChannelFuture channelFuture) {
-        Thread asyncSendJob = new Thread(new AsyncSendJob(channelFuture));
+    private void startClient() {
+        Thread asyncSendJob = new Thread(new AsyncSendJob());
         asyncSendJob.start();
     }
 
@@ -137,12 +140,6 @@ public class Client {
      * 异步发送信息任务
      */
     static class AsyncSendJob implements Runnable {
-
-
-
-        public AsyncSendJob(ChannelFuture channelFuture) {
-            this.channelFuture = channelFuture;
-        }
 
         @Override
         public void run() {

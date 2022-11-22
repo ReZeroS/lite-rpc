@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.logging.LogRecord;
 
-import static io.github.rezeros.cache.CommonClientCache.CLIENT_CONFIG;
+import static io.github.rezeros.core.common.cache.CommonClientCache.CLIENT_CONFIG;
 
 @Slf4j
 public class ClientLogFilterImpl implements IClientFilter {
@@ -19,9 +19,4 @@ public class ClientLogFilterImpl implements IClientFilter {
         log.info(rpcInvocation.getAttachments().get("c_app_name") + " do invoke -----> " + rpcInvocation.getTargetServiceName());
     }
 
-
-    @Override
-    public boolean isLoggable(LogRecord record) {
-        return false;
-    }
 }

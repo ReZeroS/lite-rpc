@@ -1,6 +1,8 @@
 package io.github.rezeros.core.client;
 
 import io.github.rezeros.core.common.ChannelFutureWrapper;
+import io.github.rezeros.core.common.utils.CommonUtils;
+import io.github.rezeros.core.router.Selector;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 
@@ -9,8 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import static io.github.rezeros.cache.CommonClientCache.CONNECT_MAP;
-import static io.github.rezeros.cache.CommonClientCache.SERVER_ADDRESS;
+import static io.github.rezeros.core.common.cache.CommonClientCache.CONNECT_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.IROUTER;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SERVER_ADDRESS;
 
 public class ConnectionHandler {
 

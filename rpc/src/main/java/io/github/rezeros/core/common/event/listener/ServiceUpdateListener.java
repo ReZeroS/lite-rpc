@@ -4,6 +4,8 @@ import io.github.rezeros.core.client.ConnectionHandler;
 import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.common.event.IRpcListener;
 import io.github.rezeros.core.common.event.IRpcUpdateEvent;
+import io.github.rezeros.core.common.event.data.URLChangeWrapper;
+import io.github.rezeros.core.common.utils.CommonUtils;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static io.github.rezeros.cache.CommonClientCache.CONNECT_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.CONNECT_MAP;
 
 @Slf4j
 public class ServiceUpdateListener implements IRpcListener<IRpcUpdateEvent> {

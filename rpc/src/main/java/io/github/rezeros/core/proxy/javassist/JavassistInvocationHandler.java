@@ -1,5 +1,6 @@
 package io.github.rezeros.core.proxy.javassist;
 
+import io.github.rezeros.core.client.RpcReferenceWrapper;
 import io.github.rezeros.protocol.RpcInvocation;
 
 import java.lang.reflect.InvocationHandler;
@@ -7,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import static io.github.rezeros.cache.CommonClientCache.RESP_MAP;
-import static io.github.rezeros.cache.CommonClientCache.SEND_QUEUE;
+import static io.github.rezeros.core.common.cache.CommonClientCache.RESP_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SEND_QUEUE;
 
 public class JavassistInvocationHandler implements InvocationHandler {
 
@@ -17,8 +18,10 @@ public class JavassistInvocationHandler implements InvocationHandler {
 
     private Class<?> clazz;
 
-    public JavassistInvocationHandler(Class<?> clazz) {
-        this.clazz = clazz;
+    private final RpcReferenceWrapper rpcReferenceWrapper;
+
+    public JavassistInvocationHandler(RpcReferenceWrapper rpcReferenceWrapper) {
+        this.rpcReferenceWrapper = rpcReferenceWrapper;
     }
 
     @Override

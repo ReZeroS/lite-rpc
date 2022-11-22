@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+import static io.github.rezeros.core.common.constants.RpcConstants.MAGIC_NUMBER;
+
 
 /**
  * magicNumber：魔法数，主要是在做服务通讯的时候定义的一个安全检测，确认当前请求的协议是否合法。

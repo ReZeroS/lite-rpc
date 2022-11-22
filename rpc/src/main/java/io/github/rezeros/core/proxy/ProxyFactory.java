@@ -1,6 +1,8 @@
 package io.github.rezeros.core.proxy;
 
-public interface ProxyFactory {
+import io.github.rezeros.core.client.RpcReferenceWrapper;
 
-    <T> T getProxy(final Class clazz) throws Throwable;
+public interface ProxyFactory {
+    <T> T getProxy(RpcReferenceWrapper rpcReferenceWrapper) throws Throwable;
+
 }

@@ -1,11 +1,15 @@
 package io.github.rezeros.core.registry.zookeeper;
 
+import com.alibaba.fastjson.JSON;
 import io.github.rezeros.core.common.event.IRpcEvent;
 import io.github.rezeros.core.common.event.IRpcListenerLoader;
+import io.github.rezeros.core.common.event.IRpcNodeChangeEvent;
 import io.github.rezeros.core.common.event.IRpcUpdateEvent;
+import io.github.rezeros.core.common.event.data.URLChangeWrapper;
 import io.github.rezeros.core.registry.AbstractRegister;
 import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
+import io.github.rezeros.test.DataService;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 
@@ -75,9 +79,30 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
     @Override
     public void doAfterSubscribe(URL url) {
         //监听是否有新的服务注册
+        String servicePath = url.getParameters().get("servicePath");
+
         String newServerNodePath = ROOT + "/" + url.getServiceName() + "/provider";
         watchChildNodeData(newServerNodePath);
-        url.getParameters().get("providerIps")
+        String providerIpStrJson = url.getParameters().get("providerIps");
+        List<String> providerIpList = JSON.parseObject(providerIpStrJson, List.class);
+        for (String providerIp : providerIpList) {
+            //启动环节会触发订阅订阅节点详情地址为：/irpc/com.sise.test.UserService/provider/192.11.11.101:9090
+            this.watchNodeDataChange(ROOT + "/" + servicePath + "/" + providerIp);
+        }
+    }
+    public void watchNodeDataChange(String newServerNodePath) {
+        zkClient.watchNodeData(newServerNodePath, new Watcher() {
+            @Override
+            public void process(WatchedEvent watchedEvent) {
+                String path = watchedEvent.getPath();
+                System.out.println("[watchNodeDataChange] 监听到zk节点下的" + path + "节点数据发生变更");
+                String nodeData = zkClient.getNodeData(path);
+                ProviderNodeInfo providerNodeInfo = URL.buildURLFromUrlStr(nodeData);
+                IRpcEvent iRpcEvent = new IRpcNodeChangeEvent(providerNodeInfo);
+                IRpcListenerLoader.sendEvent(iRpcEvent);
+                watchNodeDataChange(newServerNodePath);
+            }
+        });
     }
 
     public void watchChildNodeData(String newServerNodePath){

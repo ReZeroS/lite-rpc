@@ -11,6 +11,7 @@
     <modules>
         <module>inject</module>
         <module>rpc</module>
+        <module>rpc-springboot-starter</module>
     </modules>
     <url>https://qqtim.club</url>
 
@@ -24,6 +25,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>2.19.0</version>
         </dependency>
     </dependencies>
 

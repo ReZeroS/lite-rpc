@@ -3,11 +3,13 @@ package io.github.rezeros.core.router;
 import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.registry.URL;
 
-import java.nio.channels.Selector;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static io.github.rezeros.cache.CommonClientCache.CONNECT_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.CHANNEL_FUTURE_POLLING_REF;
+import static io.github.rezeros.core.common.cache.CommonClientCache.CONNECT_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.SERVICE_ROUTER_MAP;
 
 public class RandomRouterImpl implements IRouter{
     @Override
@@ -102,9 +104,9 @@ public class RandomRouterImpl implements IRouter{
         while (index < arrInt.length) {
             int num = ra.nextInt(len);
             //如果数组中不包含这个元素则赋值给数组
-            if (!contains(arrInt, num)) {
-                arrInt[index++] = num;
-            }
+//            if (!contains(arrInt, num)) {
+//                arrInt[index++] = num;
+//            }
         }
         return arrInt;
     }

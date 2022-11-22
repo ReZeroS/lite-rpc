@@ -1,9 +1,12 @@
-package io.github.rezeros.cache;
+package io.github.rezeros.core.common.cache;
 
+import io.github.rezeros.core.common.ChannelFuturePollingRef;
 import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.filter.client.ClientFilterChain;
 import io.github.rezeros.core.registry.URL;
+import io.github.rezeros.core.router.IRouter;
+import io.github.rezeros.core.spi.ExtensionLoader;
 import io.github.rezeros.protocol.RpcInvocation;
 
 import java.util.ArrayList;
@@ -26,7 +29,17 @@ public class CommonClientCache {
     public static Set<String> SERVER_ADDRESS = new HashSet<>();
     //每次进行远程调用的时候都是从这里面去选择服务提供者
     public static Map<String, List<ChannelFutureWrapper>> CONNECT_MAP = new ConcurrentHashMap<>();
+    public static ChannelFuturePollingRef CHANNEL_FUTURE_POLLING_REF = new ChannelFuturePollingRef();
 
 
     public static ClientFilterChain clientFilterChain;
+
+    public static IRouter IROUTER;
+
+    public static Map<String, ChannelFutureWrapper[]> SERVICE_ROUTER_MAP = new ConcurrentHashMap<>();
+
+
+
+    public static ExtensionLoader EXTENSION_LOADER = new ExtensionLoader();
+
 }

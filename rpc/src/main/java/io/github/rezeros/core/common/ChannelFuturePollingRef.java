@@ -2,6 +2,8 @@ package io.github.rezeros.core.common;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import static io.github.rezeros.core.common.cache.CommonClientCache.SERVICE_ROUTER_MAP;
+
 public class ChannelFuturePollingRef {
     private AtomicLong referenceTimes = new AtomicLong(0);
 

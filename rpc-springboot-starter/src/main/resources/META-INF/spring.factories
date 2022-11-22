@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.rezeros.rpc.springboot.starter.config.IRpcServerAutoConfiguration,\
+io.github.rezeros.rpc.springboot.starter.config.IRpcClientAutoConfiguration

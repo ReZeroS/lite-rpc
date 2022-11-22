@@ -1,6 +1,7 @@
 package io.github.rezeros.core.common.event;
 
 import io.github.rezeros.core.common.event.listener.ServiceUpdateListener;
+import io.github.rezeros.core.common.utils.CommonUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
