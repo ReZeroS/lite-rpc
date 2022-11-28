@@ -19,7 +19,6 @@ public class NioSocketServer extends Thread {
     }
 
     Selector selector = null;
-    SelectionKey selectionKey = null;
     ServerSocketChannel serverSocketChannel = null;
 
 
@@ -30,7 +29,7 @@ public class NioSocketServer extends Thread {
         serverSocketChannel.bind(new InetSocketAddress(1099));
 
         // 初始化时仅注册 Accept 事件
-        selectionKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
     }
 
@@ -98,6 +97,7 @@ public class NioSocketServer extends Thread {
 
     private void accept(SelectionKey selectedKey) throws IOException {
         // Accept 后 注册 read 事件
+        ServerSocketChannel serverSocketChannel = (ServerSocketChannel)selectedKey.channel();
         SocketChannel socketChannel = serverSocketChannel.accept();
         System.out.println("conn is acceptable");
         socketChannel.configureBlocking(false);
@@ -109,7 +109,7 @@ public class NioSocketServer extends Thread {
 
     private void read(SelectionKey selectedKey) {
         try {
-            SocketChannel channel = (SocketChannel) selectionKey.channel();
+            SocketChannel channel = (SocketChannel) selectedKey.channel();
             ByteBuffer byteBuffer = ByteBuffer.allocate(100);
             int len = channel.read(byteBuffer);
             if (len > 0) {
@@ -117,12 +117,12 @@ public class NioSocketServer extends Thread {
                 byte[] byteArray = new byte[byteBuffer.limit()];
                 byteBuffer.get(byteArray);
                 System.out.println("NioSocketServer receive from client:" + new String(byteArray,0,len));
-                selectionKey.interestOps(SelectionKey.OP_READ);
+                selectedKey.interestOps(SelectionKey.OP_READ);
             }
         } catch (Exception e) {
             try {
                 serverSocketChannel.close();
-                selectionKey.cancel();
+                selectedKey.cancel();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

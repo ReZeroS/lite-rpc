@@ -15,10 +15,10 @@ public class ServiceWrapper {
      */
     private String group = "default";
 
-    /**
-     * 整个应用的token校验
-     */
-    private String serviceToken = "";
+//    /**
+//     * 整个应用的token校验
+//     */
+//    private String serviceToken = "";
 
     /**
      * 限流策略

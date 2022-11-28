@@ -20,7 +20,11 @@ public class IRpcListenerLoader {
         iRpcListenerList.add(iRpcListener);
     }
 
+
+
     public void init() {
+        registerListener(new ServiceUpdateListener());
+        registerListener(new ProviderNodeDataChangeListener());
         registerListener(new ServiceUpdateListener());
     }
 
@@ -39,6 +43,17 @@ public class IRpcListenerLoader {
         return null;
     }
 
+    public static void sendSyncEvent(IRpcEvent iRpcEvent) {
+        if(CommonUtils.isEmptyList(iRpcListenerList)){
+            return;
+        }
+        for (IRpcListener<?> iRpcListener : iRpcListenerList) {
+            Class<?> type = getInterfaceT(iRpcListener);
+            if(iRpcEvent.getClass().equals(type)){
+                iRpcListener.callBack(iRpcEvent.getData());
+            }
+        }
+    }
     public static void sendEvent(IRpcEvent iRpcEvent) {
         if(CommonUtils.isEmptyList(iRpcListenerList)){
             return;

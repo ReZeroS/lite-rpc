@@ -19,7 +19,6 @@ public class BioServer {
         while (true) {
             // 堵塞点1
             Socket clientSocket = serverSocket.accept();
-
             executors.execute(() -> {
 
                 try {

@@ -4,6 +4,7 @@ import io.github.rezeros.core.common.RpcDecoder;
 import io.github.rezeros.core.common.RpcEncoder;
 import io.github.rezeros.core.common.ServerHandler;
 import io.github.rezeros.core.common.config.PropertiesBootstrap;
+import io.github.rezeros.core.common.event.IRpcListenerLoader;
 import io.github.rezeros.core.common.utils.CommonUtils;
 import io.github.rezeros.core.config.ServerConfig;
 import io.github.rezeros.core.registry.RegistryService;
@@ -20,19 +21,30 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_CACHE;
 import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_URL_SET;
 import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECODE_CHAR;
 
+@Slf4j
 public class Server {
+
+    private static IRpcListenerLoader iRpcListenerLoader;
 
     public static void main(String[] args) throws InterruptedException {
         Server server = new Server();
         server.initServerConfig();
+        iRpcListenerLoader = new IRpcListenerLoader();
+        iRpcListenerLoader.init();
         // 暴露服务信息
-        server.exportService(new DataServiceImpl());
+        server.exportService(new ServiceWrapper(new DataServiceImpl()));
+        // 停机hook
+        ApplicationShutdownHook.registryShutdownHook();
+
         server.startApplication();
+        log.info("[startApplication] server is started!");
+
     }
 
 
@@ -48,18 +60,18 @@ public class Server {
     private RegistryService registryService;
 
 
-
     private void startApplication() throws InterruptedException {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
-        serverBootstrap.option(ChannelOption.TCP_NODELAY, true);
-        serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
-        serverBootstrap.option(ChannelOption.SO_SNDBUF, 16 * 1024)
+        serverBootstrap.option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .option(ChannelOption.SO_SNDBUF, 16 * 1024)
                 .option(ChannelOption.SO_RCVBUF, 16 * 1024)
-                .option(ChannelOption.SO_KEEPALIVE, true);
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.SO_REUSEADDR, true);
 
         // 长链接模式
         // 绑在 accept 上？
@@ -109,8 +121,6 @@ public class Server {
 
         PROVIDER_URL_SET.add(url);
     }
-
-
 
 
 }
