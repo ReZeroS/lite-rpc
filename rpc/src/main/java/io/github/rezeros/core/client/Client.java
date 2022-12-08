@@ -41,6 +41,7 @@ public class Client {
 
     private static final EventLoopGroup clientGroup = new NioEventLoopGroup();
 
+
     private ClientConfig clientConfig;
 
     private AbstractRegister abstractRegister;
@@ -81,17 +82,11 @@ public class Client {
 
     private void doSubscribeService(Class serviceBean) {
         if (abstractRegister == null) {
-            abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
-
-
-        }
-
-        if (abstractRegister == null) {
             try {
                 //使用自定义的SPI机制去加载配置
                 EXTENSION_LOADER.loadExtension(RegistryService.class);
-                Map<String, Class> registerMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
-                Class registerClass =  registerMap.get(clientConfig.getRegisterType());
+                Map<String, Class<?>> registerMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
+                Class<?> registerClass =  registerMap.get(clientConfig.getRegisterType());
                 //真正实力化对象的位置
                 abstractRegister = (AbstractRegister) registerClass.newInstance();
             } catch (Exception e) {

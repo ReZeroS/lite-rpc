@@ -15,10 +15,6 @@ public class ServiceWrapper {
      */
     private String group = "default";
 
-//    /**
-//     * 整个应用的token校验
-//     */
-//    private String serviceToken = "";
 
     /**
      * 限流策略
@@ -27,6 +23,10 @@ public class ServiceWrapper {
 
 
     public ServiceWrapper(Object serviceObj) {
+        Class<?>[] interfaces = serviceObj.getClass().getInterfaces();
+        if (interfaces.length != 1) {
+            throw new RuntimeException("必须实现且仅实现一个接口");
+        }
         this.serviceObj = serviceObj;
     }
 

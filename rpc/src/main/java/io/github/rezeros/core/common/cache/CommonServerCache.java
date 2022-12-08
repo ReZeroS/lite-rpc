@@ -3,6 +3,7 @@ package io.github.rezeros.core.common.cache;
 import io.github.rezeros.core.common.ServerServiceSemaphoreWrapper;
 import io.github.rezeros.core.dispatcher.ServerChannelDispatcher;
 import io.github.rezeros.core.filter.server.ServerFilterChain;
+import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.serialize.SerializeFactory;
 
@@ -26,5 +27,8 @@ public class CommonServerCache {
     public static ServerChannelDispatcher SERVER_CHANNEL_DISPATCHER;
 
     public static final Map<String, ServerServiceSemaphoreWrapper> SERVER_SERVICE_SEMAPHORE_MAP = new ConcurrentHashMap<>(64);
+
+    public static RegistryService REGISTRY_SERVICE;
+
 
 }

@@ -2,6 +2,7 @@ package io.github.rezeros.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Arrays;
 
 /**
  * @Author: ReZero
@@ -21,6 +22,10 @@ public class AnnotationUtils {
             }
         }
         return annotation;
+    }
+
+    public static boolean hasAnnotation(Class<?> interfaceClass, Class<? extends Annotation> annotation){
+        return interfaceClass.isAnnotationPresent(annotation);
     }
 
 

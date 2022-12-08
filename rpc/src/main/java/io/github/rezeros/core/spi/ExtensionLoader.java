@@ -14,9 +14,9 @@ public class ExtensionLoader {
 
     public static String EXTENSION_LOADER_DIR_PREFIX = "META-INF/irpc/";
 
-    public static Map<String, LinkedHashMap<String, Class>> EXTENSION_LOADER_CLASS_CACHE = new ConcurrentHashMap<>();
+    public static Map<String, LinkedHashMap<String, Class<?>>> EXTENSION_LOADER_CLASS_CACHE = new ConcurrentHashMap<>();
 
-    public void loadExtension(Class clazz) throws IOException,ClassNotFoundException {
+    public void loadExtension(Class<?> clazz) throws IOException, ClassNotFoundException {
         if (clazz == null) {
             throw new IllegalArgumentException("class is null!");
         }
@@ -30,7 +30,7 @@ public class ExtensionLoader {
             inputStreamReader = new InputStreamReader(url.openStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
-            LinkedHashMap<String, Class> classMap = new LinkedHashMap<>();
+            LinkedHashMap<String, Class<?>> classMap = new LinkedHashMap<>();
             while ((line = bufferedReader.readLine()) != null) {
                 //如果配置中加入了#开头则表示忽略该类无需进行加载
                 if (line.startsWith("#")) {
@@ -42,7 +42,7 @@ public class ExtensionLoader {
                 classMap.put(implClassName, Class.forName(interfaceName));
             }
             //只会触发class文件的加载，而不会触发对象的实例化
-            if(EXTENSION_LOADER_CLASS_CACHE.containsKey(clazz.getName())){
+            if (EXTENSION_LOADER_CLASS_CACHE.containsKey(clazz.getName())) {
                 //支持开发者自定义配置
                 EXTENSION_LOADER_CLASS_CACHE.get(clazz.getName()).putAll(classMap);
             } else {

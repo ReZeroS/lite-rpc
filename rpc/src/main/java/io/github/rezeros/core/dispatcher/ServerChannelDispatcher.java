@@ -15,6 +15,9 @@ import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_CAC
 import static io.github.rezeros.core.common.cache.CommonServerCache.SERVER_FILTER_CHAIN;
 import static io.github.rezeros.core.common.cache.CommonServerCache.SERVER_SERIALIZE_FACTORY;
 
+/**
+ * server channel 分发，主要指连接
+ */
 public class ServerChannelDispatcher {
 
     private BlockingQueue<ServerChannelReadData> RPC_DATA_QUEUE;

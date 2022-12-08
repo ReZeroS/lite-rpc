@@ -1,8 +1,11 @@
-package io.github.rezeros.rpc.springboot.starter.common;
+package io.github.rezeros.core.common.annotations;
 
 import java.lang.annotation.*;
 
-
+/**
+ * @Author linhao
+ * @Date created in 7:28 下午 2022/3/7
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

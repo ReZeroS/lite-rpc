@@ -1,5 +1,6 @@
 package io.github.rezeros.core.common.event;
 
+import io.github.rezeros.core.common.event.listener.ServiceDestroyListener;
 import io.github.rezeros.core.common.event.listener.ServiceUpdateListener;
 import io.github.rezeros.core.common.utils.CommonUtils;
 
@@ -26,6 +27,7 @@ public class IRpcListenerLoader {
         registerListener(new ServiceUpdateListener());
         registerListener(new ProviderNodeDataChangeListener());
         registerListener(new ServiceUpdateListener());
+        registerListener(new ServiceDestroyListener());
     }
 
     /**

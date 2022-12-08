@@ -1,10 +1,13 @@
-package io.github.rezeros.rpc.springboot.starter.common;
+package io.github.rezeros.core.common.annotations;
 
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
-
+/**
+ * @Author linhao
+ * @Date created in 7:27 下午 2022/3/7
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
