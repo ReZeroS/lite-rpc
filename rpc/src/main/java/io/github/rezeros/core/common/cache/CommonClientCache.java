@@ -6,6 +6,7 @@ import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.filter.client.ClientFilterChain;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.router.IRouter;
+import io.github.rezeros.core.serialize.SerializeFactory;
 import io.github.rezeros.core.spi.ExtensionLoader;
 import io.github.rezeros.protocol.RpcInvocation;
 
@@ -36,10 +37,14 @@ public class CommonClientCache {
 
     public static IRouter IROUTER;
 
+    public static SerializeFactory CLIENT_SERIALIZE_FACTORY;
+
+
     public static Map<String, ChannelFutureWrapper[]> SERVICE_ROUTER_MAP = new ConcurrentHashMap<>();
 
 
 
     public static ExtensionLoader EXTENSION_LOADER = new ExtensionLoader();
 
+    public static ClientFilterChain CLIENT_FILTER_CHAIN;
 }

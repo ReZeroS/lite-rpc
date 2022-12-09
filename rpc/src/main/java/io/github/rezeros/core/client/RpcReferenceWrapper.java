@@ -29,13 +29,6 @@ public class RpcReferenceWrapper<T> {
         attatchments.put("url",url);
     }
 
-    public String getServiceToken(){
-        return String.valueOf(attatchments.get("serviceToken"));
-    }
-
-    public void setServiceToken(String serviceToken){
-        attatchments.put("serviceToken",serviceToken);
-    }
 
     public String getGroup(){
         return String.valueOf(attatchments.get("group"));

@@ -63,7 +63,6 @@ public class Server {
 
         server.startApplication();
         log.info("[startApplication] server is started!");
-
     }
 
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ClientFilterChain {
 
-    private static List<IClientFilter> iClientFilterList = new ArrayList<>();
+    private static final List<IClientFilter> iClientFilterList = new ArrayList<>();
 
     public void addClientFilter(IClientFilter iClientFilter) {
         iClientFilterList.add(iClientFilter);

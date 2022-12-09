@@ -1,13 +1,13 @@
 package io.github.rezeros.core.spi;
 
 
+import io.github.rezeros.core.filter.IClientFilter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExtensionLoader {
@@ -49,6 +49,21 @@ public class ExtensionLoader {
                 EXTENSION_LOADER_CLASS_CACHE.put(clazz.getName(), classMap);
             }
         }
+    }
+
+
+    public <T> T getInstance(String implementName, Class<T> interfaceClass) throws InstantiationException, IllegalAccessException {
+        LinkedHashMap<String, Class<?>> cacheMap = EXTENSION_LOADER_CLASS_CACHE.get(interfaceClass.getName());
+        return interfaceClass.cast(cacheMap.get(implementName).newInstance());
+    }
+
+    public <T> List<T> loadInstanceList(Class<T> interfaceClass) throws InstantiationException, IllegalAccessException {
+        List<T> result = new ArrayList<>();
+        LinkedHashMap<String, Class<?>> cacheMap = EXTENSION_LOADER_CLASS_CACHE.get(interfaceClass.getName());
+        for (Class<?> readyClass : cacheMap.values()) {
+            result.add(interfaceClass.cast(readyClass.newInstance()));
+        }
+        return result;
     }
 
 }
