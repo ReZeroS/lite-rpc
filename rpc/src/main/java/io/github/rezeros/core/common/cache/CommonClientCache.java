@@ -4,6 +4,7 @@ import io.github.rezeros.core.common.ChannelFuturePollingRef;
 import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.filter.client.ClientFilterChain;
+import io.github.rezeros.core.registry.AbstractRegister;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.router.IRouter;
 import io.github.rezeros.core.serialize.SerializeFactory;
@@ -47,4 +48,7 @@ public class CommonClientCache {
     public static ExtensionLoader EXTENSION_LOADER = new ExtensionLoader();
 
     public static ClientFilterChain CLIENT_FILTER_CHAIN;
+
+    public static AbstractRegister ABSTRACT_REGISTER;
+
 }
