@@ -1,14 +1,19 @@
 package io.github.rezeros.core.filter.server;
 
+
 import io.github.rezeros.core.filter.IServerFilter;
 import io.github.rezeros.protocol.RpcInvocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerFilterChain {
+/**
+ * @Author linhao
+ * @Date created in 8:40 下午 2022/1/29
+ */
+public class ServerBeforeFilterChain {
 
-    private static List<IServerFilter> iServerFilters = new ArrayList<>();
+    private static final List<IServerFilter> iServerFilters = new ArrayList<>();
 
     public void addServerFilter(IServerFilter iServerFilter) {
         iServerFilters.add(iServerFilter);

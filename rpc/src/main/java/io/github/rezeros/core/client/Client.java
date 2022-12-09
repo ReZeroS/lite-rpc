@@ -66,11 +66,16 @@ public class Client {
 //        }
     }
 
-    private void doConnectServer() throws InterruptedException {
+    public void doConnectServer() {
         for (String providerServiceName : SUBSCRIBE_SERVICE_LIST) {
             List<String> providerIps = abstractRegister.getProviderIps(providerServiceName);
             for (String providerIp : providerIps) {
-                ConnectionHandler.connect(providerServiceName, providerIp);
+                try {
+                    ConnectionHandler.connect(providerServiceName, providerIp);
+                } catch (InterruptedException e) {
+                    log.error("Client connect providerService {} failed. provider ip is: {}", providerServiceName, providerIp);
+                    throw new RuntimeException(e);
+                }
             }
 
             URL url = new URL();
@@ -80,7 +85,7 @@ public class Client {
         }
     }
 
-    private void doSubscribeService(Class serviceBean) {
+    public void doSubscribeService(Class serviceBean) {
         if (abstractRegister == null) {
             try {
                 //使用自定义的SPI机制去加载配置
@@ -126,7 +131,7 @@ public class Client {
     /**
      * 开启发送线程，专门从事将数据包发送给服务端，起到一个解耦的效果
      */
-    private void startClient() {
+    public void startClient() {
         Thread asyncSendJob = new Thread(new AsyncSendJob());
         asyncSendJob.start();
     }

@@ -11,6 +11,8 @@ import io.github.rezeros.core.common.event.IRpcListenerLoader;
 import io.github.rezeros.core.common.utils.CommonUtils;
 import io.github.rezeros.core.config.ServerConfig;
 import io.github.rezeros.core.filter.IServerFilter;
+import io.github.rezeros.core.filter.server.ServerAfterFilterChain;
+import io.github.rezeros.core.filter.server.ServerBeforeFilterChain;
 import io.github.rezeros.core.registry.AbstractRegister;
 import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
@@ -27,6 +29,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -41,9 +44,14 @@ import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECOD
 import static io.github.rezeros.core.spi.ExtensionLoader.EXTENSION_LOADER_CLASS_CACHE;
 
 @Slf4j
+@Data
 public class Server {
 
-    public static void main(String[] args) throws InterruptedException {
+    private ServerConfig serverConfig;
+
+
+
+    public static void main(String[] args) throws Exception {
         Server server = new Server();
         server.initServerConfig();
         IRpcListenerLoader iRpcListenerLoader = new IRpcListenerLoader();
@@ -59,7 +67,7 @@ public class Server {
     }
 
 
-    private void initServerConfig() throws Exception {
+    public void initServerConfig() throws Exception {
         this.serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
         // 业务线程相关配置
         SERVER_CHANNEL_DISPATCHER.init(serverConfig.getServerQueueSize(), serverConfig.getServerBizThreadNums());
@@ -72,7 +80,6 @@ public class Server {
         if (serializeFactoryClass == null) {
             throw new RuntimeException("no match serialize type for " + serverSerialize);
         }
-
         SERVER_SERIALIZE_FACTORY = (SerializeFactory) serializeFactoryClass.newInstance();
         //过滤链技术初始化
         EXTENSION_LOADER.loadExtension(IServerFilter.class);
@@ -81,11 +88,11 @@ public class Server {
         ServerAfterFilterChain serverAfterFilterChain = new ServerAfterFilterChain();
         //过滤器初始化环节新增 前置过滤器和后置过滤器
         for (String iServerFilterKey : iServerFilterClassMap.keySet()) {
-            Class iServerFilterClass = iServerFilterClassMap.get(iServerFilterKey);
+            Class<?> iServerFilterClass = iServerFilterClassMap.get(iServerFilterKey);
             if (iServerFilterClass == null) {
                 throw new RuntimeException("no match iServerFilter type for " + iServerFilterKey);
             }
-            SPI spi = (SPI) iServerFilterClass.getDeclaredAnnotation(SPI.class);
+            SPI spi = iServerFilterClass.getDeclaredAnnotation(SPI.class);
             if (spi != null && "before".equals(spi.value())) {
                 serverBeforeFilterChain.addServerFilter((IServerFilter) iServerFilterClass.newInstance());
             } else if (spi != null && "after".equals(spi.value())) {
@@ -96,15 +103,15 @@ public class Server {
         SERVER_BEFORE_FILTER_CHAIN = serverBeforeFilterChain;
     }
 
-    private ServerConfig serverConfig;
 
-
-    private void startApplication() throws InterruptedException {
+    public void startApplication() throws InterruptedException {
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
         ThreadFactory threadFactory = new DefaultThreadFactory("irpc-NettyServerWorker", true);
         int core = Runtime.getRuntime().availableProcessors() + 1;
         log.info("This node has {} available processors ", core);
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        // cpu 密集型 core + 1
+        // todo 美团动态线程池
+        EventLoopGroup workerGroup = new NioEventLoopGroup(Math.min(core, 32), threadFactory);
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
@@ -133,6 +140,7 @@ public class Server {
         this.batchExportUrl();
         SERVER_CHANNEL_DISPATCHER.startDataConsume();
         serverBootstrap.bind(serverConfig.getServerPort()).sync();
+        IS_STARTED = true;
     }
 
     private void batchExportUrl() {
@@ -144,7 +152,7 @@ public class Server {
     }
 
 
-    private void exportService(ServiceWrapper serviceWrapper) {
+    public void exportService(ServiceWrapper serviceWrapper) {
         if (REGISTRY_SERVICE == null) {
             try {
                 EXTENSION_LOADER.loadExtension(RegistryService.class);

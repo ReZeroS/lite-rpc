@@ -2,7 +2,8 @@ package io.github.rezeros.core.common.cache;
 
 import io.github.rezeros.core.common.ServerServiceSemaphoreWrapper;
 import io.github.rezeros.core.dispatcher.ServerChannelDispatcher;
-import io.github.rezeros.core.filter.server.ServerFilterChain;
+import io.github.rezeros.core.filter.server.ServerAfterFilterChain;
+import io.github.rezeros.core.filter.server.ServerBeforeFilterChain;
 import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.serialize.SerializeFactory;
@@ -21,7 +22,8 @@ public class CommonServerCache {
 
     public static SerializeFactory SERVER_SERIALIZE_FACTORY;
 
-    public static ServerFilterChain SERVER_FILTER_CHAIN;
+    public static ServerBeforeFilterChain SERVER_BEFORE_FILTER_CHAIN;
+    public static ServerAfterFilterChain SERVER_AFTER_FILTER_CHAIN;
 
 
     public static ServerChannelDispatcher SERVER_CHANNEL_DISPATCHER;
@@ -29,6 +31,8 @@ public class CommonServerCache {
     public static final Map<String, ServerServiceSemaphoreWrapper> SERVER_SERVICE_SEMAPHORE_MAP = new ConcurrentHashMap<>(64);
 
     public static RegistryService REGISTRY_SERVICE;
+
+    public static volatile boolean IS_STARTED;
 
 
 }
