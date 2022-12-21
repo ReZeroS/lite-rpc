@@ -1,0 +1,2 @@
+rotate=io.github.rezeros.core.router.RotateRouterImpl
+random=io.github.rezeros.core.router.RandomRouterImpl

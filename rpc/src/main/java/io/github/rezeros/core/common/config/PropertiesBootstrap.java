@@ -5,6 +5,8 @@ import io.github.rezeros.core.config.ServerConfig;
 
 import java.io.IOException;
 
+import static io.github.rezeros.core.common.constants.RpcConstants.*;
+
 
 public class PropertiesBootstrap {
 
@@ -37,15 +39,15 @@ public class PropertiesBootstrap {
             throw new RuntimeException("loadServerConfigFromLocal fail,e is {}", e);
         }
         ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setServerPort(PropertiesLoader.getPropertiesInteger(SERVER_PORT));
+        serverConfig.setServerPort(PropertiesLoader.getPropertiesIntegerDefault(SERVER_PORT, 10086));
         serverConfig.setApplicationName(PropertiesLoader.getPropertiesStr(APPLICATION_NAME));
         serverConfig.setRegisterAddr(PropertiesLoader.getPropertiesStr(REGISTER_ADDRESS));
         serverConfig.setRegisterType(PropertiesLoader.getPropertiesStr(REGISTER_TYPE));
-//        serverConfig.setServerSerialize(PropertiesLoader.getPropertiesStrDefault(SERVER_SERIALIZE_TYPE,JDK_SERIALIZE_TYPE));
-//        serverConfig.setServerBizThreadNums(PropertiesLoader.getPropertiesIntegerDefault(SERVER_BIZ_THREAD_NUMS,DEFAULT_THREAD_NUMS));
-//        serverConfig.setServerQueueSize(PropertiesLoader.getPropertiesIntegerDefault(SERVER_QUEUE_SIZE,DEFAULT_QUEUE_SIZE));
-//        serverConfig.setMaxConnections(PropertiesLoader.getPropertiesIntegerDefault(SERVER_MAX_CONNECTION,DEFAULT_MAX_CONNECTION_NUMS));
-//        serverConfig.setMaxServerRequestData(PropertiesLoader.getPropertiesIntegerDefault(SERVER_MAX_DATA_SIZE,SERVER_DEFAULT_MSG_LENGTH));
+        serverConfig.setServerSerialize(PropertiesLoader.getPropertiesStrDefault(SERVER_SERIALIZE_TYPE, JDK_SERIALIZE_TYPE));
+        serverConfig.setServerBizThreadNums(PropertiesLoader.getPropertiesIntegerDefault(SERVER_BIZ_THREAD_NUMS, DEFAULT_THREAD_NUMS));
+        serverConfig.setServerQueueSize(PropertiesLoader.getPropertiesIntegerDefault(SERVER_QUEUE_SIZE, DEFAULT_QUEUE_SIZE));
+        serverConfig.setMaxConnections(PropertiesLoader.getPropertiesIntegerDefault(SERVER_MAX_CONNECTION, DEFAULT_MAX_CONNECTION_NUMS));
+        serverConfig.setMaxServerRequestData(PropertiesLoader.getPropertiesIntegerDefault(SERVER_MAX_DATA_SIZE, SERVER_DEFAULT_MSG_LENGTH));
         return serverConfig;
     }
 
@@ -54,7 +56,7 @@ public class PropertiesBootstrap {
      *
      * @return ClientConfig
      */
-    public static ClientConfig loadClientConfigFromLocal(){
+    public static ClientConfig loadClientConfigFromLocal() {
         try {
             PropertiesLoader.loadConfiguration();
         } catch (IOException e) {

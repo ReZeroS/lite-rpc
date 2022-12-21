@@ -26,7 +26,7 @@ public class CommonServerCache {
     public static ServerAfterFilterChain SERVER_AFTER_FILTER_CHAIN;
 
 
-    public static ServerChannelDispatcher SERVER_CHANNEL_DISPATCHER;
+    public static ServerChannelDispatcher SERVER_CHANNEL_DISPATCHER = new ServerChannelDispatcher();
 
     public static final Map<String, ServerServiceSemaphoreWrapper> SERVER_SERVICE_SEMAPHORE_MAP = new ConcurrentHashMap<>(64);
 

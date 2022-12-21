@@ -32,12 +32,11 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 
+import static io.github.rezeros.core.common.cache.CommonClientCache.ABSTRACT_REGISTER;
 import static io.github.rezeros.core.common.cache.CommonClientCache.EXTENSION_LOADER;
 import static io.github.rezeros.core.common.cache.CommonServerCache.*;
 import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECODE_CHAR;
@@ -72,14 +71,9 @@ public class Server {
         SERVER_CHANNEL_DISPATCHER.init(serverConfig.getServerQueueSize(), serverConfig.getServerBizThreadNums());
 
         // 序列化方式
-        String serverSerialize = serverConfig.getServerSerialize();
         EXTENSION_LOADER.loadExtension(SerializeFactory.class);
-        LinkedHashMap<String, Class<?>> serializeFactoryClassMap = EXTENSION_LOADER_CLASS_CACHE.get(SerializeFactory.class.getName());
-        Class<?> serializeFactoryClass = serializeFactoryClassMap.get(serverSerialize);
-        if (serializeFactoryClass == null) {
-            throw new RuntimeException("no match serialize type for " + serverSerialize);
-        }
-        SERVER_SERIALIZE_FACTORY = (SerializeFactory) serializeFactoryClass.newInstance();
+        SERVER_SERIALIZE_FACTORY = EXTENSION_LOADER.getInstance(serverConfig.getServerSerialize(), SerializeFactory.class);
+
         //过滤链技术初始化
         EXTENSION_LOADER.loadExtension(IServerFilter.class);
         LinkedHashMap<String, Class<?>> iServerFilterClassMap = EXTENSION_LOADER_CLASS_CACHE.get(IServerFilter.class.getName());
@@ -155,9 +149,7 @@ public class Server {
         if (REGISTRY_SERVICE == null) {
             try {
                 EXTENSION_LOADER.loadExtension(RegistryService.class);
-                Map<String, Class<?>> registryClassMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
-                Class<?> registryClass = registryClassMap.get(serverConfig.getRegisterType());
-                REGISTRY_SERVICE = (AbstractRegister) registryClass.newInstance();
+                ABSTRACT_REGISTER = (AbstractRegister) EXTENSION_LOADER.getInstance(serverConfig.getRegisterType(), RegistryService.class);
             } catch (Exception e) {
                 throw new RuntimeException("registryServiceType unKnow,error is ", e);
             }

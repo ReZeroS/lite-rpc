@@ -1,0 +1,2 @@
+jdk=io.github.rezeros.core.proxy.jdk.JDKProxyFactory
+javassist=io.github.rezeros.core.proxy.javassist.JavassistProxyFactory

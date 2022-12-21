@@ -67,18 +67,18 @@ public class PropertiesLoader {
      * @param key
      * @return
      */
-    public static Integer getPropertiesInteger(String key) {
+    public static int getPropertiesInteger(String key) {
         if (properties == null) {
-            return null;
+            return 8080;
         }
         if (CommonUtils.isEmpty(key)) {
-            return null;
+            return 8080;
         }
         if (!propertiesMap.containsKey(key)) {
             String value = properties.getProperty(key);
             propertiesMap.put(key, value);
         }
-        return Integer.valueOf(propertiesMap.get(key));
+        return Integer.parseInt(propertiesMap.get(key));
     }
 
     /**

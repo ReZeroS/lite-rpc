@@ -1,0 +1,4 @@
+jdk=io.github.rezeros.core.serialize.jdk.JdkSerializeFactory
+protobuf=io.github.rezeros.core.serialize.protobuf.ProtobufSerializeFactory
+hessian=io.github.rezeros.core.serialize.hessian.HessianSerializeFactory
+fastJson=io.github.rezeros.core.serialize.fastjson.FastJsonSerializeFactory

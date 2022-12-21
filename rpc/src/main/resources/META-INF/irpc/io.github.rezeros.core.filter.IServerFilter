@@ -1,0 +1,3 @@
+serverLogFilterImpl=io.github.rezeros.core.filter.server.ServerLogFilterImpl
+serverServiceBeforeLimitFilterImpl=io.github.rezeros.core.filter.server.ServerServiceBeforeLimitFilterImpl
+serverServiceAfterLimitFilterImpl=io.github.rezeros.core.filter.server.ServerServiceAfterLimitFilterImpl

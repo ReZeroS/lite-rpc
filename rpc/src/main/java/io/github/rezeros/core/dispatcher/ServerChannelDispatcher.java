@@ -11,9 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.rezeros.core.common.cache.CommonServerCache.PROVIDER_CACHE;
-import static io.github.rezeros.core.common.cache.CommonServerCache.SERVER_FILTER_CHAIN;
-import static io.github.rezeros.core.common.cache.CommonServerCache.SERVER_SERIALIZE_FACTORY;
+import static io.github.rezeros.core.common.cache.CommonServerCache.*;
 
 /**
  * server channel 分发，主要指连接
@@ -51,7 +49,7 @@ public class ServerChannelDispatcher {
                             RpcProtocol rpcProtocol = serverChannelReadData.getRpcProtocol();
                             RpcInvocation rpcInvocation = SERVER_SERIALIZE_FACTORY.deserialize(rpcProtocol.getContent(), RpcInvocation.class);
                             //执行过滤链路
-                            SERVER_FILTER_CHAIN.doFilter(rpcInvocation);
+                            SERVER_BEFORE_FILTER_CHAIN.doFilter(rpcInvocation);
                             Object aimObject = PROVIDER_CACHE.get(rpcInvocation.getTargetServiceName());
                             Method[] methods = aimObject.getClass().getDeclaredMethods();
                             Object result = null;
@@ -74,6 +72,7 @@ public class ServerChannelDispatcher {
                                 }
                             }
                             rpcInvocation.setResponse(result);
+                            SERVER_AFTER_FILTER_CHAIN.doFilter(rpcInvocation);
                             RpcProtocol respRpcProtocol = new RpcProtocol(SERVER_SERIALIZE_FACTORY.serialize(rpcInvocation));
                             serverChannelReadData.getChannelHandlerContext().writeAndFlush(respRpcProtocol);
                         } catch (Exception e) {

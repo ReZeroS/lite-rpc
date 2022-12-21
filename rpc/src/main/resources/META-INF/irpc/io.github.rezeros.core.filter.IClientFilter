@@ -1,0 +1,3 @@
+clientLogFilterImpl=io.github.rezeros.core.filter.client.ClientLogFilterImpl
+directInvokeFilterImpl=io.github.rezeros.core.filter.client.DirectInvokeFilterImpl
+groupFilterImpl=io.github.rezeros.core.filter.client.GroupFilterImpl

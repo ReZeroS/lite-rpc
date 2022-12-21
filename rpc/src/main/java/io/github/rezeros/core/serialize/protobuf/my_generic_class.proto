@@ -1,0 +1,6 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+message DynamicObjectHolder {
+  // Define a field to hold the serialized object
+  google.protobuf.Any serialized_object = 1;
+}

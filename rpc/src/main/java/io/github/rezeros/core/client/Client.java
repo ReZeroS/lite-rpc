@@ -185,7 +185,7 @@ public class Client {
                     ChannelFuture channelFuture = ConnectionHandler.getChannelFuture(data.getTargetServiceName());
                     //netty的通道负责发送数据给服务端
                     channelFuture.channel().writeAndFlush(rpcProtocol);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     return;
                 }
