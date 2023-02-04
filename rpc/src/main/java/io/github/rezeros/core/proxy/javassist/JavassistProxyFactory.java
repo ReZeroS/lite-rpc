@@ -8,7 +8,7 @@ import java.lang.reflect.Proxy;
 public class JavassistProxyFactory implements ProxyFactory {
 
     @Override
-    public <T> T getProxy(RpcReferenceWrapper rpcReferenceWrapper) throws Throwable {
+    public <T> T getProxy(RpcReferenceWrapper<T> rpcReferenceWrapper) throws Throwable {
         return (T) ProxyGenerator.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 rpcReferenceWrapper.getAimClass(), new JavassistInvocationHandler(rpcReferenceWrapper));
     }

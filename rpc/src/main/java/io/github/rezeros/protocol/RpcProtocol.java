@@ -25,6 +25,7 @@ public class RpcProtocol implements Serializable {
 
 
     public RpcProtocol(byte[] content) {
+        this.contentLength = content.length;
         this.content = content;
     }
 }

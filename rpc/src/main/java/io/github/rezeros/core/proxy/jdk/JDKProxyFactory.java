@@ -7,7 +7,7 @@ import io.github.rezeros.core.proxy.ProxyFactory;
 import java.lang.reflect.Proxy;
 
 public class JDKProxyFactory implements ProxyFactory {
-    public <T> T getProxy(RpcReferenceWrapper rpcReferenceWrapper) {
+    public <T> T getProxy(RpcReferenceWrapper<T> rpcReferenceWrapper) {
 //        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new JDKClientInvocationHandler(clazz));
         return null;
     }

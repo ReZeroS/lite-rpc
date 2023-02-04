@@ -1,4 +1,4 @@
-package io.github.rezeros.core.server;
+package io.github.rezeros.core.filter.server;
 
 import io.github.rezeros.core.common.ServerServiceSemaphoreWrapper;
 import io.github.rezeros.core.common.annotations.SPI;

@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ThreadFactory;
 
-import static io.github.rezeros.core.common.cache.CommonClientCache.ABSTRACT_REGISTER;
 import static io.github.rezeros.core.common.cache.CommonClientCache.EXTENSION_LOADER;
 import static io.github.rezeros.core.common.cache.CommonServerCache.*;
 import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECODE_CHAR;
@@ -56,7 +55,9 @@ public class Server {
         IRpcListenerLoader iRpcListenerLoader = new IRpcListenerLoader();
         iRpcListenerLoader.init();
         // 暴露服务信息
-        server.exportService(new ServiceWrapper(new DataServiceImpl()));
+        ServiceWrapper dataServiceWrapper = new ServiceWrapper(new DataServiceImpl());
+        dataServiceWrapper.setLimit(10);
+        server.exportService(dataServiceWrapper);
         // 停机hook
         ApplicationShutdownHook.registryShutdownHook();
 
@@ -67,6 +68,7 @@ public class Server {
 
     public void initServerConfig() throws Exception {
         this.serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
+        SERVER_CONFIG = serverConfig;
         // 业务线程相关配置
         SERVER_CHANNEL_DISPATCHER.init(serverConfig.getServerQueueSize(), serverConfig.getServerBizThreadNums());
 
@@ -149,7 +151,7 @@ public class Server {
         if (REGISTRY_SERVICE == null) {
             try {
                 EXTENSION_LOADER.loadExtension(RegistryService.class);
-                ABSTRACT_REGISTER = (AbstractRegister) EXTENSION_LOADER.getInstance(serverConfig.getRegisterType(), RegistryService.class);
+                REGISTRY_SERVICE = EXTENSION_LOADER.getInstance(serverConfig.getRegisterType(), RegistryService.class);
             } catch (Exception e) {
                 throw new RuntimeException("registryServiceType unKnow,error is ", e);
             }

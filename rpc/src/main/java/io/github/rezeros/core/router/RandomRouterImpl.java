@@ -4,14 +4,13 @@ import io.github.rezeros.core.common.ChannelFutureWrapper;
 import io.github.rezeros.core.registry.URL;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static io.github.rezeros.core.common.cache.CommonClientCache.CHANNEL_FUTURE_POLLING_REF;
-import static io.github.rezeros.core.common.cache.CommonClientCache.CONNECT_MAP;
-import static io.github.rezeros.core.common.cache.CommonClientCache.SERVICE_ROUTER_MAP;
+import static io.github.rezeros.core.common.cache.CommonClientCache.*;
 
-public class RandomRouterImpl implements IRouter{
+public class RandomRouterImpl implements IRouter {
     @Override
     public void refreshRouterArr(Selector selector) {
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(selector.getProviderServiceName());
@@ -39,12 +38,11 @@ public class RandomRouterImpl implements IRouter{
         for (int j = 0; j < finalArr.length; j++) {
             finalChannelFutureWrappers[j] = channelFutureWrappers.get(j);
         }
-        SERVICE_ROUTER_MAP.put(url.getServiceName(),finalChannelFutureWrappers);
+        SERVICE_ROUTER_MAP.put(url.getServiceName(), finalChannelFutureWrappers);
     }
 
     /**
      * weight是指权重，权重值约定好配置是100的整倍数
-     *
      */
     private static Integer[] createWeightArr(List<ChannelFutureWrapper> channelFutureWrappers) {
         List<Integer> weightArr = new ArrayList<>();
@@ -74,9 +72,6 @@ public class RandomRouterImpl implements IRouter{
 
     /**
      * 创建随机乱序数组
-     *
-     * @param arr
-     * @return
      */
     private static Integer[] createRandomArr(Integer[] arr) {
         int total = arr.length;
@@ -94,23 +89,24 @@ public class RandomRouterImpl implements IRouter{
     }
 
 
-    private int[] createRandomIndex(int len) {
-        int[] arrInt = new int[len];
-        Random ra = new Random();
-        for (int i = 0; i < arrInt.length; i++) {
-            arrInt[i] = -1;
+    private int[] createRandomIndex(int n) {
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = i;
         }
-        int index = 0;
-        while (index < arrInt.length) {
-            int num = ra.nextInt(len);
-            //如果数组中不包含这个元素则赋值给数组
-//            if (!contains(arrInt, num)) {
-//                arrInt[index++] = num;
-//            }
+        Random rand = new Random();
+        // 逆序遍历，交换当前元素和从数组开始到当前元素范围内的随机一个元素
+        for (int i = n - 1; i > 0; i--) {
+            swap(arr, i, rand.nextInt(i + 1));
         }
-        return arrInt;
+        return arr;
     }
 
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
 
 
 }

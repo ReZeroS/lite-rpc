@@ -16,6 +16,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        log.info("rpc client handler...");
         //客户端和服务端之间的数据都是以RpcProtocol对象作为基本协议进行的交互
         RpcProtocol rpcProtocol = (RpcProtocol) msg;
         //这里是传输参数更为详细的RpcInvocation对象字节数组。

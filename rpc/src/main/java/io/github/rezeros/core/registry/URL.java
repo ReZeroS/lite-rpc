@@ -33,6 +33,10 @@ public class URL {
         this.parameters.putIfAbsent(key, value);
     }
 
+    public String getParameter(String key) {
+        return this.parameters.get(key);
+    }
+
 
 
     /**

@@ -44,8 +44,8 @@ public class ServerChannelDispatcher {
             while (true) {
                 try {
                     ServerChannelReadData serverChannelReadData = RPC_DATA_QUEUE.take();
-                    executorService.submit(() -> {
-                        try {
+//                    executorService.submit(() -> {
+//                        try {
                             RpcProtocol rpcProtocol = serverChannelReadData.getRpcProtocol();
                             RpcInvocation rpcInvocation = SERVER_SERIALIZE_FACTORY.deserialize(rpcProtocol.getContent(), RpcInvocation.class);
                             //执行过滤链路
@@ -78,12 +78,13 @@ public class ServerChannelDispatcher {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    }
+//            );
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
                 }
-            }
-        }
+//            }
+//        }
     }
 
     public void startDataConsume() {

@@ -4,11 +4,13 @@ import io.github.rezeros.protocol.RpcProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 import static io.github.rezeros.core.common.constants.RpcConstants.MAGIC_NUMBER;
 
+@Slf4j
 public class RpcDecoder extends ByteToMessageDecoder {
 
     /**
@@ -18,6 +20,7 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> out) throws Exception {
+        log.info("rpc decoder...");
         if (byteBuf.readableBytes() >= BASE_LENGTH) {
             //这里对应了RpcProtocol的魔数
             if (!(byteBuf.readShort() == MAGIC_NUMBER)) {

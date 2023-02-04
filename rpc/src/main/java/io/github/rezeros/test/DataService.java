@@ -1,7 +1,10 @@
 package io.github.rezeros.test;
 
+import io.github.rezeros.core.common.annotations.IRpcService;
+
 import java.util.List;
 
+@IRpcService
 public interface DataService {
 
     /**

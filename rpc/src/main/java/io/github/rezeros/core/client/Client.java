@@ -8,11 +8,11 @@ import io.github.rezeros.core.common.cache.CommonClientCache;
 import io.github.rezeros.core.common.config.PropertiesBootstrap;
 import io.github.rezeros.core.common.event.IRpcListenerLoader;
 import io.github.rezeros.core.common.utils.CommonUtils;
-import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.filter.IClientFilter;
 import io.github.rezeros.core.filter.client.ClientFilterChain;
 import io.github.rezeros.core.proxy.ProxyFactory;
 import io.github.rezeros.core.registry.AbstractRegister;
+import io.github.rezeros.core.registry.RegistryConstant;
 import io.github.rezeros.core.registry.RegistryService;
 import io.github.rezeros.core.registry.URL;
 import io.github.rezeros.core.router.IRouter;
@@ -38,6 +38,8 @@ import java.util.List;
 
 import static io.github.rezeros.core.common.cache.CommonClientCache.*;
 import static io.github.rezeros.core.common.constants.RpcConstants.DEFAULT_DECODE_CHAR;
+import static io.github.rezeros.core.registry.RegistryConstant.PROVIDER_IPS;
+import static io.github.rezeros.core.registry.RegistryConstant.SERVICE_PATH;
 
 @Slf4j
 @Data
@@ -45,10 +47,6 @@ public class Client {
 
 
     private static final EventLoopGroup clientGroup = new NioEventLoopGroup();
-
-
-    private ClientConfig clientConfig;
-
 
     private IRpcListenerLoader iRpcListenerLoader;
 
@@ -60,7 +58,7 @@ public class Client {
         RpcReference rpcReference = client.initClientApplication();
         RpcReferenceWrapper<DataService> rpcReferenceWrapper = new RpcReferenceWrapper<>();
         rpcReferenceWrapper.setAimClass(DataService.class);
-        rpcReferenceWrapper.setGroup("dev");
+        rpcReferenceWrapper.setGroup("default");
 //        rpcReferenceWrapper.setUrl("192.168.43.227:9093");
         //在初始化之前必须要设置对应的上下文
         DataService dataService = rpcReference.get(rpcReferenceWrapper);
@@ -68,9 +66,9 @@ public class Client {
         ConnectionHandler.setBootstrap(client.getBootstrap());
         client.doConnectServer();
         client.startClient();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000; i++) {
             try {
-                String result = dataService.sendData("test");
+                String result = dataService.sendData("txxxxest");
                 System.out.println(result);
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -80,19 +78,20 @@ public class Client {
     }
 
     public void doConnectServer() {
-        for (String providerServiceName : SUBSCRIBE_SERVICE_LIST) {
-            List<String> providerIps = ABSTRACT_REGISTER.getProviderIps(providerServiceName);
+        for (URL providerUrl : SUBSCRIBE_SERVICE_LIST) {
+            List<String> providerIps = ABSTRACT_REGISTER.getProviderIps(providerUrl.getServiceName());
             for (String providerIp : providerIps) {
                 try {
-                    ConnectionHandler.connect(providerServiceName, providerIp);
+                    ConnectionHandler.connect(providerUrl.getServiceName(), providerIp);
                 } catch (InterruptedException e) {
-                    log.error("Client connect providerService {} failed. provider ip is: {}", providerServiceName, providerIp);
+                    log.error("Client connect providerService {} failed. provider ip is: {}", providerUrl.getServiceName(), providerIp);
                     throw new RuntimeException(e);
                 }
             }
 
             URL url = new URL();
-            url.setServiceName(providerServiceName);
+            url.addParameter(SERVICE_PATH, providerUrl.getServiceName() + "/" + RegistryConstant.PROVIDER);
+            url.addParameter(PROVIDER_IPS, JSON.toJSONString(providerIps));
             //客户端在此新增一个订阅的功能
             ABSTRACT_REGISTER.doAfterSubscribe(url);
         }
@@ -103,28 +102,29 @@ public class Client {
             try {
                 //使用自定义的SPI机制去加载配置
                 EXTENSION_LOADER.loadExtension(RegistryService.class);
-                ABSTRACT_REGISTER = (AbstractRegister) EXTENSION_LOADER.getInstance(clientConfig.getRegisterType(), RegistryService.class);
+                ABSTRACT_REGISTER = (AbstractRegister) EXTENSION_LOADER.getInstance(CLIENT_CONFIG.getRegisterType(), RegistryService.class);
             } catch (Exception e) {
                 throw new RuntimeException("registryServiceType unKnow,error is ", e);
             }
         }
 
         URL url = new URL();
-        url.setApplicationName(clientConfig.getApplicationName());
+        url.setApplicationName(CLIENT_CONFIG.getApplicationName());
         url.setServiceName(serviceBean.getName());
         url.addParameter("host", CommonUtils.getIpAddress());
         ABSTRACT_REGISTER.subscribe(url);
     }
 
-    public RpcReference initClientApplication() throws InterruptedException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        clientConfig = PropertiesBootstrap.loadClientConfigFromLocal();
+    public RpcReference initClientApplication() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        CLIENT_CONFIG = PropertiesBootstrap.loadClientConfigFromLocal();
         bootstrap.group(clientGroup);
         bootstrap.channel(NioSocketChannel.class);
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
+                log.info("init the consumer pipeline");
                 ByteBuf delimiter = Unpooled.copiedBuffer(DEFAULT_DECODE_CHAR.getBytes());
-                ch.pipeline().addLast(new DelimiterBasedFrameDecoder(clientConfig.getMaxServerRespDataSize(), delimiter));
+                ch.pipeline().addLast(new DelimiterBasedFrameDecoder(CLIENT_CONFIG.getMaxServerRespDataSize(), delimiter));
                 //管道中初始化一些逻辑，这里包含了上边所说的编解码器和客户端响应类
                 ch.pipeline().addLast(new RpcEncoder());
                 ch.pipeline().addLast(new RpcDecoder());
@@ -136,19 +136,19 @@ public class Client {
         iRpcListenerLoader.init();
         initClientConfig();
         EXTENSION_LOADER.loadExtension(ProxyFactory.class);
-        return new RpcReference(EXTENSION_LOADER.getInstance(clientConfig.getProxyType(), ProxyFactory.class));
+        return new RpcReference(EXTENSION_LOADER.getInstance(CLIENT_CONFIG.getProxyType(), ProxyFactory.class));
     }
 
 
     private void initClientConfig() throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         //初始化路由策略
         EXTENSION_LOADER.loadExtension(IRouter.class);
-        IROUTER = EXTENSION_LOADER.getInstance(clientConfig.getRouterStrategy(), IRouter.class);
+        IROUTER = EXTENSION_LOADER.getInstance(CLIENT_CONFIG.getRouterStrategy(), IRouter.class);
 
         //初始化序列化框架
         EXTENSION_LOADER.loadExtension(SerializeFactory.class);
 
-        CLIENT_SERIALIZE_FACTORY = EXTENSION_LOADER.getInstance(clientConfig.getClientSerialize(), SerializeFactory.class);
+        CLIENT_SERIALIZE_FACTORY = EXTENSION_LOADER.getInstance(CLIENT_CONFIG.getClientSerialize(), SerializeFactory.class);
 
         //初始化过滤链
         ClientFilterChain clientFilterChain = new ClientFilterChain();

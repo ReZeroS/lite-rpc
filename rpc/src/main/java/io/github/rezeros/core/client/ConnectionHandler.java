@@ -64,13 +64,8 @@ public class ConnectionHandler {
         SERVER_ADDRESS.remove(providerIp);
         List<ChannelFutureWrapper> channelFutureWrappers = CONNECT_MAP.get(providerServiceName);
         if (CommonUtils.isNotEmptyList(channelFutureWrappers)) {
-            Iterator<ChannelFutureWrapper> iterator = channelFutureWrappers.iterator();
-            while (iterator.hasNext()) {
-                ChannelFutureWrapper channelFutureWrapper = iterator.next();
-                if (providerIp.equals(channelFutureWrapper.getHost() + ":" + channelFutureWrapper.getPort())) {
-                    iterator.remove();
-                }
-            }
+            channelFutureWrappers.removeIf(channelFutureWrapper ->
+                    providerIp.equals(channelFutureWrapper.getHost() + ":" + channelFutureWrapper.getPort()));
         }
     }
 
@@ -82,8 +77,7 @@ public class ConnectionHandler {
         if (CommonUtils.isEmptyList(channelFutureWrappers)) {
             throw new RuntimeException("no provider exist for " + providerServiceName);
         }
-        ChannelFuture channelFuture = channelFutureWrappers.get(new Random().nextInt(channelFutureWrappers.size())).getChannelFuture();
-        return channelFuture;
+        return channelFutureWrappers.get(new Random().nextInt(channelFutureWrappers.size())).getChannelFuture();
     }
 
 

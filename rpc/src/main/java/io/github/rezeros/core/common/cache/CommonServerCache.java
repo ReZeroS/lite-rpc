@@ -1,6 +1,7 @@
 package io.github.rezeros.core.common.cache;
 
 import io.github.rezeros.core.common.ServerServiceSemaphoreWrapper;
+import io.github.rezeros.core.config.ServerConfig;
 import io.github.rezeros.core.dispatcher.ServerChannelDispatcher;
 import io.github.rezeros.core.filter.server.ServerAfterFilterChain;
 import io.github.rezeros.core.filter.server.ServerBeforeFilterChain;
@@ -34,5 +35,6 @@ public class CommonServerCache {
 
     public static volatile boolean IS_STARTED;
 
+    public static ServerConfig SERVER_CONFIG;
 
 }
