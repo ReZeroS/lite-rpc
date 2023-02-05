@@ -37,9 +37,7 @@ public class JavassistInvocationHandler implements InvocationHandler {
         //这里就是将请求的参数放入到发送队列中
         SEND_QUEUE.add(rpcInvocation);
         if (timeoutInvocation.tryAcquire(timeout, TimeUnit.MILLISECONDS)){
-            Object response = RESP_MAP.get(rpcInvocation.getUuid()).getRpcInvocation().getResponse();
-            RESP_MAP.remove(rpcInvocation.getUuid());
-            return response;
+            return RESP_MAP.remove(rpcInvocation.getUuid()).getRpcInvocation().getResponse();
         }
         RESP_MAP.remove(rpcInvocation.getUuid());
         throw new TimeoutException("client wait server's response timeout!");

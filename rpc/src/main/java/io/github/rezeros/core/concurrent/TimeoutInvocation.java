@@ -3,20 +3,19 @@ package io.github.rezeros.core.concurrent;
 import io.github.rezeros.protocol.RpcInvocation;
 import lombok.Data;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Data
 public class TimeoutInvocation {
 
-    private final Semaphore semaphore;
+    private final CountDownLatch latch;
 
     private RpcInvocation rpcInvocation;
 
-    public TimeoutInvocation(RpcInvocation rpcInvocation) throws InterruptedException {
+    public TimeoutInvocation(RpcInvocation rpcInvocation) {
         this.rpcInvocation = rpcInvocation;
-        this.semaphore = new Semaphore(1);
-        semaphore.acquire();
+        this.latch = new CountDownLatch(1);
     }
 
     public void setRpcInvocation(RpcInvocation rpcInvocation){
@@ -28,10 +27,10 @@ public class TimeoutInvocation {
     }
 
     public boolean tryAcquire(long timeout, TimeUnit unit) throws InterruptedException {
-        return semaphore.tryAcquire(timeout, unit);
+        return latch.await(timeout, unit);
     }
 
     public void release(){
-        semaphore.release();
+        latch.countDown();
     }
 }
