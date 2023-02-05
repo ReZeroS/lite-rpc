@@ -46,7 +46,7 @@ public class RpcReferenceWrapper<T> {
         this.attatchments = attatchments;
     }
 
-    public void setTimeOut(int timeOut) {
+    public void setTimeOut(long timeOut) {
         attatchments.put("timeOut", timeOut);
     }
 

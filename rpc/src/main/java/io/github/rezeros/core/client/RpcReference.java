@@ -32,7 +32,7 @@ public class RpcReference {
      */
     private void initGlobalRpcReferenceWrapperConfig(RpcReferenceWrapper rpcReferenceWrapper) {
         if (rpcReferenceWrapper.getTimeOUt() == null) {
-            rpcReferenceWrapper.setTimeOut(CLIENT_CONFIG.getTimeOut());
+            rpcReferenceWrapper.setTimeOut(CLIENT_CONFIG.getTimeout());
         }
     }
 }

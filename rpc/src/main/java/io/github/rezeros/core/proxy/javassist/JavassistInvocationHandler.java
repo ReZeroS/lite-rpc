@@ -1,20 +1,18 @@
 package io.github.rezeros.core.proxy.javassist;
 
 import io.github.rezeros.core.client.RpcReferenceWrapper;
+import io.github.rezeros.core.concurrent.TimeoutInvocation;
 import io.github.rezeros.protocol.RpcInvocation;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static io.github.rezeros.core.common.cache.CommonClientCache.RESP_MAP;
-import static io.github.rezeros.core.common.cache.CommonClientCache.SEND_QUEUE;
+import static io.github.rezeros.core.common.cache.CommonClientCache.*;
 
 public class JavassistInvocationHandler implements InvocationHandler {
-
-
-    private final static Object OBJECT = new Object();
 
     private final RpcReferenceWrapper<?> rpcReferenceWrapper;
 
@@ -29,17 +27,21 @@ public class JavassistInvocationHandler implements InvocationHandler {
         rpcInvocation.setTargetMethod(method.getName());
         rpcInvocation.setTargetServiceName(rpcReferenceWrapper.getAimClass().getName());
         rpcInvocation.setUuid(UUID.randomUUID().toString());
-        RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
-        //代理类内部将请求放入到发送队列中，等待发送队列发送请求
-        SEND_QUEUE.add(rpcInvocation);
-        long beginTime = System.currentTimeMillis();
+        return tryFinishedTask(rpcInvocation, CLIENT_CONFIG.getTimeout());
+    }
+
+    private static Object tryFinishedTask(RpcInvocation rpcInvocation, long timeout) throws InterruptedException, TimeoutException {
         //如果请求数据在指定时间内返回则返回给客户端调用方
-        while (System.currentTimeMillis() - beginTime < 1000 * 1000) {
-            Object object = RESP_MAP.get(rpcInvocation.getUuid());
-            if (object instanceof RpcInvocation) {
-                return ((RpcInvocation) object).getResponse();
-            }
+        TimeoutInvocation timeoutInvocation = new TimeoutInvocation(null);
+        RESP_MAP.put(rpcInvocation.getUuid(), timeoutInvocation);
+        //这里就是将请求的参数放入到发送队列中
+        SEND_QUEUE.add(rpcInvocation);
+        if (timeoutInvocation.tryAcquire(timeout, TimeUnit.MILLISECONDS)){
+            Object response = RESP_MAP.get(rpcInvocation.getUuid()).getRpcInvocation().getResponse();
+            RESP_MAP.remove(rpcInvocation.getUuid());
+            return response;
         }
+        RESP_MAP.remove(rpcInvocation.getUuid());
         throw new TimeoutException("client wait server's response timeout!");
     }
 }

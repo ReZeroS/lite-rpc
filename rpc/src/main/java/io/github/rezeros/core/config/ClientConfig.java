@@ -17,7 +17,7 @@ public class ClientConfig {
     /**
      * 客户端发数据的超时时间
      */
-    private Integer timeOut;
+    private Long timeout;
 
     /**
      * 代理类型 example: jdk,javassist

@@ -24,7 +24,7 @@ public class RpcConstants {
 
     public static final String KRYO_SERIALIZE_TYPE = "kryo";
 
-    public static final Integer DEFAULT_TIMEOUT = 3000;
+    public static final Long DEFAULT_TIMEOUT = 3000L;
 
     public static final Integer DEFAULT_THREAD_NUMS = 256;
 

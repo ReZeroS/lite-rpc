@@ -2,6 +2,7 @@ package io.github.rezeros.core.common.cache;
 
 import io.github.rezeros.core.common.ChannelFuturePollingRef;
 import io.github.rezeros.core.common.ChannelFutureWrapper;
+import io.github.rezeros.core.concurrent.TimeoutInvocation;
 import io.github.rezeros.core.config.ClientConfig;
 import io.github.rezeros.core.filter.client.ClientFilterChain;
 import io.github.rezeros.core.registry.AbstractRegister;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommonClientCache {
 
     public static BlockingQueue<RpcInvocation> SEND_QUEUE = new ArrayBlockingQueue<>(100);
-    public static ConcurrentHashMap<String, Object> RESP_MAP = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, TimeoutInvocation> RESP_MAP = new ConcurrentHashMap<>();
     public static ClientConfig CLIENT_CONFIG;
     //provider名称 --> 该服务有哪些集群URL
     public static List<URL> SUBSCRIBE_SERVICE_LIST = new ArrayList<>();
