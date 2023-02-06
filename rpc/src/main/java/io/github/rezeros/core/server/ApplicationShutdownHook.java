@@ -12,13 +12,10 @@ public class ApplicationShutdownHook {
      * 注册一个shutdownHook的钩子，当jvm进程关闭的时候触发
      */
     public static void registryShutdownHook(){
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                log.info("[registryShutdownHook] ==== ");
-                IRpcListenerLoader.sendSyncEvent(new IRpcDestroyEvent("destroy"));
-                System.out.println("destory");
-            }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            log.info("[registryShutdownHook] ==== ");
+            IRpcListenerLoader.sendSyncEvent(new IRpcDestroyEvent("destroy"));
+            System.out.println("destory");
         }));
     }
 

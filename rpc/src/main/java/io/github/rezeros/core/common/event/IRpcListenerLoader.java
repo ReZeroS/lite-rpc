@@ -13,11 +13,11 @@ import java.util.concurrent.Executors;
 
 public class IRpcListenerLoader {
 
-    private static final List<IRpcListener> iRpcListenerList = new ArrayList<>();
+    private static final List<IRpcListener<?>> iRpcListenerList = new ArrayList<>();
 
-    private static ExecutorService eventThreadPool = Executors.newFixedThreadPool(1);
+    private static final ExecutorService eventThreadPool = Executors.newFixedThreadPool(1);
 
-    public static void registerListener(IRpcListener iRpcListener) {
+    public static void registerListener(IRpcListener<?> iRpcListener) {
         iRpcListenerList.add(iRpcListener);
     }
 

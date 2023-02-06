@@ -68,7 +68,7 @@ public class IRpcClientAutoConfiguration implements BeanPostProcessor, Applicati
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         if (needInitClient && client!=null) {
-            log.info(" ================== [{}] started success ================== ",client.getClientConfig().getApplicationName());
+//            log.info(" ================== [{}] started success ================== ",client.getClientConfig().getApplicationName());
             ConnectionHandler.setBootstrap(client.getBootstrap());
             client.doConnectServer();
             client.startClient();
