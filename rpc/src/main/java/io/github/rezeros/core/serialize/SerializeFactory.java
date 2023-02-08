@@ -13,5 +13,5 @@ public interface SerializeFactory {
     /**
      * 反序列化
      */
-    <T> T deserialize(byte[] data, Class<T> clazz) throws IOException, ClassNotFoundException;
+    <T> T deserialize(byte[] data, Class<T> clazz) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException;
 }

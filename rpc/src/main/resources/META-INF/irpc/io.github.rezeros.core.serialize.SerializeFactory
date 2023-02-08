@@ -1,3 +1,3 @@
 jdk=io.github.rezeros.core.serialize.jdk.JdkSerializeFactory
-protobuf=io.github.rezeros.core.serialize.protobuf.ProtobufSerializeFactory
+protostuff=io.github.rezeros.core.serialize.protobuf.ProtostuffSerializeFactory
 fastJson=io.github.rezeros.core.serialize.fastjson.FastJsonSerializeFactory

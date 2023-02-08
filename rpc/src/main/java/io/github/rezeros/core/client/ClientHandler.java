@@ -10,6 +10,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import static io.github.rezeros.core.common.cache.CommonClientCache.CLIENT_SERIALIZE_FACTORY;
 import static io.github.rezeros.core.common.cache.CommonClientCache.RESP_MAP;
 
 @Slf4j
@@ -23,7 +24,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         //这里是传输参数更为详细的RpcInvocation对象字节数组。
         byte[] reqContent = rpcProtocol.getContent();
 //        String json = new String(reqContent, 0, reqContent.length);
-        RpcInvocation rpcInvocation = JSON.parseObject(reqContent, RpcInvocation.class);
+        RpcInvocation rpcInvocation = CLIENT_SERIALIZE_FACTORY.deserialize(reqContent, RpcInvocation.class);
         //通过之前发送的uuid来注入匹配的响应数值
         if (rpcInvocation.getE() != null) {
             log.error("rpc invocation error", rpcInvocation.getE());
